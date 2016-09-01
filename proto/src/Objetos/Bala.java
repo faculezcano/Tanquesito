@@ -1,3 +1,6 @@
+package Objetos;
+import ObjetoDinamico;
+
 import java.util.LinkedList;
 import java.util.Random;
 
