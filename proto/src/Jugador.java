@@ -37,7 +37,7 @@ public class Jugador extends ObjetoDinamico{
 	}
 	
 	public Bala disparar(){
-		double velDisparo = 2;
+		double velDisparo = 8;
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D vel = new Point2D(velDisparo*Math.cos(rad), velDisparo*Math.sin(rad));
 		Point2D pos = new Point2D(getX()+35*Math.cos(rad)-10,getY()+35*Math.sin(rad)-5);

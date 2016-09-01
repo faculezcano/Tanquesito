@@ -30,7 +30,7 @@ public class tester extends Application {
 	protected MotionManager mm = new MotionManager();
 	
 	private void createMap(int cantx, int canty){
-		int size = 32;
+		int size = 64;
 		//LinkedList<Point2D> usadas = new LinkedList<Point2D>();
 		Random r = new Random();
 		for(int i = 0; i<30; i++){
@@ -90,7 +90,7 @@ public class tester extends Application {
 	}
 	
 	public void start(Stage stage) {
-		stage.setTitle("Tu vieja puta");
+		stage.setTitle("Tanquesito");
 		
 		g = new Group();
 		
@@ -126,16 +126,16 @@ public class tester extends Application {
 			public void handle(KeyEvent e) {
 				Point2D vel = j.getVelocidad();
 				if(e.getCode()==KeyCode.W){
-					vel = new Point2D(0, -1);
+					vel = new Point2D(0, -4);
 					j.setAngle(180);
 				}else if(e.getCode()==KeyCode.S){
-					vel = new Point2D(0, 1);
+					vel = new Point2D(0, 4);
 					j.setAngle(0);
 				}else if(e.getCode()==KeyCode.A){
-					vel = new Point2D(-1,0);
+					vel = new Point2D(-4,0);
 					j.setAngle(90);
 				}else if(e.getCode()==KeyCode.D){
-					vel = new Point2D(1,0);
+					vel = new Point2D(4,0);
 					j.setAngle(-90);
 				}
 				Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
