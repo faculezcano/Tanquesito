@@ -1,9 +1,8 @@
 import java.awt.MouseInfo;
 import java.util.Random;
 
-import Objetos.Bala;
-import Objetos.Jugador;
-import Sistema.MotionManager;
+import Objetos.*;
+import Sistema.*;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,7 +30,8 @@ public class tester extends Application {
 	protected double yDiscrepance = 0.0;
 	protected Jugador j;
 	protected Group g;
-	protected MotionManager mm = new MotionManager();
+	protected Mapa map;
+	//protected MotionManager mm = new MotionManager();
 	
 	private void createMap(int cantx, int canty){
 		int size = 64;
@@ -99,10 +99,9 @@ public class tester extends Application {
 		g = new Group();
 		
 		j = new Jugador(new Point2D(230,225));
-		j.addToGroup(g);
-		mm.addObject(j);
+		//mm.addObject(j);
 		
-		Bala b = new Bala(new Point2D(250,250),new Point2D(0,0));
+		//Bala b = new Bala(new Point2D(250,250),new Point2D(0,0));
 		//b.addToGroup(g);
 		//mm.addObject(b);
 		//Npc n = new Npc(b);
@@ -113,6 +112,12 @@ public class tester extends Application {
 		
 		
 		//createMap(20,20);
+		
+		map = new Mapa(8,8,g);
+		map.generarMapa();
+		
+		map.add(j);
+		
 
 		final Scene s = new Scene(g,500,500, Color.GREY);
 		s.setOnMouseMoved(new EventHandler<MouseEvent>(){
@@ -160,9 +165,9 @@ public class tester extends Application {
 						public void run() {
 							// TODO Auto-generated method stub
 							Bala b = j.disparar();
-							b.addToGroup(g);
-							mm.addObject(b);
-							
+							//b.addToGroup(g);
+							//mm.addObject(b);
+							map.add(b);
 						}
 						
 					});
@@ -201,9 +206,9 @@ public class tester extends Application {
 		stage.setScene(s);
 		stage.setResizable(false);
 		stage.show();		
-		Thread motionThread = new Thread(mm);
-		motionThread.setDaemon(true);
-		motionThread.start();
+		//Thread motionThread = new Thread(mm);
+		//motionThread.setDaemon(true);
+		//motionThread.start();
 	}
 
 }
