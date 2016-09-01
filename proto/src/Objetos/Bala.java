@@ -85,13 +85,11 @@ public class Bala extends ObjetoDinamico{
 
 	@Override
 	public Point2D getPosition() {
-		// TODO Auto-generated method stub
 		return new Point2D(getX()-5,getY()-5);
 	}
 
 	@Override
 	public void translate(Point2D t) {
-		// TODO Auto-generated method stub
 		bala.setTranslateX(t.getX());
 		bala.setTranslateY(t.getY());
 	}
