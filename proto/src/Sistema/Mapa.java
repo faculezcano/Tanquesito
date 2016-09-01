@@ -1,6 +1,7 @@
 package Sistema;
 
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
@@ -14,12 +15,12 @@ import Objetos.Ladrillo;
 public class Mapa {
 	
 	protected MotionManager motMan;
-	protected LinkedList<ObjetoEstatico> objs;
+	protected ConcurrentLinkedQueue<ObjetoEstatico> objs;
 	protected Group g;
 	
 	public Mapa(int bloquesX, int bloquesY, Group g){
 		motMan = new MotionManager(this);
-		objs = new LinkedList<ObjetoEstatico>();
+		objs = new ConcurrentLinkedQueue<ObjetoEstatico>();
 		this.g = g;
 		Thread thMotMan = new Thread(motMan);
 		thMotMan.setDaemon(true);
@@ -63,7 +64,7 @@ public class Mapa {
 	}
 	
 	public void add(ObjetoEstatico obj){
-		objs.addLast(obj);
+		objs.add(obj);
 		obj.addToGroup(g);
 	}
 	

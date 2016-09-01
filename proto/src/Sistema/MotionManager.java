@@ -1,22 +1,26 @@
 package Sistema;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import sun.misc.Queue;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 
 public class MotionManager implements Runnable{
 	
-	protected LinkedList<ObjetoDinamico> objs = new LinkedList<ObjetoDinamico>();
+	protected ConcurrentLinkedQueue<ObjetoDinamico> objs;
 	protected int fps = 30;
 	protected long time;
 	protected Mapa map;
 	
 	public MotionManager(Mapa map){
 		this.map = map;
+		objs = new ConcurrentLinkedQueue<ObjetoDinamico>();
 	}
 	
 	public void addObject(ObjetoDinamico o){
-		objs.addLast(o);
+		objs.add(o);
 	}
 
 	public void run() {
