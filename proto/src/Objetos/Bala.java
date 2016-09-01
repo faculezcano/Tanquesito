@@ -94,4 +94,19 @@ public class Bala extends ObjetoDinamico{
 		bala.setTranslateY(t.getY());
 	}
 
+	@Override
+	public Shape getForma() {
+		return bala;
+	}
+	
+	public String toString(){
+		return "Bala";
+	}
+
+	@Override
+	public void remove(Group g) {
+		g.getChildren().remove(bala);
+		g.getChildren().removeAll(humo);
+	}
+
 }

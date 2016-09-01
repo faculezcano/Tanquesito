@@ -121,17 +121,31 @@ public class Jugador extends ObjetoDinamico{
 
 	@Override
 	public Point2D getPosition() {
-		// TODO Auto-generated method stub
 		return new Point2D(getX(),getY());
 	}
 
 	@Override
 	public void translate(Point2D t) {
-		// TODO Auto-generated method stub
 		cuerpo.setTranslateX(t.getX());
 		cuerpo.setTranslateY(t.getY());
 		canon.setTranslateX(t.getX());
 		canon.setTranslateY(t.getY());
+	}
+
+	@Override
+	public Shape getForma() {
+		return cuerpo;
+	}
+	
+	public String toString(){
+		return "Jugador";
+	}
+
+	@Override
+	public void remove(Group g) {
+		g.getChildren().remove(cuerpo);
+		g.getChildren().remove(canon);
+		g.getChildren().removeAll(pisadas);
 	}
 
 }
