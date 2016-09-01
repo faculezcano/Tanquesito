@@ -1,6 +1,7 @@
 package Sistema;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.shape.Shape;
 
 
 public abstract class ObjetoDinamico {
@@ -22,9 +23,13 @@ public abstract class ObjetoDinamico {
 	
 	public abstract void setPosition(Point2D pos);
 	
+	public abstract Shape getForma();
+	
 	public void setPosition(double x, double y){
 		setPosition(new Point2D(x,y));
 	}
+	
+	public abstract void remove(Group g);
 	
 	public abstract Point2D getPosition();
 
