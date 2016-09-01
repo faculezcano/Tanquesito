@@ -1,6 +1,10 @@
 import java.awt.MouseInfo;
 import java.util.Random;
 
+import Objetos.Bala;
+import Objetos.Jugador;
+import Sistema.MotionManager;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.*;

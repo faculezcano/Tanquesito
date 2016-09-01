@@ -1,5 +1,5 @@
 package Objetos;
-import ObjetoEstatico;
+import Sistema.ObjetoEstatico;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;

@@ -1,8 +1,9 @@
 package Objetos;
-import ObjetoDinamico;
 
 import java.util.LinkedList;
 import java.util.Random;
+
+import Sistema.ObjetoDinamico;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -49,7 +50,7 @@ public class Bala extends ObjetoDinamico{
 	public void setPosition(Point2D pos) {
 		
 		if(origen.distance(pos) >=6){
-			int dispersion = 3;
+			//int dispersion = 3;
 			Circle c = new Circle(getX()+10-10*Math.cos(Math.toRadians(bala.getRotate()))+r.nextGaussian()*2,getY()+5-10*Math.sin(Math.toRadians(bala.getRotate()))+r.nextGaussian()*2,8);
 			double col = (r.nextInt(2)+2)/10.0;
 			c.setFill(Color.color(col, col,col));

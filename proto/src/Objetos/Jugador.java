@@ -1,13 +1,13 @@
 package Objetos;
-import ObjetoDinamico;
 
 import java.util.LinkedList;
+
+import Sistema.ObjetoDinamico;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 
