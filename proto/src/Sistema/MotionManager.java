@@ -31,13 +31,21 @@ public class MotionManager implements Runnable{
 			
 			LinkedList<Object> borrar = new LinkedList<Object>();
 			LinkedList<ObjetoDinamico> dinBorrar = new LinkedList<ObjetoDinamico>();
+
 			for(ObjetoDinamico obj : objs){
-				for(ObjetoEstatico oE : map.colisiones(obj))
+				LinkedList<ObjetoEstatico> statics = map.colisiones(obj);
+				ObjetoDinamico auxD = null;
+				obj.setColision(auxD);
+				ObjetoEstatico auxE = null;
+				obj.setColision(auxE);
+				for(ObjetoEstatico oE : statics){
+					obj.setColision(oE);
 					if(obj.toString() == "Bala"){
 						borrar.add(obj);
 						dinBorrar.add(obj);
 						borrar.add(oE);
 					}
+				}
 			}
 			
 			for(ObjetoDinamico oD : dinBorrar){
@@ -51,9 +59,16 @@ public class MotionManager implements Runnable{
 				@Override
 				public void run() {
 					for(ObjetoDinamico obj : objs){
-						Point2D vel = obj.getVelocidad();
-						obj.setPosition(obj.getPosition().add(vel));
-						
+						if(!obj.getColision()){
+							Point2D vel = obj.getVelocidad();
+							obj.setPosition(obj.getPosition().add(vel));
+						}else{
+							obj.setPosition(Math.round(obj.getPosition().getX()/32)*32, Math.round(obj.getPosition().getY()/32)*32);
+							ObjetoDinamico auxD = null;
+							obj.setColision(auxD);
+							ObjetoEstatico auxE = null;
+							obj.setColision(auxE);
+						}
 					}
 				}
 				
