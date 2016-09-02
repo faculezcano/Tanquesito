@@ -3,6 +3,7 @@ package Objetos;
 import java.util.LinkedList;
 
 import Sistema.ObjetoDinamico;
+import Sistema.ObjetoEstatico;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;

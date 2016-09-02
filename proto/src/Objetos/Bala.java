@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import Sistema.ObjetoDinamico;
+import Sistema.ObjetoEstatico;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
