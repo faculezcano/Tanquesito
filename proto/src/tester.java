@@ -114,10 +114,9 @@ public class tester extends Application {
 		//createMap(20,20);
 		
 		map = new Mapa(8,8,g);
-		map.generarMapa();
-		
+				
 		map.add(j);
-		
+		map.generarMapa();
 
 		final Scene s = new Scene(g,500,500, Color.GREY);
 		s.setOnMouseMoved(new EventHandler<MouseEvent>(){
