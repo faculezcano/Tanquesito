@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -30,13 +31,19 @@ public class Mapa {
 	public void generarMapa(){
 		
 		//TODO borrar testeo
+		Group gr = new Group();
 		for(int i = 0; i<8; i++)
 			for(int j = 0; j<8; j++){
 				Ladrillo l = new Ladrillo();
-				add(l);
+				gr.getChildren().add(l.getForma());
+				objs.add(l);
+				//add(l);
 				l.setPosition(new Point2D(128+i*32,128+j*32));
 			}
-				
+		DropShadow ds = new DropShadow();
+		ds.setRadius(10);
+		gr.setEffect(ds);
+		g.getChildren().add(gr);
 		
 		
 		//TODO escribir algoritmo de generacion de mapa
@@ -70,7 +77,8 @@ public class Mapa {
 	
 	public void remove(ObjetoEstatico obj){
 		objs.remove(obj);
-		g.getChildren().remove(obj.getForma());
+		Group parent = (Group)obj.getForma().getParent();
+		parent.getChildren().remove(obj.getForma());
 	}
 	
 	public void remove(ObjetoDinamico obj){
