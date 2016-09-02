@@ -8,6 +8,8 @@ public abstract class ObjetoDinamico {
 	
 	protected Point2D velocidad = new Point2D(0,0);
 	protected Point2D posicion;
+	protected ObjetoDinamico colisionD;
+	protected ObjetoEstatico colisionE;
 	
 	public void setVelocidad(Point2D vel){
 		velocidad = vel;
@@ -24,6 +26,18 @@ public abstract class ObjetoDinamico {
 	public abstract void setPosition(Point2D pos);
 	
 	public abstract Shape getForma();
+	
+	public void setColision(ObjetoDinamico o){
+		colisionD=o;
+	}
+	
+	public void setColision(ObjetoEstatico o){
+		colisionE=o;
+	}
+	
+	public boolean getColision(){
+		return colisionD != null || colisionE != null;
+	}
 	
 	public void setPosition(double x, double y){
 		setPosition(new Point2D(x,y));
