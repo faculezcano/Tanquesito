@@ -110,7 +110,7 @@ public class Jugador extends ObjetoDinamico{
 			if(motor.getRate() > 0.5)
 				motor.setRate(motor.getRate()-0.1);
 		}else{
-			if(motor.getRate() < 2.0)
+			if(motor.getRate() < 1.5)
 				motor.setRate(motor.getRate()+0.05);
 		}
 		
