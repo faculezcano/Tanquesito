@@ -38,8 +38,8 @@ public class Jugador extends ObjetoDinamico{
 		
 		motor = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/motor.mp3"));
 		
-		
-		motor.setStopTime(Duration.seconds(1));
+		motor.setStartTime(Duration.millis(200));
+		motor.setStopTime(Duration.seconds(2));
 		motor.setRate(0.5);
 		motor.setOnEndOfMedia(new Runnable(){
 
