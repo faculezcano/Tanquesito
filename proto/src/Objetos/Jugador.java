@@ -9,8 +9,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
+import javafx.util.Duration;
 
 public class Jugador extends ObjetoDinamico{
 	
@@ -22,6 +25,8 @@ public class Jugador extends ObjetoDinamico{
 	
 	protected double canonAng = 0;
 	
+	protected MediaPlayer motor;
+	
 	public Jugador(Point2D pos){
 		cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/cuerpo.png"))));
 		canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/canon.png"))));
@@ -30,6 +35,21 @@ public class Jugador extends ObjetoDinamico{
 		ds.setRadius(10);
 		cuerpo.setEffect(ds);
 		canon.setEffect(ds);
+		
+		motor = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/motor.mp3"));
+		
+		
+		motor.setStopTime(Duration.seconds(1));
+		motor.setRate(0.5);
+		motor.setOnEndOfMedia(new Runnable(){
+
+			@Override
+			public void run() {
+				motor.seek(Duration.ZERO);
+				
+			}
+		});
+		motor.play();
 		//cuerpo.setStroke(Color.BLACK);
 		//canon.setStroke(Color.BLACK);
 	}
@@ -84,6 +104,14 @@ public class Jugador extends ObjetoDinamico{
 		
 		if(origen == null){
 			origen = new Point2D(pos.getX(),pos.getY());
+		}
+		
+		if(velocidad.magnitude() == 0){
+			if(motor.getRate() > 0.5)
+				motor.setRate(motor.getRate()-0.1);
+		}else{
+			if(motor.getRate() < 2.0)
+				motor.setRate(motor.getRate()+0.05);
 		}
 		
 		if(origen.distance(pos)>=64){
