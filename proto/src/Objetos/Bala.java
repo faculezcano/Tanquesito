@@ -9,14 +9,19 @@ import Sistema.ObjetoEstatico;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
+import javafx.util.Duration;
 
 public class Bala extends ObjetoDinamico{
 	protected Shape bala = new Rectangle(0,0,20,10);
 	protected Point2D origen;
 	protected Random r = new Random();
+	
+	protected MediaPlayer disparoSound;
 	
 	private LinkedList<Circle> humo = new LinkedList<Circle>();
 	
@@ -33,6 +38,16 @@ public class Bala extends ObjetoDinamico{
 		origen = new Point2D(pos.getX(),pos.getY());
 		setVelocidad(vel);
 		bala.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
+		
+		
+		
+		disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
+		
+		disparoSound.setStartTime(Duration.millis(0));
+		disparoSound.setStopTime(Duration.seconds(1));
+		
+		
+		disparoSound.play();
 	}
 	
 	public void addToGroup(Group g){
