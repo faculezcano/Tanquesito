@@ -108,7 +108,7 @@ public class Jugador extends ObjetoDinamico{
 		
 		double diff = canonAng-canon.getRotate();// calculo la diferencia
 		
-		if(Math.abs(canon.getRotate()-canonAng) > 4.0){// si la diferencia es grosa
+		if(Math.abs(diff) > 4.0){// si la diferencia es grosa
 			
 			double nuevoAng = 0;
 			
