@@ -55,7 +55,11 @@ public class Jugador extends ObjetoDinamico{
 	}
 	
 	public void setCanonAngle(double deg){
-		canon.setRotate(deg);
+		//canon.setRotate(deg);
+		if(deg < 0){
+			deg +=360;
+		}
+		canonAng = deg;
 		//canon.setTranslateX(getX()+15*Math.cos(Math.toRadians(deg+90)));
 		//canon.setTranslateY(getY()+15*Math.sin(Math.toRadians(deg+90)));
 	}
@@ -101,6 +105,27 @@ public class Jugador extends ObjetoDinamico{
 
 	@Override
 	public void setPosition(Point2D pos) {
+		
+		if(Math.abs(canon.getRotate()-canonAng) > 4.0){
+			
+			double nuevoAng = 0;
+			double diff = canonAng-canon.getRotate();
+			if(diff < 0)
+				diff +=360;
+			
+			if(diff < 180)
+				nuevoAng = (canon.getRotate()+4.0)%360.0;
+				
+			else
+				nuevoAng = (canon.getRotate()-4.0)%360.0;
+			
+			if(nuevoAng < 0)
+				nuevoAng+=360;
+			
+			canon.setRotate(nuevoAng);
+		}else{
+			canon.setRotate(canonAng);
+		}
 		
 		if(origen == null){
 			origen = new Point2D(pos.getX(),pos.getY());
