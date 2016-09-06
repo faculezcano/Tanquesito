@@ -106,24 +106,29 @@ public class Jugador extends ObjetoDinamico{
 	@Override
 	public void setPosition(Point2D pos) {
 		
-		if(Math.abs(canon.getRotate()-canonAng) > 4.0){
+		double diff = canonAng-canon.getRotate();// calculo la diferencia
+		
+		if(Math.abs(canon.getRotate()-canonAng) > 4.0){// si la diferencia es grosa
 			
 			double nuevoAng = 0;
-			double diff = canonAng-canon.getRotate();
+			
+			// si la diferencia es negativa, osea -90 por ej, la paso a positiva -90 = 270
 			if(diff < 0)
 				diff +=360;
 			
+			// aca elijo para que lado girar dependiendo que me quede mas corto
 			if(diff < 180)
 				nuevoAng = (canon.getRotate()+4.0)%360.0;
 				
 			else
 				nuevoAng = (canon.getRotate()-4.0)%360.0;
 			
+			// si el nuevo angulo es negativo lo paso a positivo
 			if(nuevoAng < 0)
 				nuevoAng+=360;
 			
 			canon.setRotate(nuevoAng);
-		}else{
+		}else{	// si la diferencia es chica, lo asigno
 			canon.setRotate(canonAng);
 		}
 		
