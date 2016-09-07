@@ -49,7 +49,8 @@ public class Jugador extends ObjetoDinamico{
 				
 			}
 		});
-		//motor.play();
+		
+		motor.play();
 		//cuerpo.setStroke(Color.BLACK);
 		//canon.setStroke(Color.BLACK);
 	}
