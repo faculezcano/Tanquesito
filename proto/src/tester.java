@@ -32,7 +32,7 @@ public class tester extends Application {
 	protected Jugador j;
 	protected Group g;
 	protected Mapa map;
-	//protected MotionManager mm = new MotionManager();
+
 	
 	
 	//Lo de abajo no sirve, Gracias Facu Por comentarlo y no hacerme perder tiempo. :)
@@ -99,6 +99,9 @@ public class tester extends Application {
 	
 	public void start(Stage stage) {
 		stage.setTitle("Tanquesito");
+		//stage.setFullScreen(true);
+		stage.centerOnScreen();
+		
 		
 		g = new Group();
 		
