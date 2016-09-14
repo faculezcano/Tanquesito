@@ -46,16 +46,35 @@ public class Jugador extends ObjetoDinamico{
 				motor = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/motor.mp3"));
 				
 				motor.setStartTime(Duration.millis(500));
-				motor.setStopTime(Duration.millis(600));
+				motor.setStopTime(Duration.millis(553));
 				motor.setRate(0.5);
-				motor.setOnEndOfMedia(new Runnable(){
+				motor.setCycleCount(MediaPlayer.INDEFINITE);
+				
+				motor.setOnRepeat(new Runnable(){
+					public void run() {
+						motor.setRate(rate);
+					}
+				});
+				
+				motor.setOnStalled(new Runnable(){
+					public void run() {
+						motor.play();
+					}
+				});
+				
+				motor.setOnError(new Runnable(){
+					public void run() {
+						motor.play();
+					}
+				});
+				/*motor.setOnEndOfMedia(new Runnable(){
 
 					@Override
 					public void run() {
 						motor.seek(motor.getStartTime());
 						motor.setRate(rate);
 					}
-				});
+				});*/
 				motor.play();
 			}
 			
