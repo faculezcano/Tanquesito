@@ -1,5 +1,9 @@
 package Sistema;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -49,8 +53,40 @@ public class Mapa {
 		//TODO escribir algoritmo de generacion de mapa
 	}
 	
-	public void cargarMapa(String archivo) throws InvalidMapException{
+	
+	public void cargarMapa(String archivo) throws InvalidMapException, IOException, FileNotFoundException{
 		//TODO cargar un mapa de un archivo
+		
+		Group gr = new Group();
+		
+		FileReader f = new FileReader(archivo);
+		BufferedReader b = new BufferedReader(f);
+		
+		int fila = 0;
+		String cadena = b.readLine();
+		
+		while(cadena != null){
+			for(int col=0;col<cadena.length();col++){
+				System.out.print(cadena.charAt(col));
+				if (cadena.charAt(col) == '1') {
+					Ladrillo l = new Ladrillo();
+					gr.getChildren().add(l.getForma());
+					objs.add(l);
+					l.setPosition(new Point2D(0+col*32,0+fila*32));
+				}
+					
+			}
+			System.out.println();
+			fila++;
+			cadena=b.readLine();
+		}
+		b.close();
+		
+		DropShadow ds = new DropShadow();
+		ds.setRadius(10);
+		gr.setEffect(ds);
+		g.getChildren().add(gr);
+		
 	}
 	
 	public LinkedList<ObjetoEstatico> colisiones(ObjetoDinamico obj){

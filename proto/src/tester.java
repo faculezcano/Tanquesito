@@ -1,4 +1,5 @@
 import java.awt.MouseInfo;
+import java.io.IOException;
 import java.util.Random;
 
 import Objetos.*;
@@ -33,60 +34,63 @@ public class tester extends Application {
 	protected Mapa map;
 	//protected MotionManager mm = new MotionManager();
 	
-	private void createMap(int cantx, int canty){
-		int size = 64;
-		//LinkedList<Point2D> usadas = new LinkedList<Point2D>();
-		Random r = new Random();
-		for(int i = 0; i<30; i++){
-			int coorX = r.nextInt(cantx);
-			int coorY = r.nextInt(canty);
-			Point2D dir;// = new Point2D(r.nextInt(3)-1,r.nextInt(3)-1);
-			switch(r.nextInt(4)){
-			case 0:
-				dir = new Point2D(1,0);
-				break;
-			case 1:
-				dir = new Point2D(0,1);
-				break;
-			case 2:
-				dir = new Point2D(-1,0);
-				break;
-			default:
-				dir = new Point2D(0,-1);
-				break;
-			}
-			/*while(dir.magnitude()==0)
-				dir = new Point2D(r.nextInt(3)-1,r.nextInt(3)-1);*/
-			
-			int cant;
-			double tipo = r.nextGaussian();
-			
-			if(tipo < -1)
-				cant = r.nextInt(3)+1;
-			else if(tipo > 1)
-				cant = r.nextInt(3)+1;
-			else{
-				Double d = 3*r.nextGaussian();
-				cant = Math.abs(d.intValue()+5);
-			}
-			
-			for(int j = 0; j < cant; j++){
-				Shape s = new Rectangle(coorX*size,coorY*size,size,size);
-				
-				if(tipo < -1)
-					s.setFill(Color.DARKSLATEBLUE);
-				else if(tipo > 1)
-					s.setFill(Color.DARKGREEN);
-				else
-					s.setFill(Color.DARKORANGE.darker());
-				
-				g.getChildren().add(s);
-				coorX += dir.getX();
-				coorY += dir.getY();
-			}
-			
-		}
-	}
+	
+	//Lo de abajo no sirve, Gracias Facu Por comentarlo y no hacerme perder tiempo. :)
+	
+//	private void createMap(int cantx, int canty){
+//		int size = 64;
+//		//LinkedList<Point2D> usadas = new LinkedList<Point2D>();
+//		Random r = new Random();
+//		for(int i = 0; i<30; i++){
+//			int coorX = r.nextInt(cantx);
+//			int coorY = r.nextInt(canty);
+//			Point2D dir;// = new Point2D(r.nextInt(3)-1,r.nextInt(3)-1);
+//			switch(r.nextInt(4)){
+//			case 0:
+//				dir = new Point2D(1,0);
+//				break;
+//			case 1:
+//				dir = new Point2D(0,1);
+//				break;
+//			case 2:
+//				dir = new Point2D(-1,0);
+//				break;
+//			default:
+//				dir = new Point2D(0,-1);
+//				break;
+//			}
+//			/*while(dir.magnitude()==0)
+//				dir = new Point2D(r.nextInt(3)-1,r.nextInt(3)-1);*/
+//			
+//			int cant;
+//			double tipo = r.nextGaussian();
+//			
+//			if(tipo < -1)
+//				cant = r.nextInt(3)+1;
+//			else if(tipo > 1)
+//				cant = r.nextInt(3)+1;
+//			else{
+//				Double d = 3*r.nextGaussian();
+//				cant = Math.abs(d.intValue()+5);
+//			}
+//			
+//			for(int j = 0; j < cant; j++){
+//				Shape s = new Rectangle(coorX*size,coorY*size,size,size);
+//				
+//				if(tipo < -1)
+//					s.setFill(Color.DARKSLATEBLUE);
+//				else if(tipo > 1)
+//					s.setFill(Color.DARKGREEN);
+//				else
+//					s.setFill(Color.DARKORANGE.darker());
+//				
+//				g.getChildren().add(s);
+//				coorX += dir.getX();
+//				coorY += dir.getY();
+//			}
+//			
+//		}
+//	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -116,8 +120,13 @@ public class tester extends Application {
 		map = new Mapa(8,8,g);
 				
 		map.add(j);
-		map.generarMapa();
-
+		try {
+			map.cargarMapa("src/Mapas/ProtoMap.txt");
+		} catch (InvalidMapException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		final Scene s = new Scene(g,500,500, Color.GREY);
 		s.setOnMouseMoved(new EventHandler<MouseEvent>(){
 			@Override
