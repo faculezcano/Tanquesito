@@ -1,5 +1,4 @@
-
-import java.util.*;
+package common;
 
 /**
  * 
@@ -7,7 +6,7 @@ import java.util.*;
 public class Dios {
 
     /**
-     * Default constructor
+     *
      */
     public Dios() {
     }

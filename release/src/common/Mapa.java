@@ -1,73 +1,37 @@
+package common;
 
 import java.util.*;
+
+import javafx.scene.Group;
+
+import assets.*;
+import assets.tanques.*;
 
 /**
  * 
  */
-public class Mapa extends Lista {
-
-    /**
-     * Default constructor
-     */
-    public Mapa() {
-    }
-
-    /**
-     * 
-     */
-    protected List<TanqueEnemigo> enemigos;
-
-    /**
-     * 
-     */
+public class Mapa {
+	
+	protected List<TanqueEnemigo> enemigos;
     protected Group group;
-
-    /**
-     * 
-     */
-    protected List<Bala> bullets;
-
-    /**
-     * 
-     */
+    protected List<Bullet> bullets;
     protected Jugador jugador;
-
-    /**
-     * 
-     */
     protected List<PowerUp> powerUps;
-
-    /**
-     * 
-     */
     protected List<Obstaculo> obstaculos;
 
-
-
-
-
-
-
-
-
-
-
-
-
+	/**
+     * @param cantX 
+     * @param cantY 
+     * @param g
+     */
+    public Mapa(int cantX, int cantY, Group g) {
+        // TODO implement here
+    }
 
     /**
      * @param o
      */
     public void addEnemigo(TanqueEnemigo o) {
-        // TODO implement here
-    }
-
-    /**
-     * @param cantX 
-     * @param cantY 
-     * @param g
-     */
-    public void Mapa(int cantX, int cantY, Group g) {
         // TODO implement here
     }
 
@@ -81,7 +45,7 @@ public class Mapa extends Lista {
     /**
      * @param String file
      */
-    public void cargarMapa(void String file) {
+    public void cargarMapa(String file) {
         // TODO implement here
     }
 

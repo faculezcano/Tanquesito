@@ -1,16 +1,26 @@
+package assets;
 
-import java.util.*;
 
 /**
  * 
  */
-public class Ladrillo extends ObjetoEstatico {
+public abstract class Obstaculo extends ObjetoEstatico {
 
     /**
      * Default constructor
      */
-    public Ladrillo() {
+    public Obstaculo() {
     }
+
+    /**
+     * 
+     */
+    protected int vida;
+
+    /**
+     * 
+     */
+    public abstract void impactar();
 
     /**
      * @return

@@ -1,15 +1,20 @@
+package assets;
 
-import java.util.*;
+import common.Mapa;
+
 
 /**
  * 
  */
-public class PowUPShovel extends ObjetoEstatico {
+public abstract class PowerUp extends ObjetoEstatico {
+	
+	protected Mapa map;
+    public abstract void accion();
 
     /**
-     * Default constructor
+     *
      */
-    public PowUPShovel() {
+    public PowerUp() {
     }
 
     /**

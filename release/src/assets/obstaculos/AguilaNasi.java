@@ -1,4 +1,6 @@
-package Proyecto;
+package assets.obstaculos;
+
+import assets.Obstaculo;
 
 /**
  * 
@@ -6,7 +8,7 @@ package Proyecto;
 public class AguilaNasi extends Obstaculo {
 
     /**
-     * Default constructor
+     *
      */
     public AguilaNasi() {
     }

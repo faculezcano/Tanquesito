@@ -1,4 +1,6 @@
-package Proyecto;
+package assets.obstaculos;
+
+import assets.ObjetoEstatico;
 
 /**
  * 
@@ -6,7 +8,7 @@ package Proyecto;
 public class Agua extends ObjetoEstatico {
 
     /**
-     * Default constructor
+     *
      */
     public Agua() {
     }

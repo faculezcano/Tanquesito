@@ -1,14 +1,15 @@
-package Proyecto;
+package assets;
 
 
 import java.util.*;
+
 
 import javafx.geometry.Point2D;
 
 /**
  * 
  */
-public abstract class Tanque extends MotionManager {
+public abstract class Tanque extends ObjetoDinamico {
 
     /**
      * Default constructor
@@ -80,7 +81,7 @@ public abstract class Tanque extends MotionManager {
     /**
      * 
      */
-    public abstract void dañar();
+    public abstract void romper();
 
     /**
      * @return

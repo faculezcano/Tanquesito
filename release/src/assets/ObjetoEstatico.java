@@ -1,26 +1,16 @@
-
-import java.util.*;
+package assets;
 
 /**
  * 
  */
-public abstract class PowerUp extends ObjetoEstatico {
+public abstract class ObjetoEstatico {
 
     /**
-     * Default constructor
+     *
      */
-    public PowerUp() {
+    public ObjetoEstatico() {
+    	
     }
-
-    /**
-     * 
-     */
-    public Mapa map;
-
-    /**
-     * 
-     */
-    public abstract void accion();
 
     /**
      * @return

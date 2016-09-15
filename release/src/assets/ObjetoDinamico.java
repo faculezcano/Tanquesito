@@ -1,4 +1,4 @@
-package Proyecto;
+package assets;
 
 
 import com.sun.javafx.geom.Shape;
