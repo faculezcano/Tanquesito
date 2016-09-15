@@ -30,11 +30,10 @@ public abstract class Tanque extends ObjetoDinamico {
      * @param vel
      */
     public Bullet disparar() {
-    	double velDisparo = 8;
 		double rad = Math.toRadians(canon.getRotate()+90);
-		Point2D velBala = new Point2D(velDisparo*Math.cos(rad), velDisparo*Math.sin(rad));
+		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
 		Point2D pos = new Point2D(getX()+35*Math.cos(rad)-10,getY()+35*Math.sin(rad)-5);
-		Bullet bala = new Bullet(pos,velBala.multiply(vel_disparo));
+		Bullet bala = new Bullet(pos,velBala);
 		return bala;
     }
 
@@ -46,6 +45,10 @@ public abstract class Tanque extends ObjetoDinamico {
 			ang +=360;
 		}
 		canonAng = ang;
+    }
+    
+    public int velMovimiento(){
+    	return vel_mov;
     }
     
     protected void giroLentoCanon(){
@@ -136,7 +139,7 @@ public abstract class Tanque extends ObjetoDinamico {
 
 	@Override
 	public Point2D getPosicion() {
-		return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth(),cuerpo.getTranslateY()+cuerpo.getHeight());
+		return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth()/2,cuerpo.getTranslateY()+cuerpo.getHeight()/2);
 	}
 
     /**
