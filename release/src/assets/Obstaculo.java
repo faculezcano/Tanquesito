@@ -7,12 +7,6 @@ package assets;
 public abstract class Obstaculo extends ObjetoEstatico {
 
     /**
-     * Default constructor
-     */
-    public Obstaculo() {
-    }
-
-    /**
      * 
      */
     protected int vida;

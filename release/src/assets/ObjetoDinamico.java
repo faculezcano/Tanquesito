@@ -9,13 +9,7 @@ import javafx.geometry.Point2D;
  * 
  */
 public abstract class ObjetoDinamico {
-
-    /**
-     * Default constructor
-     */
-    public ObjetoDinamico() {
-    }
-
+	
     /**
      * 
      */

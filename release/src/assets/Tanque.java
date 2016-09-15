@@ -10,46 +10,14 @@ import javafx.geometry.Point2D;
  * 
  */
 public abstract class Tanque extends ObjetoDinamico {
-
-    /**
-     * Default constructor
-     */
-    protected Tanque() {
-    }
-
-    /**
-     * 
-     */
-    protected int resistencia;
-
-    /**
-     * 
-     */
+	
+	protected int resistencia;
     protected int vel_mov;
-
-    /**
-     * 
-     */
     protected int vel_disparo;
-
-    /**
-     * 
-     */
     protected int puntos;
-
-    /**
-     * 
-     */
     protected Point2D origen;
-
-    /**
-     * 
-     */
     protected List<Bullet> bullets;
-
-
-
-
+    
     /**
      * @param vel
      */

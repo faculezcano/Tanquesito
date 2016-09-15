@@ -2,6 +2,8 @@ package assets.tanques;
 
 import javafx.geometry.Point2D;
 
+import assets.TanqueEnemigo;
+
 import com.sun.javafx.geom.Shape;
 
 /**

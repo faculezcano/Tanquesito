@@ -4,14 +4,7 @@ package assets;
  * 
  */
 public abstract class ObjetoEstatico {
-
-    /**
-     *
-     */
-    public ObjetoEstatico() {
-    	
-    }
-
+	
     /**
      * @return
      */

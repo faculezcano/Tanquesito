@@ -12,12 +12,6 @@ public abstract class PowerUp extends ObjetoEstatico {
     public abstract void accion();
 
     /**
-     *
-     */
-    public PowerUp() {
-    }
-
-    /**
      * @return
      */
     public abstract boolean colisionaVehiculo();
