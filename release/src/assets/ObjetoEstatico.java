@@ -1,30 +1,37 @@
 package assets;
 
-import javafx.scene.Group;
+import java.util.LinkedList;
+
+import com.sun.javafx.geom.Shape;
 
 /**
  * 
  */
 public abstract class ObjetoEstatico {
 	
-    /**
-     * @return
-     */
-    public abstract boolean colisionaVehiculo();
-
-    /**
-     * @return
-     */
-    public abstract boolean colisionaBala();
+   
 
     /**
      * 
      */
-    public abstract void colision();
-
-	public void addToGroup(Group g) {
-		// TODO Auto-generated method stub
-		
-	}
+    public abstract void afectarTanque();
+    
+    /**
+     * 
+     */
+    public abstract void afectarBala();
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract LinkedList<Shape> getFormas();
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract Shape colisionForma();
+	
 
 }

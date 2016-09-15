@@ -1,28 +1,47 @@
 package assets.obstaculos;
 
-import assets.ObjetoEstatico;
+
+import java.util.LinkedList;
+
+import com.sun.javafx.geom.Shape;
+
+import assets.Obstaculo;
 
 /**
  * 
  */
-public class Arboles extends ObjetoEstatico {
+public class Arboles extends Obstaculo {
+
+
 
 	@Override
-	public boolean colisionaVehiculo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean colisionaBala() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void colision() {
+	public void afectarTanque() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void impactar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afectarBala() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public LinkedList<Shape> getFormas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Shape colisionForma() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

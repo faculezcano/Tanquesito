@@ -1,10 +1,10 @@
 package assets.obstaculos;
 
-import assets.ObjetoEstatico;
+import java.util.LinkedList;
+
 import assets.Obstaculo;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
-import javafx.scene.Node;
+
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -29,28 +29,10 @@ public class Ladrillo extends Obstaculo {
 		rect1.setTranslateY(pos.getY());
 	}
 	
+
+
+
 	
-	public void addToGroup(Group g) {
-		g.getChildren().add(rect1);
-	}
-
-	@Override
-	public boolean colisionaVehiculo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean colisionaBala() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void colision() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	public Shape getForma() {
@@ -63,5 +45,31 @@ public class Ladrillo extends Obstaculo {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void afectarTanque() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afectarBala() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public LinkedList<com.sun.javafx.geom.Shape> getFormas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.sun.javafx.geom.Shape colisionForma() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }

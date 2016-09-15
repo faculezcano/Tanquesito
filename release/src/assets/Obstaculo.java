@@ -16,19 +16,16 @@ public abstract class Obstaculo extends ObjetoEstatico {
      */
     public abstract void impactar();
 
-    /**
-     * @return
-     */
-    public abstract boolean colisionaVehiculo();
-
-    /**
-     * @return
-     */
-    public abstract boolean colisionaBala();
+   
 
     /**
      * 
      */
-    public abstract void colision();
+    public abstract void afectarTanque();
+    
+    /**
+     * 
+     */
+    public abstract void afectarBala();
 
 }

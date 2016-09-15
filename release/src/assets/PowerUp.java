@@ -24,6 +24,6 @@ public abstract class PowerUp extends ObjetoEstatico {
     /**
      * 
      */
-    public abstract void colision();
+    public abstract void afectarTanque();
 
 }
