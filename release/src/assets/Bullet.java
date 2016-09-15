@@ -95,7 +95,7 @@ public class Bullet extends ObjetoDinamico {
 			Circle nuevoHumo = crearHumo();
 			Group g = (Group)forma.getParent();
 			g.getChildren().add(nuevoHumo);
-			humo.addLast(crearHumo());
+			humo.addLast(nuevoHumo);
 			
 			Shape s = humo.getFirst();
 			if(s.getOpacity() <= 0){
