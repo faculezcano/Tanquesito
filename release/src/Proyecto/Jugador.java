@@ -1,7 +1,4 @@
-package ProyectoTDP;
-
-
-import java.util.*;
+package Proyecto;
 
 /**
  * 

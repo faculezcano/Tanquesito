@@ -1,4 +1,4 @@
-package ProyectoTDP;
+package Proyecto;
 
 /**
  * 

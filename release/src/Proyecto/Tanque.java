@@ -1,4 +1,4 @@
-package ProyectoTDP;
+package Proyecto;
 
 
 import java.util.*;
@@ -13,7 +13,7 @@ public abstract class Tanque extends MotionManager {
     /**
      * Default constructor
      */
-    private Tanque() {
+    protected Tanque() {
     }
 
     /**

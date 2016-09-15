@@ -1,5 +1,4 @@
-
-import java.util.*;
+package Proyecto;
 
 /**
  * 
@@ -11,5 +10,11 @@ public class TanqueRapido extends TanqueEnemigo {
      */
     public TanqueRapido() {
     }
+
+	@Override
+	public void dañar() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

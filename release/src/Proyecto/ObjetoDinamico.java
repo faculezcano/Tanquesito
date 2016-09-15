@@ -1,26 +1,25 @@
+package Proyecto;
 
-import java.util.*;
+
+import com.sun.javafx.geom.Shape;
+
+import javafx.geometry.Point2D;
 
 /**
  * 
  */
-public class Bullet extends ObjetoDinamico {
+public abstract class ObjetoDinamico {
 
     /**
      * Default constructor
      */
-    public Bullet() {
+    public ObjetoDinamico() {
     }
 
     /**
      * 
      */
-    protected Shape forma;
-
-    /**
-     * 
-     */
-    protected Point2D origen;
+    protected Point2D velocidad;
 
 
 
@@ -34,15 +33,21 @@ public class Bullet extends ObjetoDinamico {
      */
     public abstract Point2D getPosicion();
 
-    /**
-     * @param Group g
-     */
-    public abstract void addToGroup(void Group g);
 
     /**
-     * @param Group g
+     * @return
      */
-    public abstract void remove(void Group g);
+    public Point2D getVelocidad() {
+        // TODO implement here
+        return null;
+    }
+
+    /**
+     * @param vel
+     */
+    public void setVelocidad(Point2D vel) {
+        // TODO implement here
+    }
 
     /**
      * @return

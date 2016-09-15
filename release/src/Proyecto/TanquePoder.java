@@ -1,17 +1,14 @@
-package ProyectoTDP;
-
-
-import java.util.*;
+package Proyecto;
 
 /**
  * 
  */
-public class TanqueBlindado extends TanqueEnemigo {
+public class TanquePoder extends TanqueEnemigo {
 
     /**
      * Default constructor
      */
-    public TanqueBlindado() {
+    public TanquePoder() {
     }
 
 	@Override
