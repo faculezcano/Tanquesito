@@ -4,8 +4,6 @@ import javafx.geometry.Point2D;
 
 import assets.Tanque;
 
-import com.sun.javafx.geom.Shape;
-
 
 /**
  * 
@@ -20,36 +18,43 @@ public class Jugador extends Tanque {
      * 
      */
     public Jugador() {
-    	super();
+    	nivel = 1;
+    	disparos_simul = 1;
+    	vida = 3;
     }
 
 	@Override
 	public void romper() {
+		resistencia--;
+		if(resistencia <= 0){
+			vida--;
+		}
+		if(vida <= 0){
+			//TODO: PERDIIII!
+		}
+	}
+
+	@Override
+	public void colision() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void setPosicion(Point2D p) {
-		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Point2D getPosicion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Shape getForma() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void colision() {
-		// TODO Auto-generated method stub
+		giroLentoCanon();
+		
+		if(origen == null){
+			origen = new Point2D(p.getX(),p.getY());
+		}
+		
+		pisadas(p);
+		
+		cuerpo.setTranslateX(p.getX()-cuerpo.getWidth());
+		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight());
+		canon.setTranslateX(p.getX()-canon.getWidth());
+		canon.setTranslateY(p.getY()-canon.getHeight());
 		
 	}
 
