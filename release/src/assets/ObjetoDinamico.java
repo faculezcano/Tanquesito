@@ -1,9 +1,7 @@
 package assets;
 
-
-import com.sun.javafx.geom.Shape;
-
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Shape;
 
 /**
  * 
@@ -26,21 +24,27 @@ public abstract class ObjetoDinamico {
      * @return
      */
     public abstract Point2D getPosicion();
-
+    
+    public double getX(){
+    	return getPosicion().getX();
+    }
+    
+    public double getY(){
+    	return getPosicion().getY();
+    }
 
     /**
      * @return
      */
     public Point2D getVelocidad() {
-        // TODO implement here
-        return null;
+        return velocidad;
     }
 
     /**
      * @param vel
      */
     public void setVelocidad(Point2D vel) {
-        // TODO implement here
+        velocidad = vel;
     }
 
     /**
