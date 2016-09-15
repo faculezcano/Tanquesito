@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import assets.Bullet;
+import assets.ObjetoEstatico;
 import assets.Tanque;
 
 
@@ -67,11 +68,7 @@ public class Jugador extends Tanque {
 		}
 	}
 
-	@Override
-	public void colision() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void setPosicion(Point2D p) {
@@ -88,6 +85,18 @@ public class Jugador extends Tanque {
 		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
 		canon.setTranslateX(p.getX()-canon.getWidth()/2);
 		canon.setTranslateY(p.getY()-canon.getHeight()/2);
+		
+	}
+
+	@Override
+	public void colision(ObjetoEstatico oe) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afectar() {
+		// TODO Auto-generated method stub
 		
 	}
 

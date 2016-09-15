@@ -2,7 +2,7 @@ package assets.tanques;
 
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
-
+import assets.ObjetoEstatico;
 import assets.TanqueEnemigo;
 
 /**
@@ -34,8 +34,15 @@ public class TanquePoder extends TanqueEnemigo {
 		return null;
 	}
 
+
 	@Override
-	public void colision() {
+	public void colision(ObjetoEstatico oe) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afectar() {
 		// TODO Auto-generated method stub
 		
 	}
