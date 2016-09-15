@@ -1,5 +1,7 @@
 package assets;
 
+import javafx.scene.Group;
+
 /**
  * 
  */
@@ -19,5 +21,10 @@ public abstract class ObjetoEstatico {
      * 
      */
     public abstract void colision();
+
+	public void addToGroup(Group g) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

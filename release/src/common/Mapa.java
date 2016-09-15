@@ -144,9 +144,9 @@ public class Mapa {
 					System.out.print(cadena.charAt(col));
 					if (cadena.charAt(col) == '1') {
 						Ladrillo l = new Ladrillo();
-						/*gr.getChildren().add(l.getForma());
-						objs.add(l);
-						l.setPosition(new Point2D(0+col*32,0+fila*32));*/
+						gr.getChildren().add(l.getForma());
+						obstaculos.add(l);
+						l.setPosicion(new Point2D(0+col*32,0+fila*32));
 					}
 						
 				}
