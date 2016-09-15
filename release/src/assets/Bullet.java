@@ -123,4 +123,18 @@ public class Bullet extends ObjetoDinamico {
 		return c;
 	}
 
+	@Override
+	public void colision(ObjetoEstatico oe) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afectar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 }

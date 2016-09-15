@@ -55,6 +55,11 @@ public abstract class ObjetoDinamico {
     /**
      * 
      */
-    public abstract void colision();
+    public abstract void colision(ObjetoEstatico oe);
+    
+    /**
+     * 
+     */
+    public abstract void afectar();
 
 }
