@@ -11,7 +11,7 @@ public abstract class ObjetoDinamico {
     /**
      * 
      */
-    protected Point2D velocidad;
+    protected Point2D velocidad = new Point2D(0,0);
 
 
 
