@@ -44,8 +44,8 @@ public class Mapa {
     }
     
     private boolean colisiona(ObjetoDinamico od, ObjetoEstatico oe){
-    	/*Shape interseccion = Shape.intersect(od.getForma(), oe.getForma());
-		return !interseccion.getBoundsInLocal().isEmpty();*/
+    	//Shape interseccion = Shape.intersect(od.getForma(), oe.getForma());
+		//return !interseccion.getBoundsInLocal().isEmpty();
     	return false;
     }
     
@@ -70,8 +70,8 @@ public class Mapa {
 						}
 						if(!colisiones.isEmpty())
 							b.colision();
-						for(Obstaculo o: colisiones)
-							o.colision();
+						for(Obstaculo o: colisiones){
+							//o.colision();
 					}
 					
 					Platform.runLater(new Runnable(){
@@ -87,6 +87,11 @@ public class Mapa {
 							Point2D vel = jugador.getVelocidad();
 							jugador.setPosicion(jugador.getPosicion().add(vel));
 							
+							for(TanqueEnemigo en: enemigos){
+								Point2D velEn=en.getVelocidad();
+								en.setPosicion(en.getPosicion().add(velEn));
+							}
+							
 						}
 						
 					});
@@ -100,7 +105,7 @@ public class Mapa {
 				}
 			}
     		
-    	});
+			}});
     	colisiones.setDaemon(true);
     	colisiones.start();
     }
@@ -188,6 +193,10 @@ public class Mapa {
      */
     public void setJugador(Jugador j) {
        	jugador = j;
+    }
+    
+    public ConcurrentLinkedQueue<Obstaculo> getObstaculos(){
+    	return obstaculos;
     }
 
 }
