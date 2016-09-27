@@ -28,6 +28,7 @@ public class Mapa {
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos;
     protected Jugador jugador;
     protected Group g;
+    protected Tanque enemigo;
     
 	/**
      * @param cantX 
@@ -143,6 +144,7 @@ public class Mapa {
 			
 			int fila = 0;
 			String cadena = b.readLine();
+			enemigo = enemigos.poll();
 			
 			while(cadena != null){
 				for(int col=0;col<cadena.length();col++){

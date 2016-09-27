@@ -132,10 +132,13 @@ public abstract class Tanque extends ObjetoDinamico {
 	}
     
     // TODO: fijarse si implementar este metodo general aca o que siga abstracto
-    /*@Override
+    @Override
 	public void setPosicion(Point2D p) {
+    	
+    	cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
+    	cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
 		
-	}*/
+	}
 
 	@Override
 	public Point2D getPosicion() {

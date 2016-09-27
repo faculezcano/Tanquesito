@@ -1,6 +1,6 @@
 import java.awt.MouseInfo;
 import java.io.IOException;
-import java.util.Random;
+
 
 import Objetos.*;
 import Sistema.*;
@@ -16,8 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 
@@ -99,7 +97,7 @@ public class tester extends Application {
 	
 	public void start(Stage stage) {
 		stage.setTitle("Tanquesito");
-		//stage.setFullScreen(true);
+		stage.setFullScreen(true);
 		stage.centerOnScreen();
 		
 		

@@ -27,7 +27,7 @@ public class Jugador extends ObjetoDinamico{
 	
 	protected double canonAng = 0;
 	
-	protected MediaPlayer motor;
+	
 	
 	public Jugador(Point2D pos){
 		cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/cuerpo.png"))));
@@ -38,50 +38,6 @@ public class Jugador extends ObjetoDinamico{
 		cuerpo.setEffect(ds);
 		canon.setEffect(ds);
 		
-		Thread sonido = new Thread (new Runnable(){
-			
-			@Override
-			public void run() {
-				
-				motor = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/motor.mp3"));
-				
-				motor.setStartTime(Duration.millis(500));
-				motor.setStopTime(Duration.millis(553));
-				motor.setRate(0.5);
-				motor.setCycleCount(MediaPlayer.INDEFINITE);
-				
-				motor.setOnRepeat(new Runnable(){
-					public void run() {
-						motor.setRate(rate);
-					}
-				});
-				
-				motor.setOnStalled(new Runnable(){
-					public void run() {
-						motor.play();
-					}
-				});
-				
-				motor.setOnError(new Runnable(){
-					public void run() {
-						motor.play();
-					}
-				});
-				/*motor.setOnEndOfMedia(new Runnable(){
-
-					@Override
-					public void run() {
-						motor.seek(motor.getStartTime());
-						motor.setRate(rate);
-					}
-				});*/
-				motor.play();
-			}
-			
-		});
-		
-		sonido.setDaemon(true);
-		sonido.start();
 		
 		
 		//cuerpo.setStroke(Color.BLACK);
@@ -169,13 +125,7 @@ public class Jugador extends ObjetoDinamico{
 		if(origen == null){
 			origen = new Point2D(pos.getX(),pos.getY());
 		}
-		if(velocidad.magnitude() == 0){
-			if(motor.getRate() > 0.5)
-				rate = (motor.getRate()-0.1);
-			}else{
-				if(motor.getRate() < 1.5)
-					rate=(motor.getRate()+0.05);
-			}
+	
 		
 		if(origen.distance(pos)>=64){
 			Rectangle pisada = new Rectangle(getX()-32,getY()-32,64,64);

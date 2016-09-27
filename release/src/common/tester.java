@@ -1,10 +1,9 @@
 package common;
 
 import java.awt.MouseInfo;
-import java.io.IOException;
 
-import assets.Bullet;
-import assets.tanques.Jugador;
+import assets.*;
+import assets.tanques.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -26,6 +25,7 @@ public class tester extends Application {
 	protected Scene s;
 	protected Group g;
 	protected Mapa map;
+	protected TanqueEnemigo enemigo;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -37,10 +37,13 @@ public class tester extends Application {
 		
 		j = new Jugador();
 		j.addToGroup(g);
+		g.getChildren().add(enemigo.getForma());
 		
 		map = new Mapa(8,8,g);
 		
 		map.setJugador(j);
+		map.addEnemigo(enemigo);
+		enemigo.setPosicion(new Point2D(32,97));
 		
 		map.cargarMapa("src/mapas/ProtoMap.txt");
 		
