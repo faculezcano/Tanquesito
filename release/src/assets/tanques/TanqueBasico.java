@@ -33,12 +33,6 @@ public class TanqueBasico extends TanqueEnemigo {
 
 
 	@Override
-	public Point2D getPosicion() {
-		// TODO Auto-generated method stub
-		return null;
-	}	
-
-	@Override
 	public void colision(ObjetoEstatico oe) {
 		// TODO Auto-generated method stub
 		
