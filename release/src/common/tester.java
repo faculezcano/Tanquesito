@@ -34,16 +34,17 @@ public class tester extends Application {
 		
 		g = new Group();
 		s = new Scene(g,500,500, Color.GREY);
-		
+		enemigo=null;
 		j = new Jugador();
 		j.addToGroup(g);
-		g.getChildren().add(enemigo.getForma());
+		//g.getChildren().add(enemigo.getForma());
+		
 		
 		map = new Mapa(8,8,g);
 		
 		map.setJugador(j);
-		map.addEnemigo(enemigo);
-		enemigo.setPosicion(new Point2D(32,97));
+		//map.addEnemigo(enemigo);
+		//enemigo.setPosicion(new Point2D(32,97));
 		
 		map.cargarMapa("src/mapas/ProtoMap.txt");
 		
@@ -79,6 +80,7 @@ public class tester extends Application {
 							Bullet b = j.disparar();
 							map.addBullet(b);
 							g.getChildren().add(b.getForma());
+							
 						}
 						
 					});
@@ -108,13 +110,34 @@ public class tester extends Application {
 				}else if(e.getCode()==KeyCode.D){
 					vel = new Point2D(j.velMovimiento(),0);
 					j.setAngle(-90);
+				}else if(e.getCode()==KeyCode.O){
+					
+						if(enemigo == null){
+							enemigo=new TanqueBasico();
+							map.addEnemigo(enemigo);
+							g.getChildren().add(enemigo.getForma());
+							enemigo.setPosicion(new Point2D(32,97));
+							//g.getChildren().add(enemigo.getForma());
+							//map.addEnemigo(enemigo);
+							//enemigo.setPosicion(new Point2D(32,97));
+						}
+				}else if(e.getCode()==KeyCode.P){
+					
+					if(enemigo!=null){
+						map.eliminarEnemigo(enemigo);
+						g.getChildren().remove(enemigo.getForma());
+						enemigo=null;
+					}
 				}
+					
+				
 				//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
 				//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);
 				j.setVelocidad(vel);
 			}
+			});
 			
-		});
+		
 		
 		s.setOnKeyReleased(new EventHandler<KeyEvent>(){
 			@Override

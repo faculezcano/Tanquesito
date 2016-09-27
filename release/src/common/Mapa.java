@@ -118,6 +118,10 @@ public class Mapa {
         enemigos.add(o);
     }
     
+    public void eliminarEnemigo(TanqueEnemigo o){
+    	enemigos.remove(o);
+    }
+    
     public void addBullet(Bullet b){
     	bullets.add(b);
     }
