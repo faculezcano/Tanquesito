@@ -71,7 +71,7 @@ public class Mapa {
 						}
 						if(!colisiones.isEmpty())
 							b.colision();
-						for(Obstaculo o: colisiones){
+						//for(Obstaculo o: colisiones)
 							//o.colision();
 					}
 					
@@ -104,7 +104,6 @@ public class Mapa {
 					} catch (InterruptedException e) {}
 					
 				}
-			}
     		
 			}});
     	colisiones.setDaemon(true);
