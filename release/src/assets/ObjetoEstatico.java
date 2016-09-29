@@ -27,11 +27,15 @@ public abstract class ObjetoEstatico {
      */
     public abstract LinkedList<Shape> getFormas();
     
+    public abstract javafx.scene.shape.Shape getForma();
+    
     /**
      * 
      * @return
      */
     public abstract Shape colisionForma();
+    
+    
 	
 
 }

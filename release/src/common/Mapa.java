@@ -28,6 +28,7 @@ public class Mapa {
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos;
     protected Jugador jugador;
     protected Group g;
+    protected Group gr;
     protected Tanque enemigo;
     
 	/**
@@ -136,7 +137,7 @@ public class Mapa {
      * @param String file
      */
     public void cargarMapa(String archivo) {
-    	Group gr = new Group();
+    	gr = new Group();
 		
 		try {
 			
@@ -177,6 +178,14 @@ public class Mapa {
 		ds.setRadius(10);
 		gr.setEffect(ds);
 		g.getChildren().add(gr);
+    }
+    
+    public void eliminarObstaculo(){
+    	Obstaculo obst= obstaculos.element();
+    	gr.getChildren().remove(obst.getForma());
+    	obstaculos.remove(obst);
+    	
+    	
     }
 
     /**

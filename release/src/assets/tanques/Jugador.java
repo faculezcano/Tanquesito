@@ -87,6 +87,10 @@ public class Jugador extends Tanque {
 		canon.setTranslateY(p.getY()-canon.getHeight()/2);
 		
 	}
+	
+	public void setPuntos(int p){
+		puntos=p;
+	}
 
 	@Override
 	public void colision(ObjetoEstatico oe) {

@@ -15,6 +15,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class tester extends Application {
@@ -26,11 +29,13 @@ public class tester extends Application {
 	protected Group g;
 	protected Mapa map;
 	protected TanqueEnemigo enemigo;
+	protected Text puntos;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Tanquesito");
 		stage.centerOnScreen();
+		
 		
 		g = new Group();
 		s = new Scene(g,500,500, Color.GREY);
@@ -38,8 +43,12 @@ public class tester extends Application {
 		j = new Jugador();
 		j.addToGroup(g);
 		//g.getChildren().add(enemigo.getForma());
+		puntos= new Text("PUNTOS="+j.getPuntos());
+		puntos.setFont(Font.font("serif", FontWeight.BOLD, 15));
 		
-		
+		puntos.setX(400);
+		puntos.setY(400);
+		g.getChildren().add(puntos);
 		map = new Mapa(8,8,g);
 		
 		map.setJugador(j);
@@ -127,7 +136,14 @@ public class tester extends Application {
 						map.eliminarEnemigo(enemigo);
 						g.getChildren().remove(enemigo.getForma());
 						enemigo=null;
+						j.setPuntos((j.getPuntos())+1);
+						puntos.setText("PUNTOS="+j.getPuntos());
+						
+						
 					}
+				}else if(e.getCode()==KeyCode.K){
+					
+					map.eliminarObstaculo();
 				}
 					
 				
