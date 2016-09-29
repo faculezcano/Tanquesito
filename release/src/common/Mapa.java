@@ -182,9 +182,12 @@ public class Mapa {
     }
     
     public void eliminarObstaculo(){
-    	Obstaculo obst= obstaculos.element();
-    	gr.getChildren().remove(obst.getForma());
-    	obstaculos.remove(obst);
+    	
+    	if(!obstaculos.isEmpty()){
+	    	Obstaculo obst= obstaculos.element();
+	    	gr.getChildren().remove(obst.getForma());
+	    	obstaculos.remove(obst);
+    	}
     	
     	
     }

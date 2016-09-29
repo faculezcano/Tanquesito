@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import assets.Bullet;
+import assets.*;
 import assets.ObjetoEstatico;
 import assets.Tanque;
 
@@ -20,7 +21,7 @@ import assets.Tanque;
  */
 public class Jugador extends Tanque {
 	
-	protected int nivel;
+	protected Nivel nivel;
     protected int disparos_simul;
     protected int vida;
 
@@ -29,8 +30,6 @@ public class Jugador extends Tanque {
      */
     public Jugador() {
     	resistencia = 3;
-        vel_mov = 4;
-        vel_disparo = 6;
         puntos = 0;
         bullets = new LinkedList<Bullet>();
        	cuerpo = new Rectangle(0,0,64,64);
@@ -38,7 +37,9 @@ public class Jugador extends Tanque {
         canonAng = 0;
         huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));;
         pisadas = new LinkedList<Shape>();
-        nivel = 1;
+        nivel = new NivelUno();
+        vel_disparo = nivel.getVelocidadDisparo();
+        vel_mov = nivel.getVelocidad();
     	disparos_simul = 1;
     	vida = 3;
     	
@@ -49,6 +50,11 @@ public class Jugador extends Tanque {
 		ds.setRadius(10);
 		cuerpo.setEffect(ds);
 		canon.setEffect(ds);
+    }
+    
+    public void setNivel(Nivel n){
+    	nivel = n;
+    	vel_disparo = n.getVelocidadDisparo();
     }
     
     //TODO: chequear esto
@@ -68,6 +74,10 @@ public class Jugador extends Tanque {
 		}
 	}
 
+		
+	public Point2D getVelocidad(){
+		return velocidad.multiply(nivel.getVelocidad());
+	}
 	
 
 	@Override

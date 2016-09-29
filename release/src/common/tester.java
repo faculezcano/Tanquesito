@@ -46,7 +46,7 @@ public class tester extends Application {
 		puntos= new Text("PUNTOS="+j.getPuntos());
 		puntos.setFont(Font.font("serif", FontWeight.BOLD, 15));
 		
-		puntos.setX(400);
+		puntos.setX(380);
 		puntos.setY(400);
 		g.getChildren().add(puntos);
 		map = new Mapa(8,8,g);
@@ -129,21 +129,20 @@ public class tester extends Application {
 							//g.getChildren().add(enemigo.getForma());
 							//map.addEnemigo(enemigo);
 							//enemigo.setPosicion(new Point2D(32,97));
+						}else{
+							int puntosEnemigo = enemigo.getPuntos();
+							map.eliminarEnemigo(enemigo);
+							g.getChildren().remove(enemigo.getForma());
+							enemigo=null;
+							j.setPuntos((j.getPuntos())+puntosEnemigo);
+							puntos.setText("PUNTOS="+j.getPuntos());
 						}
-				}else if(e.getCode()==KeyCode.P){
-					
-					if(enemigo!=null){
-						map.eliminarEnemigo(enemigo);
-						g.getChildren().remove(enemigo.getForma());
-						enemigo=null;
-						j.setPuntos((j.getPuntos())+1);
-						puntos.setText("PUNTOS="+j.getPuntos());
-						
-						
-					}
 				}else if(e.getCode()==KeyCode.K){
 					
 					map.eliminarObstaculo();
+				}else if(e.getCode()==KeyCode.L){
+					
+					j.setNivel(new NivelDos());
 				}
 					
 				
