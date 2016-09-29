@@ -142,7 +142,7 @@ public class tester extends Application {
 					map.eliminarObstaculo();
 				}else if(e.getCode()==KeyCode.L){
 					
-					j.setNivel(new NivelDos());
+					j.subirNivel();
 				}
 					
 				

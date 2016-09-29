@@ -52,9 +52,9 @@ public class Jugador extends Tanque {
 		canon.setEffect(ds);
     }
     
-    public void setNivel(Nivel n){
-    	nivel = n;
-    	vel_disparo = n.getVelocidadDisparo();
+    public void subirNivel(){
+    	nivel = nivel.nextLvl();
+    	vel_disparo = nivel.getVelocidadDisparo();
     }
     
     //TODO: chequear esto
@@ -75,8 +75,8 @@ public class Jugador extends Tanque {
 	}
 
 		
-	public Point2D getVelocidad(){
-		return velocidad.multiply(nivel.getVelocidad());
+	public int velMovimiento(){
+		return nivel.getVelocidad();
 	}
 	
 

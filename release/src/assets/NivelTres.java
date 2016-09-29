@@ -1,9 +1,9 @@
 package assets;
 
-public class NivelUno extends Nivel {
+public class NivelTres extends Nivel {
 	
-	public NivelUno(){
-		next = new NivelDos();
+	public NivelTres(){
+		next = new NivelCuatro();
 	}
 
 	@Override
@@ -15,19 +15,19 @@ public class NivelUno extends Nivel {
 	@Override
 	public int getVelocidadDisparo() {
 		// TODO Auto-generated method stub
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public int getGolpesResiste() {
 		// TODO Auto-generated method stub
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public int getDisparosSimul() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 2;
 	}
 
 }

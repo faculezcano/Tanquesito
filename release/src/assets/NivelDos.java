@@ -1,6 +1,10 @@
 package assets;
 
 public class NivelDos extends Nivel {
+	
+	public NivelDos(){
+		next = new NivelTres();
+	}
 
 	@Override
 	public int getVelocidad() {
