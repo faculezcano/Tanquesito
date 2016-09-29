@@ -42,4 +42,10 @@ public class PowUPGranade extends Obstaculo {
 		return null;
 	}
 
+	@Override
+	public javafx.scene.shape.Shape getForma() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

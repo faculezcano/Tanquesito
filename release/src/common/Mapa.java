@@ -20,6 +20,7 @@ import assets.tanques.*;
 /**
  * 
  */
+@SuppressWarnings("unused")
 public class Mapa {
 	
 	protected ConcurrentLinkedQueue<TanqueEnemigo> enemigos;

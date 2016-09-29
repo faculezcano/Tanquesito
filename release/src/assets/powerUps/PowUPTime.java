@@ -42,6 +42,12 @@ public class PowUPTime extends Obstaculo {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public javafx.scene.shape.Shape getForma() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }
