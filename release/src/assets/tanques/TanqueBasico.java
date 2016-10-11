@@ -19,8 +19,11 @@ public class TanqueBasico extends TanqueEnemigo {
      */
     public TanqueBasico() {
     	cuerpo = new Rectangle(0,0,64,64);
-    	vel_mov = 4;
+    	vel_mov = 1;
     	puntos = 100;
+    	vel_disparo = 1;
+    	resistencia = 1;
+    	
     	
     	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/Enemigo.png"))));
     }

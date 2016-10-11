@@ -38,7 +38,7 @@ public class tester extends Application {
 		
 		
 		g = new Group();
-		s = new Scene(g,500,500, Color.GREY);
+		s = new Scene(g,1024,600, Color.BEIGE);
 		enemigo=null;
 		j = new Jugador();
 		j.addToGroup(g);
@@ -122,7 +122,7 @@ public class tester extends Application {
 				}else if(e.getCode()==KeyCode.O){
 					
 						if(enemigo == null){
-							enemigo=new TanqueBasico();
+							enemigo = new TanqueBasico();
 							map.addEnemigo(enemigo);
 							g.getChildren().add(enemigo.getForma());
 							enemigo.setPosicion(new Point2D(32,97));
