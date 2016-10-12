@@ -4,6 +4,8 @@ package assets;
 import java.util.LinkedList;
 import java.util.Random;
 
+import common.SyncRemover;
+
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -143,14 +145,15 @@ public class Bullet extends ObjetoDinamico {
 						if(s.getOpacity() <= 0){
 							humo.remove();
 							
-							Platform.runLater(new Runnable() {
+							Platform.runLater(new SyncRemover(s,g));
+							/*Platform.runLater(new Runnable() {
 
 								@Override
 								public void run() {
 									g.getChildren().remove(s);
 								}
 									
-							});
+							});*/
 						}
 						for(Circle h:humo){
 							h.setOpacity(h.getOpacity()- 0.03);

@@ -82,7 +82,23 @@ public class Mapa {
 						while (!colisionesBala.isEmpty()){
 							Obstaculo ob = colisionesBala.remove();
 							ob.colisionaBala(b);
-							Platform.runLater(new Runnable() {
+							
+							if (ob.GetVida() == 0) {
+								Platform.runLater(new SyncRemover(ob.getForma(),gr));
+								obstaculos.remove(ob);
+								//gr.getChildren().remove(ob.getForma());
+							}
+							
+							if (b.getResistencia() == 0) {
+								Platform.runLater(new SyncRemover(b.getForma(),g));
+								bullets.remove(b);
+								//gr.getChildren().remove(ob.getForma());
+							}
+							
+								
+							
+							
+							/*Platform.runLater(new Runnable() {
 								public void run() {
 									if (ob.GetVida() == 0) {
 										gr.getChildren().remove(ob.getForma());
@@ -96,7 +112,7 @@ public class Mapa {
 									bullets.remove(b);	
 									obstaculos.remove(ob);
 							}
-							});
+							});*/
 						
 						
 						}
