@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -100,6 +99,21 @@ public abstract class Tanque extends ObjetoDinamico {
 			
 		}
     }
+    
+    @Override
+    public void setVelocidad(Point2D vel){
+    	super.setVelocidad(vel);
+    	if(vel.magnitude()!=0){
+    		if(vel.getX()>0)
+    			setAngle(270);
+    		else if (vel.getX()<0)
+    			setAngle(90);
+    		if(vel.getY() > 0)
+    			setAngle(0);
+    		else if(vel.getY()<0)
+    			setAngle(180);
+    	}
+    }
 
     /**
      * @param ang
@@ -134,10 +148,10 @@ public abstract class Tanque extends ObjetoDinamico {
     // TODO: fijarse si implementar este metodo general aca o que siga abstracto
     @Override
 	public void setPosicion(Point2D p) {
-    	
-    	cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
-    	cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
-		
+		cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
+		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
+		canon.setTranslateX(p.getX()-canon.getWidth()/2);
+		canon.setTranslateY(p.getY()-canon.getHeight()/2);
 	}
 
 	@Override
@@ -145,16 +159,18 @@ public abstract class Tanque extends ObjetoDinamico {
 		return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth()/2,cuerpo.getTranslateY()+cuerpo.getHeight()/2);
 	}
 
-    /**
-     * 
-     */
-    public abstract void romper();
-
-    /**
-     * @return
-     */
     public int getPuntos() {
         return puntos;
     }
+    
+    public void colisiona(){
+    	//if(velocidad.magnitude() == 0){
+    		setPosicion(new Point2D(Math.round(getX()/32)*32,Math.round(getY()/32)*32));
+    	/*}else{
+    		setPosicion(getPosicion().add(getVelocidad().multiply(-1)));
+    	}*/
+    }
+    
+    public abstract void afectar();
 
 }

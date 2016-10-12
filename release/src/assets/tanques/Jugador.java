@@ -10,10 +10,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import assets.Bullet;
 import assets.*;
-import assets.ObjetoEstatico;
-import assets.Tanque;
 
 
 /**
@@ -33,9 +30,9 @@ public class Jugador extends Tanque {
         puntos = 0;
         bullets = new LinkedList<Bullet>();
        	cuerpo = new Rectangle(0,0,64,64);
-        canon = new Rectangle(0,0,64,64);;
+        canon = new Rectangle(0,0,64,64);
         canonAng = 0;
-        huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));;
+        huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
         pisadas = new LinkedList<Shape>();
         nivel = new NivelUno();
         vel_disparo = nivel.getVelocidadDisparo();
@@ -62,18 +59,6 @@ public class Jugador extends Tanque {
 		g.getChildren().add(cuerpo);
 		g.getChildren().add(canon);
 	}
-
-	@Override
-	public void romper() {
-		resistencia--;
-		if(resistencia <= 0){
-			vida--;
-		}
-		if(vida <= 0){
-			//TODO: PERDIIII!
-		}
-	}
-
 		
 	public int velMovimiento(){
 		return nivel.getVelocidad();
@@ -91,10 +76,7 @@ public class Jugador extends Tanque {
 		
 		pisadas(p);
 
-		cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
-		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
-		canon.setTranslateX(p.getX()-canon.getWidth()/2);
-		canon.setTranslateY(p.getY()-canon.getHeight()/2);
+		super.setPosicion(p);
 		
 	}
 	
@@ -106,14 +88,12 @@ public class Jugador extends Tanque {
 
 	@Override
 	public void afectar() {
-		// TODO Auto-generated method stub
-		
+		resistencia--;
+		if(resistencia <= 0){
+			vida--;
+		}
+		if(vida <= 0){
+			//TODO: PERDIIII!
+		}
 	}
-
-	@Override
-	public void colisiona() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

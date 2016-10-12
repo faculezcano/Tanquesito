@@ -46,8 +46,8 @@ public class tester extends Application {
 		puntos= new Text("PUNTOS="+j.getPuntos());
 		puntos.setFont(Font.font("serif", FontWeight.BOLD, 15));
 		
-		puntos.setX(380);
-		puntos.setY(400);
+		puntos.setX(10);
+		puntos.setY(580);
 		g.getChildren().add(puntos);
 		map = new Mapa(8,8,g);
 		
@@ -55,7 +55,7 @@ public class tester extends Application {
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
 		
-		map.cargarMapa("src/mapas/ProtoMap.txt");
+		map.cargarMapa("src/mapas/testEnemigo.txt");
 		
 		bindearMouse();
 		bindearTeclado();
@@ -109,23 +109,28 @@ public class tester extends Application {
 				Point2D vel = j.getVelocidad();
 				if(e.getCode()==KeyCode.W){
 					vel = new Point2D(0, -j.velMovimiento());
-					j.setAngle(180);
+					//j.setAngle(180);
 				}else if(e.getCode()==KeyCode.S){
 					vel = new Point2D(0, j.velMovimiento());
-					j.setAngle(0);
+					//j.setAngle(0);
 				}else if(e.getCode()==KeyCode.A){
 					vel = new Point2D(-j.velMovimiento(),0);
-					j.setAngle(90);
+					//j.setAngle(90);
 				}else if(e.getCode()==KeyCode.D){
 					vel = new Point2D(j.velMovimiento(),0);
-					j.setAngle(-90);
-				}else if(e.getCode()==KeyCode.O){
+					//j.setAngle(-90);
+				}
+				j.setVelocidad(vel);
+				
+				if(e.getCode()==KeyCode.O){
 					
 						if(enemigo == null){
 							enemigo = new TanqueBasico();
 							map.addEnemigo(enemigo);
+							//enemigo.addToGroup(g);
 							g.getChildren().add(enemigo.getForma());
-							enemigo.setPosicion(new Point2D(32,97));
+							enemigo.setPosicion(new Point2D(512,240));
+							map.addEnemigo(enemigo);
 							//g.getChildren().add(enemigo.getForma());
 							//map.addEnemigo(enemigo);
 							//enemigo.setPosicion(new Point2D(32,97));
@@ -133,14 +138,17 @@ public class tester extends Application {
 							int puntosEnemigo = enemigo.getPuntos();
 							map.eliminarEnemigo(enemigo);
 							g.getChildren().remove(enemigo.getForma());
-							enemigo=null;
 							j.setPuntos((j.getPuntos())+puntosEnemigo);
 							puntos.setText("PUNTOS="+j.getPuntos());
+							map.eliminarEnemigo(enemigo);
+							enemigo=null;
 						}
-				}else if(e.getCode()==KeyCode.K){
+				}
+				if(e.getCode()==KeyCode.K){
 					
 					map.eliminarObstaculo();
-				}else if(e.getCode()==KeyCode.L){
+				}
+				if(e.getCode()==KeyCode.L){
 					
 					j.subirNivel();
 				}
@@ -148,7 +156,6 @@ public class tester extends Application {
 				
 				//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
 				//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);
-				j.setVelocidad(vel);
 			}
 			});
 			

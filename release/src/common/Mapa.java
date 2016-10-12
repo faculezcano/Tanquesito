@@ -52,13 +52,18 @@ public class Mapa {
     	return false;
     }
     
+    protected boolean colisiona(Shape s1, Shape s2){
+    	Shape intersepcion = Shape.intersect(s1, s2); 
+		return !intersepcion.getBoundsInLocal().isEmpty();
+    }
+    
     private void startColisiones(){
     	Thread colisiones = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				
-				int fps = 30;
+				final int fps = 30;
 				long time;
 				double deltaT = 1.0/fps;
 				
@@ -72,12 +77,9 @@ public class Mapa {
 					for(Bullet b:bullets){
 						
 						for(Obstaculo o: obstaculos){
-							Shape intersepcion = Shape.intersect(b.getForma(), o.getForma()); 
-							if (!intersepcion.getBoundsInLocal().isEmpty() )
+							if (colisiona(b.getForma(), o.getForma()))
 									colisionesBala.add(o);
 						}
-						
-						//b.colision();
 						
 						while (!colisionesBala.isEmpty()){
 							Obstaculo ob = colisionesBala.remove();
@@ -86,13 +88,11 @@ public class Mapa {
 							if (ob.GetVida() == 0) {
 								Platform.runLater(new SyncRemover(ob.getForma(),gr));
 								obstaculos.remove(ob);
-								//gr.getChildren().remove(ob.getForma());
 							}
 							
 							if (b.getResistencia() == 0) {
 								Platform.runLater(new SyncRemover(b.getForma(),g));
 								bullets.remove(b);
-								//gr.getChildren().remove(ob.getForma());
 							}
 							
 								
@@ -119,7 +119,19 @@ public class Mapa {
 					
 					}	
 					
-				
+					for(Obstaculo o : obstaculos){
+						if(colisiona(o.getForma(),jugador.getForma()))
+							o.colisionaTanque(jugador);
+						for(TanqueEnemigo ene: enemigos){
+							if(colisiona(o.getForma(),ene.getForma()))
+								o.colisionaTanque(ene);
+							if(colisiona(jugador.getForma(),ene.getForma())){
+								//ene.colisiona();
+								//jugador.colisiona();
+							}
+							ene.apuntar(jugador.getPosicion());
+						}
+					}
 					
 					Platform.runLater(new Runnable() {
 
@@ -128,15 +140,15 @@ public class Mapa {
 							
 							for(Bullet b: bullets){
 								Point2D vel = b.getVelocidad();
-								b.setPosicion(b.getPosicion().add(vel));
+								b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
 							}
 							
 							Point2D vel = jugador.getVelocidad();
-							jugador.setPosicion(jugador.getPosicion().add(vel));
+							jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
 							
 							for(TanqueEnemigo en: enemigos){
 								Point2D velEn=en.getVelocidad();
-								en.setPosicion(en.getPosicion().add(velEn));
+								en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
 							}
 							
 						}
@@ -145,7 +157,7 @@ public class Mapa {
 					
 					try {
 						while((System.nanoTime()- time) <= deltaT*1000000000){
-							Thread.sleep(10);
+							Thread.sleep(1);
 						}
 					} catch (InterruptedException e) {}
 					
