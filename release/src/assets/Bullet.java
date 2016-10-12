@@ -158,7 +158,7 @@ public class Bullet extends ObjetoDinamico {
 						}
 						
 						try {
-							Thread.sleep(50);
+							Thread.sleep(35);
 						} catch (InterruptedException e) {}
 					}	
 				}
