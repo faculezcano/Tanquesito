@@ -3,7 +3,7 @@ package assets.obstaculos;
 
 import java.util.LinkedList;
 
-import com.sun.javafx.geom.Shape;
+import javafx.scene.shape.Shape;
 
 import assets.Bullet;
 import assets.Obstaculo;
@@ -46,7 +46,7 @@ public class Arboles extends Obstaculo {
 	}
 
 	@Override
-	public javafx.scene.shape.Shape getForma() {
+	public Shape getForma() {
 		// TODO Auto-generated method stub
 		return null;
 	}

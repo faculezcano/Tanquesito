@@ -2,14 +2,12 @@ package assets;
 
 import java.util.LinkedList;
 
-import com.sun.javafx.geom.Shape;
+import javafx.scene.shape.Shape;
 
 /**
  * 
  */
 public abstract class ObjetoEstatico {
-	
-   
 
     /**
      * 
@@ -27,7 +25,7 @@ public abstract class ObjetoEstatico {
      */
     public abstract LinkedList<Shape> getFormas();
     
-    public abstract javafx.scene.shape.Shape getForma();
+    public abstract Shape getForma();
     
     /**
      * 

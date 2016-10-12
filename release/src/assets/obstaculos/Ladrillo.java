@@ -25,7 +25,6 @@ public class Ladrillo extends Obstaculo {
 		DropShadow ds = new DropShadow();
 		ds.setRadius(10);
 		vida = 1;
-		
 	}
 	
 	public void setPosicion(Point2D pos) {
@@ -33,16 +32,9 @@ public class Ladrillo extends Obstaculo {
 		rect1.setTranslateY(pos.getY());
 	}
 	
-
-
-
-	
-
-
 	public Shape getForma() {
 		return rect1;
 	}
-
 
 	@Override
 	public void impactar() {
@@ -61,17 +53,15 @@ public class Ladrillo extends Obstaculo {
 		// TODO Auto-generated method stub
 		
 	}
-	
-
 
 	@Override
-	public LinkedList<com.sun.javafx.geom.Shape> getFormas() {
+	public LinkedList<Shape> getFormas() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public com.sun.javafx.geom.Shape colisionForma() {
+	public Shape colisionForma() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -83,10 +73,5 @@ public class Ladrillo extends Obstaculo {
 			if (vida > 0)
 				vida--;
 		}
-	
-
 	}
-
-	
-
 }
