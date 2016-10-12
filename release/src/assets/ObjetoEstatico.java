@@ -35,6 +35,8 @@ public abstract class ObjetoEstatico {
      */
     public abstract Shape colisionForma();
     
+    public abstract void colisionaBala(Bullet b);
+    
     
 	
 

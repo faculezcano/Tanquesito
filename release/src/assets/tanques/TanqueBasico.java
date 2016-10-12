@@ -35,14 +35,15 @@ public class TanqueBasico extends TanqueEnemigo {
 	}
 
 
+
 	@Override
-	public void colision(ObjetoEstatico oe) {
+	public void afectar() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void afectar() {
+	public void colisiona() {
 		// TODO Auto-generated method stub
 		
 	}

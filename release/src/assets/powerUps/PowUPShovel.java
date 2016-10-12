@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.sun.javafx.geom.Shape;
 
+import assets.Bullet;
 import assets.ObjetoEstatico;
 
 /**
@@ -40,6 +41,12 @@ public class PowUPShovel extends ObjetoEstatico {
 	public javafx.scene.shape.Shape getForma() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void colisionaBala(Bullet b) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

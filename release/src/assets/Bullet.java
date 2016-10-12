@@ -3,6 +3,8 @@ package assets;
 
 import java.util.LinkedList;
 import java.util.Random;
+
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -34,6 +36,7 @@ public class Bullet extends ObjetoDinamico {
     	forma.setTranslateX(pos.getX());
 		forma.setTranslateY(pos.getY());
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
+		resistencia = 1;
 		
 		humo = new LinkedList<Circle>();
 
@@ -80,11 +83,6 @@ public class Bullet extends ObjetoDinamico {
 		return forma;
 	}
 
-    /**
-     * 
-     */
-    public void colision() {
-	}
 
 	@Override
 	public void setPosicion(Point2D p) {
@@ -122,17 +120,52 @@ public class Bullet extends ObjetoDinamico {
 		c.setOpacity(0.6);
 		return c;
 	}
-
-	@Override
-	public void colision(ObjetoEstatico oe) {
-		// TODO Auto-generated method stub
 		
-	}
+
 
 	@Override
 	public void afectar() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void colisiona() {
+		if (resistencia > 0) {
+			resistencia--;
+			Thread t = new Thread (new Runnable(){
+				
+				public void run (){
+					Group g = (Group)forma.getParent();
+					while (!humo.isEmpty()) {
+						Shape s = humo.getFirst();
+						
+						if(s.getOpacity() <= 0){
+							humo.remove();
+							
+							Platform.runLater(new Runnable() {
+
+								@Override
+								public void run() {
+									g.getChildren().remove(s);
+								}
+									
+							});
+						}
+						for(Circle h:humo){
+							h.setOpacity(h.getOpacity()- 0.03);
+							h.setRadius(h.getRadius() - 0.1);
+						}
+						
+						try {
+							Thread.sleep(50);
+						} catch (InterruptedException e) {}
+					}	
+				}
+			}); 
+			t.setDaemon(true);
+			t.start();
+		}
 	}
 
 	

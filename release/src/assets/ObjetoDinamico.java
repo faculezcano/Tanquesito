@@ -7,6 +7,7 @@ import javafx.scene.shape.Shape;
  * 
  */
 public abstract class ObjetoDinamico {
+	protected int resistencia;
 	
     /**
      * 
@@ -55,11 +56,15 @@ public abstract class ObjetoDinamico {
     /**
      * 
      */
-    public abstract void colision(ObjetoEstatico oe);
+    public abstract void colisiona();
     
     /**
      * 
      */
     public abstract void afectar();
+    
+    public int getResistencia(){
+    	return resistencia;
+    }
 
 }

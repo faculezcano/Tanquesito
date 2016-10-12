@@ -53,7 +53,7 @@ public class Mapa {
     }
     
     private void startColisiones(){
-    	Thread colisiones = new Thread(new Runnable(){
+    	Thread colisiones = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -62,22 +62,50 @@ public class Mapa {
 				long time;
 				double deltaT = 1.0/fps;
 				
-				while(true){
+				
+				LinkedList<Obstaculo> colisionesBala = new LinkedList<Obstaculo>();
+				
+				while(true) { 
 					
 					time = System.nanoTime();
 					
 					for(Bullet b:bullets){
-						LinkedList<Obstaculo> colisiones = new LinkedList<Obstaculo>();
+						
 						for(Obstaculo o: obstaculos){
-							colisiones.add(o);
+							Shape intersepcion = Shape.intersect(b.getForma(), o.getForma()); 
+							if (!intersepcion.getBoundsInLocal().isEmpty() )
+									colisionesBala.add(o);
 						}
-						if(!colisiones.isEmpty())
-							b.colision();
-						//for(Obstaculo o: colisiones)
-							//o.colision();
-					}
+						
+						//b.colision();
+						
+						while (!colisionesBala.isEmpty()){
+							Obstaculo ob = colisionesBala.remove();
+							ob.colisionaBala(b);
+							Platform.runLater(new Runnable() {
+								public void run() {
+									if (ob.GetVida() == 0) {
+										gr.getChildren().remove(ob.getForma());
+									}
+									
+									if(b.getResistencia() == 0){
+										g.getChildren().remove(b.getForma());
+									}
+									
+									
+									bullets.remove(b);	
+									obstaculos.remove(ob);
+							}
+							});
+						
+						
+						}
 					
-					Platform.runLater(new Runnable(){
+					}	
+					
+				
+					
+					Platform.runLater(new Runnable() {
 
 						@Override
 						public void run() {
@@ -100,7 +128,7 @@ public class Mapa {
 					});
 					
 					try {
-						while((System.nanoTime()-time)<=deltaT*1000000000){
+						while((System.nanoTime()- time) <= deltaT*1000000000){
 							Thread.sleep(10);
 						}
 					} catch (InterruptedException e) {}

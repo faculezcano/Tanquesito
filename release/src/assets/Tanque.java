@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
  */
 public abstract class Tanque extends ObjetoDinamico {
 	
-	protected int resistencia;
+	
     protected int vel_mov;
     protected int vel_disparo;
     protected int puntos;

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.sun.javafx.geom.Shape;
 
+import assets.Bullet;
 import assets.Obstaculo;
 
 /**
@@ -48,6 +49,12 @@ public class Arboles extends Obstaculo {
 	public javafx.scene.shape.Shape getForma() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void colisionaBala(Bullet b) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
