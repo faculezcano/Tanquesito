@@ -1,6 +1,7 @@
 package assets;
 
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.shape.Shape;
 
 /**
@@ -8,22 +9,10 @@ import javafx.scene.shape.Shape;
  */
 public abstract class ObjetoDinamico {
 	protected int resistencia;
-	
-    /**
-     * 
-     */
     protected Point2D velocidad = new Point2D(0,0);
 
-
-
-    /**
-     * @param p
-     */
     public abstract void setPosicion(Point2D p);
 
-    /**
-     * @return
-     */
     public abstract Point2D getPosicion();
     
     public double getX(){
@@ -34,9 +23,6 @@ public abstract class ObjetoDinamico {
     	return getPosicion().getY();
     }
 
-    /**
-     * @return
-     */
     public Point2D getVelocidad() {
         return velocidad;
     }
@@ -66,5 +52,7 @@ public abstract class ObjetoDinamico {
     public int getResistencia(){
     	return resistencia;
     }
+    
+    public abstract void addToGroup(Group g);
 
 }

@@ -6,41 +6,21 @@ import javafx.scene.shape.Shape;
 
 import assets.Bullet;
 import assets.Obstaculo;
+import assets.Tanque;
 
 /**
  * 
  */
 public class AguilaNasi extends Obstaculo {
 
-    /**
-     *
-     */
-    public AguilaNasi() {
-    }
-
-    /**
-     * 
-     */
-    public void impactar(){
-    	
-    }
-
-	
-
-	@Override
-	public void afectarTanque() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void afectarBala() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public LinkedList<Shape> getFormas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Shape getForma() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -52,15 +32,17 @@ public class AguilaNasi extends Obstaculo {
 	}
 
 	@Override
-	public javafx.scene.shape.Shape getForma() {
-		// TODO Auto-generated method stub
-		return null;
+	public void colisionaBala(Bullet b) {
+		if(b!=null){
+			b.colisiona();
+			if(vida>0)
+				vida--;
+		}
 	}
 
 	@Override
-	public void colisionaBala(Bullet b) {
-		// TODO Auto-generated method stub
-		
+	public void colisionaTanque(Tanque t) {
+		t.colisiona();
 	}
 
 }

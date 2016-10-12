@@ -171,6 +171,11 @@ public class Bullet extends ObjetoDinamico {
 		}
 	}
 
+	@Override
+	public void addToGroup(Group g) {
+		g.getChildren().add(forma);
+	}
+
 	
 
 }

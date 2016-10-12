@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import assets.Bullet;
 import assets.Obstaculo;
+import assets.Tanque;
 import javafx.geometry.Point2D;
 
 import javafx.scene.effect.DropShadow;
@@ -37,24 +38,6 @@ public class Ladrillo extends Obstaculo {
 	}
 
 	@Override
-	public void impactar() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void afectarTanque() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void afectarBala() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public LinkedList<Shape> getFormas() {
 		// TODO Auto-generated method stub
 		return null;
@@ -68,10 +51,15 @@ public class Ladrillo extends Obstaculo {
 
 	@Override
 	public void colisionaBala(Bullet b) {
-		if (b != null) {
+		if(b!=null){
 			b.colisiona();
-			if (vida > 0)
+			if(vida>0)
 				vida--;
 		}
+	}
+
+	@Override
+	public void colisionaTanque(Tanque t) {
+		t.colisiona();
 	}
 }
