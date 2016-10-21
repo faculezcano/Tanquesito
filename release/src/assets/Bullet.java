@@ -1,6 +1,5 @@
 package assets;
 
-
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -10,14 +9,11 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  * 
@@ -27,7 +23,7 @@ public class Bullet extends ObjetoDinamico {
 	protected Shape forma;
     protected Point2D origen;
 	protected Random r = new Random();
-	protected MediaPlayer disparoSound;
+	//protected MediaPlayer disparoSound;
 	private LinkedList<Circle> humo;
 
     /**
@@ -44,10 +40,11 @@ public class Bullet extends ObjetoDinamico {
 
 		origen = new Point2D(pos.getX(),pos.getY());	
 		
-		disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
-		disparoSound.setStartTime(Duration.millis(0));	//TODO: chequear si es necesario poner estos limites
-		disparoSound.setStopTime(Duration.seconds(1));	//
-		disparoSound.play();
+		//disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
+		//disparoSound = new MediaPlayer(new Media(getClass().getClassLoader().getResource("audio/8bit_bomb_explosion.wav").toURI().toString()));
+		//disparoSound.setStartTime(Duration.millis(0));	//TODO: chequear si es necesario poner estos limites
+		//disparoSound.setStopTime(Duration.seconds(1));	//
+		//disparoSound.play();
 		
 		setVelocidad(vel);
 		corregirAngulo();
