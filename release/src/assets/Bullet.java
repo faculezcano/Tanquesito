@@ -3,6 +3,7 @@ package assets;
 import java.util.LinkedList;
 import java.util.Random;
 
+import assets.tanques.Jugador;
 import common.SyncRemover;
 
 import javafx.application.Platform;
@@ -25,16 +26,19 @@ public class Bullet extends ObjetoDinamico {
 	protected Random r = new Random();
 	//protected MediaPlayer disparoSound;
 	private LinkedList<Circle> humo;
+	
+	private Jugador tank;
 
     /**
      *
      */
-    public Bullet(Point2D pos,Point2D vel) {
+    public Bullet(Point2D pos,Point2D vel,Tanque t) {
     	forma = new Rectangle(0,0,20,10);
     	forma.setTranslateX(pos.getX());
 		forma.setTranslateY(pos.getY());
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
 		resistencia = 1;
+		tank = (Jugador) t;
 		
 		humo = new LinkedList<Circle>();
 
@@ -173,6 +177,7 @@ public class Bullet extends ObjetoDinamico {
 		g.getChildren().add(forma);
 	}
 
-	
-
+	public Jugador getJugador() {
+		return tank;
+	}
 }

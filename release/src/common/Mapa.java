@@ -17,6 +17,7 @@ import javafx.scene.shape.Shape;
 
 import assets.*;
 import assets.obstaculos.Ladrillo;
+import assets.obstaculos.Metal;
 import assets.tanques.*;
 
 /**
@@ -247,6 +248,12 @@ public class Mapa {
 						gr.getChildren().add(l.getForma());
 						obstaculos.add(l);
 						l.setPosicion(new Point2D(0+col*32,0+fila*32));
+					}
+					if (cadena.charAt(col) == '2') {
+						Metal m = new Metal();
+						gr.getChildren().add(m.getForma());
+						obstaculos.add(m);
+						m.setPosicion(new Point2D(0+col*32,0+fila*32));
 					}
 						
 				}

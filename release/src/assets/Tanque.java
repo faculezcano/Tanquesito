@@ -28,11 +28,11 @@ public abstract class Tanque extends ObjetoDinamico {
     /**
      * @param vel
      */
-    public Bullet disparar() {
+    public Bullet disparar(Tanque t) {
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
 		Point2D pos = new Point2D(getX()+35*Math.cos(rad)-10,getY()+35*Math.sin(rad)-5);
-		Bullet bala = new Bullet(pos,velBala);
+		Bullet bala = new Bullet(pos,velBala,t);
 		return bala;
     }
 

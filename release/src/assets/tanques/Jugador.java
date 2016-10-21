@@ -54,6 +54,10 @@ public class Jugador extends Tanque {
     	vel_disparo = nivel.getVelocidadDisparo();
     }
     
+    public Nivel getNivel() {
+    	return nivel;
+    }
+    
     //TODO: chequear esto
     public void addToGroup(Group g){
 		g.getChildren().add(cuerpo);

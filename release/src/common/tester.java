@@ -86,7 +86,7 @@ public class tester extends Application {
 
 						@Override
 						public void run() {
-							Bullet b = j.disparar();
+							Bullet b = j.disparar(j);
 							map.addBullet(b);
 							g.getChildren().add(b.getForma());
 							
@@ -151,6 +151,10 @@ public class tester extends Application {
 				if(e.getCode()==KeyCode.L){
 					
 					j.subirNivel();
+				}
+				if(e.getCode()==KeyCode.B){
+					
+					System.out.println(j.getNivel().toString());
 				}
 					
 				

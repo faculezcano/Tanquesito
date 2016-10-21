@@ -14,7 +14,8 @@ public class SyncRemover implements Runnable {
 	@Override
 	public void run() {
 		if(g!=null && s!=null)
-			g.getChildren().remove(s);
+			if (!g.getChildren().isEmpty())
+				g.getChildren().remove(s);
 	}
 
 }
