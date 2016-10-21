@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -198,8 +200,10 @@ public class Mapa {
 		
 		try {
 			
-			FileReader f;
-			f = new FileReader(archivo);
+			//FileReader f;
+			//f = new FileReader(archivo);
+			
+			InputStreamReader f = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(archivo));
 			
 			BufferedReader b = new BufferedReader(f);
 			
