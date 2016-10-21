@@ -55,7 +55,7 @@ public class tester extends Application {
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
 		
-		map.cargarMapa("src/mapas/testEnemigo.txt");
+		map.cargarMapa("mapas/testEnemigo.txt");
 		
 		bindearMouse();
 		bindearTeclado();
