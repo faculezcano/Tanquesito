@@ -135,7 +135,35 @@ public class Mapa {
 						}
 					}
 					
+					for(final Bullet b: bullets){
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Point2D vel = b.getVelocidad();
+								b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
+							}
+						});
+					}
+					
 					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Point2D vel = jugador.getVelocidad();
+							jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
+						}
+					});
+					
+					for(final TanqueEnemigo en: enemigos){
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								Point2D velEn=en.getVelocidad();
+								en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
+							}
+						});
+					}
+					
+					/*Platform.runLater(new Runnable() {
 
 						@Override
 						public void run() {
@@ -155,7 +183,7 @@ public class Mapa {
 							
 						}
 						
-					});
+					});*/
 					
 					try {
 						while((System.nanoTime()- time) <= deltaT*1000000000){
