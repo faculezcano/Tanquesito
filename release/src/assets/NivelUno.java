@@ -30,4 +30,9 @@ public class NivelUno extends Nivel {
 		return 0;
 	}
 
+	@Override
+	public boolean RompeMetal() {
+		return false;
+	}
+
 }

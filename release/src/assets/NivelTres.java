@@ -30,4 +30,9 @@ public class NivelTres extends Nivel {
 		return 2;
 	}
 
+	@Override
+	public boolean RompeMetal() {
+		return false;
+	}
+
 }

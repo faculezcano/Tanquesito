@@ -86,7 +86,7 @@ public class tester extends Application {
 
 						@Override
 						public void run() {
-							Bullet b = j.disparar(j);
+							Bullet b = j.disparar();
 							map.addBullet(b);
 							g.getChildren().add(b.getForma());
 							

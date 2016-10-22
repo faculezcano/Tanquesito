@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import assets.Bullet;
-import assets.NivelCuatro;
+//import assets.NivelCuatro;
 import assets.Obstaculo;
 import assets.Tanque;
 
@@ -52,10 +52,9 @@ public class Metal extends Obstaculo {
 
 	@Override
 	public void colisionaBala(Bullet b) {
-		//NivelCuatro n4 = new NivelCuatro(); 
 		if(b != null){
 			b.colisiona();
-			if (b.getJugador().getNivel().getGolpesResiste() == 4)	
+			if (b.getJugador().getNivel().RompeMetal())	
 				if(vida>0)
 					vida--;
 		}

@@ -15,5 +15,7 @@ public abstract class Nivel {
 	public abstract int getGolpesResiste();
 	
 	public abstract int getDisparosSimul();
+	
+	public abstract boolean RompeMetal();
 
 }

@@ -30,4 +30,9 @@ public class NivelDos extends Nivel {
 		return 0;
 	}
 
+	@Override
+	public boolean RompeMetal() {
+		return false;
+	}
+
 }
