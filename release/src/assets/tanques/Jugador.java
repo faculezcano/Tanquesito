@@ -49,6 +49,12 @@ public class Jugador extends Tanque {
 		canon.setEffect(ds);
     }
     
+    public Bullet disparar() {
+    	Bullet b = super.disparar();
+    	b.setRompeMetal(nivel.RompeMetal());
+		return  b;
+    }
+    
     public void subirNivel(){
     	nivel = nivel.nextLvl();
     	vel_disparo = nivel.getVelocidadDisparo();

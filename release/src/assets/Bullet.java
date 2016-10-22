@@ -3,7 +3,7 @@ package assets;
 import java.util.LinkedList;
 import java.util.Random;
 
-import assets.tanques.Jugador;
+//import assets.tanques.Jugador;
 import common.SyncRemover;
 
 import javafx.application.Platform;
@@ -27,18 +27,23 @@ public class Bullet extends ObjetoDinamico {
 	//protected MediaPlayer disparoSound;
 	private LinkedList<Circle> humo;
 	
-	private Jugador tank;
+	/**
+	 * condicinal para determinar si rompe una pared de metal;
+	 */
+	private boolean rompe = false;
+	
+	//private Jugador tank;
 
     /**
      *
      */
-    public Bullet(Point2D pos,Point2D vel,Tanque t) {
+    public Bullet(Point2D pos,Point2D vel) {
     	forma = new Rectangle(0,0,20,10);
     	forma.setTranslateX(pos.getX());
 		forma.setTranslateY(pos.getY());
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
 		resistencia = 1;
-		tank = (Jugador) t;
+		//tank = (Jugador) t;
 		
 		humo = new LinkedList<Circle>();
 
@@ -55,6 +60,16 @@ public class Bullet extends ObjetoDinamico {
 		
     }
     
+    public boolean setRompeMetal(boolean cond) {
+    	rompe = cond; 
+    	return rompe;
+    			
+    }
+    
+    public boolean getRompeMetal(){
+    	return rompe;
+    }
+     
     private void corregirAngulo(){
     	double deltax = velocidad.getX();
 		double deltay = - velocidad.getY();
@@ -177,7 +192,7 @@ public class Bullet extends ObjetoDinamico {
 		g.getChildren().add(forma);
 	}
 
-	public Jugador getJugador() {
-		return tank;
-	}
+//	public Jugador getJugador() {
+//		return tank;
+//	}
 }

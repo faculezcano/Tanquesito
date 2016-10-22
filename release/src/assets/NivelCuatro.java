@@ -1,7 +1,7 @@
 package assets;
 
 public class NivelCuatro extends Nivel {
-
+	
 	
 	public NivelCuatro(){
 		next = this;
@@ -30,6 +30,7 @@ public class NivelCuatro extends Nivel {
 		// TODO Auto-generated method stub
 		return 3;
 	}
+	
 
 	@Override
 	public boolean RompeMetal() {
