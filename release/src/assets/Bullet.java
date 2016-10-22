@@ -60,10 +60,8 @@ public class Bullet extends ObjetoDinamico {
 		
     }
     
-    public boolean setRompeMetal(boolean cond) {
-    	rompe = cond; 
-    	return rompe;
-    			
+    public void setRompeMetal(boolean cond) {
+    	rompe = cond; 			
     }
     
     public boolean getRompeMetal(){
