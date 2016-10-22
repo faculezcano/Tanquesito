@@ -56,9 +56,9 @@ public class Mapa {
     }
     
     protected boolean colisiona(Shape s1, Shape s2){
-    	//Shape intersepcion = Shape.intersect(s1, s2); 
-		//return !intersepcion.getBoundsInLocal().isEmpty();
-    	return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
+    	Shape intersepcion = Shape.intersect(s1, s2); 
+		return !intersepcion.getBoundsInLocal().isEmpty();
+    	//return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
     }
     
     private void startColisiones(){
