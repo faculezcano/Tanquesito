@@ -2,9 +2,9 @@
 Un jueguillo de un tanquesito :B
 
 # Controles
-Apuntar: Movimiento del mouse
-Desplazamiento: W,S,A,D
-Disparo: Clic primario.
+1. Apuntar: Movimiento del mouse
+2. Desplazamiento: W,S,A,D
+3. Disparo: Clic primario.
 
 # Testing
 A modo de testeo se utilizan ciertas teclas para probar funcionalidad del juego.
