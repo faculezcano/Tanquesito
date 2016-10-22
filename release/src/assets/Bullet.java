@@ -25,7 +25,8 @@ public class Bullet extends ObjetoDinamico {
     protected Point2D origen;
 	protected Random r = new Random();
 	//protected MediaPlayer disparoSound;
-	private LinkedList<Circle> humo;
+	
+	//private LinkedList<Circle> humo;
 	
 	/**
 	 * condicinal para determinar si rompe una pared de metal;
@@ -45,7 +46,7 @@ public class Bullet extends ObjetoDinamico {
 		resistencia = 1;
 		//tank = (Jugador) t;
 		
-		humo = new LinkedList<Circle>();
+		//humo = new LinkedList<Circle>();
 
 		origen = new Point2D(pos.getX(),pos.getY());	
 		
@@ -106,21 +107,21 @@ public class Bullet extends ObjetoDinamico {
 		//Sistema que deja humo durante el avance de la bala
 		if(origen.distance(p) >=6){
 
-			Circle nuevoHumo = crearHumo();
-			Group g = (Group)forma.getParent();
-			g.getChildren().add(nuevoHumo);
-			humo.addLast(nuevoHumo);
-			
-			Shape s = humo.getFirst();
-			if(s.getOpacity() <= 0){
-				humo.remove(s);
-				g.getChildren().remove(s);
-			}
-			
-			for(Circle h : humo){
-				h.setOpacity(h.getOpacity()-0.03);
-				h.setRadius(h.getRadius()-0.1);
-			}
+//			Circle nuevoHumo = crearHumo();
+//			Group g = (Group)forma.getParent();
+//			g.getChildren().add(nuevoHumo);
+//			humo.addLast(nuevoHumo);
+//			
+//			Shape s = humo.getFirst();
+//			if(s.getOpacity() <= 0){
+//				humo.remove(s);
+//				g.getChildren().remove(s);
+//			}
+//			
+//			for(Circle h : humo){
+//				h.setOpacity(h.getOpacity()-0.03);
+//				h.setRadius(h.getRadius()-0.1);
+//			}
 
 			origen = new Point2D(p.getX(),p.getY());
 		}
@@ -149,40 +150,40 @@ public class Bullet extends ObjetoDinamico {
 	public void colisiona() {
 		if (resistencia > 0) {
 			resistencia--;
-			Thread t = new Thread (new Runnable(){
-				
-				public void run (){
-					Group g = (Group)forma.getParent();
-					while (!humo.isEmpty()) {
-						Shape s = humo.getFirst();
-						
-						if(s.getOpacity() <= 0){
-							humo.remove();
-							
-							Platform.runLater(new SyncRemover(s,g));
-							/*Platform.runLater(new Runnable() {
-
-								@Override
-								public void run() {
-									g.getChildren().remove(s);
-								}
-									
-							});*/
-						}
-						for(Circle h:humo){
-							h.setOpacity(h.getOpacity()- 0.03);
-							h.setRadius(h.getRadius() - 0.1);
-						}
-						
-						try {
-							Thread.sleep(35);
-						} catch (InterruptedException e) {}
-					}	
-				}
-			}); 
-			t.setDaemon(true);
-			t.start();
-		}
+//			Thread t = new Thread (new Runnable(){
+//				
+//				public void run (){
+//					Group g = (Group)forma.getParent();
+////					while (!humo.isEmpty()) {
+////						Shape s = humo.getFirst();
+//						
+////						if(s.getOpacity() <= 0){
+////							humo.remove();
+//							
+//							Platform.runLater(new SyncRemover(s,g));
+//							/*Platform.runLater(new Runnable() {
+//
+//								@Override
+//								public void run() {
+//									g.getChildren().remove(s);
+//								}
+//									
+//							});*/
+//						//}
+////						for(Circle h:humo){
+////							h.setOpacity(h.getOpacity()- 0.03);
+////							h.setRadius(h.getRadius() - 0.1);
+////						}
+//						
+//						try {
+//							Thread.sleep(35);
+//						} catch (InterruptedException e) {}
+//					}	
+//				}
+//			}); 
+//			t.setDaemon(true);
+//			t.start();
+			}
 	}
 
 	@Override
