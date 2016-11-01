@@ -34,6 +34,7 @@ public class Mapa {
     protected Group g;
     protected Group gr;
     protected Tanque enemigo;
+    protected Group ge;
     
 	/**
      * @param cantX 
@@ -48,6 +49,20 @@ public class Mapa {
         
         startColisiones();
     }
+    
+    public TanqueEnemigo crearEnemigo(){
+    	TanqueEnemigo enemigo=new TanqueBasico();
+    	enemigo.setPosicion(new Point2D(512,240));
+    	this.addEnemigo(enemigo);
+    	g.getChildren().add(enemigo.getForma());
+    	
+    	return enemigo;
+    	
+    }
+    
+
+    
+    
     
     private boolean colisiona(ObjetoDinamico od, ObjetoEstatico oe){
     	//Shape interseccion = Shape.intersect(od.getForma(), oe.getForma());
@@ -73,6 +88,7 @@ public class Mapa {
 				
 				
 				LinkedList<Obstaculo> colisionesBala = new LinkedList<Obstaculo>();
+				LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
 				
 				while(true) { 
 					
@@ -84,6 +100,26 @@ public class Mapa {
 							if (colisiona(b.getForma(), o.getForma()))
 									colisionesBala.add(o);
 						}
+						for(TanqueEnemigo tenemigo: enemigos){
+							if((jugador.MisBalas().contains(b))&&(colisiona(b.getForma(),tenemigo.getForma()))){
+								int nuevaRT=tenemigo.getResistencia()-b.getResistencia();
+								int nuevaRB=b.getResistencia()-tenemigo.getResistencia();
+								tenemigo.setResistencia(nuevaRT);
+								b.setResistencia(nuevaRB);
+								if(tenemigo.getResistencia()<=0){
+									eliminarEnemigo(tenemigo);
+								}
+								if(b.getResistencia()<=0){
+									Platform.runLater(new SyncRemover(b.getForma(),g));
+									bullets.remove(b);	
+								}
+								
+								
+							}
+							
+						}
+						
+						
 						
 						while (!colisionesBala.isEmpty()){
 							Obstaculo ob = colisionesBala.remove();
@@ -208,7 +244,11 @@ public class Mapa {
     }
     
     public void eliminarEnemigo(TanqueEnemigo o){
+    	int puntosEnemigo = o.getPuntos();
+    	jugador.setPuntos((jugador.getPuntos())+puntosEnemigo);
+    	Platform.runLater(new SyncRemover(o.getForma(),g));
     	enemigos.remove(o);
+    	System.out.println(jugador.getPuntos());
     }
     
     public void addBullet(Bullet b){
@@ -239,7 +279,7 @@ public class Mapa {
 			
 			int fila = 0;
 			String cadena = b.readLine();
-			enemigo = enemigos.poll();
+			//enemigo = enemigos.poll();
 			
 			while(cadena != null){
 				for(int col=0;col<cadena.length();col++){

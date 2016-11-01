@@ -10,6 +10,10 @@ import javafx.scene.shape.Shape;
 public abstract class ObjetoDinamico {
 	protected int resistencia;
     protected Point2D velocidad = new Point2D(0,0);
+    
+    public void setResistencia(int r){
+    	resistencia=r;
+    }
 
     public abstract void setPosicion(Point2D p);
 

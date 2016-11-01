@@ -172,5 +172,9 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     public abstract void afectar();
+    
+    public LinkedList<Bullet> MisBalas(){
+    	return bullets;
+    }
 
 }

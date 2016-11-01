@@ -52,6 +52,7 @@ public class Jugador extends Tanque {
     public Bullet disparar() {
     	Bullet b = super.disparar();
     	b.setRompeMetal(nivel.RompeMetal());
+    	bullets.add(b);
 		return  b;
     }
     

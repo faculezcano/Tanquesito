@@ -69,7 +69,7 @@ public class TanqueBasico extends TanqueEnemigo {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		pisadas(p);
+		//pisadas(p);
 
 		super.setPosicion(p);
 		
