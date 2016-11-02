@@ -97,8 +97,13 @@ public class Mapa {
 					for(Bullet b:bullets){
 						
 						for(Obstaculo o: obstaculos){
-							if (colisiona(b.getForma(), o.getForma()))
+							if (colisiona(b.getForma(), o.getForma())){
 									colisionesBala.add(o);
+									if((jugador.MisBalas().contains(b))){
+										jugador.MisBalas().remove(b);
+									}
+							}		
+						
 						}
 						for(TanqueEnemigo tenemigo: enemigos){
 							if((jugador.MisBalas().contains(b))&&(colisiona(b.getForma(),tenemigo.getForma()))){
@@ -112,6 +117,7 @@ public class Mapa {
 								if(b.getResistencia()<=0){
 									Platform.runLater(new SyncRemover(b.getForma(),g));
 									bullets.remove(b);	
+									jugador.MisBalas().remove(b);
 								}
 								
 								
@@ -352,5 +358,10 @@ public class Mapa {
     public ConcurrentLinkedQueue<Obstaculo> getObstaculos(){
     	return obstaculos;
     }
+    
+    public ConcurrentLinkedQueue<Bullet> getBullets(){
+    	return bullets;
+    }
+    
 
 }

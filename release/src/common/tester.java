@@ -86,9 +86,18 @@ public class tester extends Application {
 
 						@Override
 						public void run() {
-							Bullet b = j.disparar();
-							map.addBullet(b);
-							g.getChildren().add(b.getForma());
+							int balasJmapa=0;
+							for(Bullet bm:map.getBullets()){
+								if(j.MisBalas().contains(bm)){
+									balasJmapa++;
+								}
+							}
+							if((j.MisBalas().isEmpty())||(j.getNivel().getDisparosSimul()>balasJmapa)){
+								Bullet b = j.disparar();
+								map.addBullet(b);
+								g.getChildren().add(b.getForma());
+							}
+							
 							
 						}
 						
