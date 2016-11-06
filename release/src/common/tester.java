@@ -92,10 +92,10 @@ public class tester extends Application {
 									balasJmapa++;
 								}
 							}
-							if((j.MisBalas().isEmpty())||(j.getNivel().getDisparosSimul()>balasJmapa)){
+							if(j.getNivel().getDisparosSimul()> j.MisBalas().size()){
+								
 								Bullet b = j.disparar();
 								map.addBullet(b);
-								g.getChildren().add(b.getForma());
 							}
 							
 							
