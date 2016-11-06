@@ -8,12 +8,8 @@ import javafx.scene.shape.Shape;
  * 
  */
 public abstract class ObjetoEstatico {
-
-    public abstract LinkedList<Shape> getFormas();
     
     public abstract Shape getForma();
-
-    public abstract Shape colisionForma();
     
     public abstract void colisionaBala(Bullet b);
     
