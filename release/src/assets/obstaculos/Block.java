@@ -3,12 +3,14 @@ package assets.obstaculos;
 import assets.Bullet;
 import assets.Obstaculo;
 import assets.Tanque;
+import javafx.scene.paint.Color;
 
 public class Block extends Obstaculo {
 	
 	
 	public Block() {
 		super();
+		forma.setFill(Color.BLACK);
 	}
 
 	@Override
