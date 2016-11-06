@@ -8,7 +8,7 @@ public class Block extends Obstaculo {
 	
 	
 	public Block() {
-		
+		super();
 	}
 
 	@Override
