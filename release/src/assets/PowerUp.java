@@ -1,6 +1,7 @@
 package assets;
 
 import common.Mapa;
+import javafx.scene.shape.*;
 
 
 /**
@@ -9,21 +10,17 @@ import common.Mapa;
 public abstract class PowerUp extends ObjetoEstatico {
 	
 	protected Mapa map;
-    public abstract void accion();
-
-    /**
-     * @return
-     */
-    public abstract boolean colisionaVehiculo();
-
-    /**
-     * @return
-     */
-    public abstract boolean colisionaBala();
-
-    /**
-     * 
-     */
-    public abstract void afectarTanque();
-
+	protected Shape forma;
+	
+	public PowerUp(){
+		forma = new Rectangle(0,0,32,32);
+	}
+	
+	public Shape getForma(){
+		return forma;
+	}
+	
+	public void colisionaBala(Bullet b){
+		
+	}
 }
