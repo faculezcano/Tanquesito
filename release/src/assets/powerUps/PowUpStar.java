@@ -10,8 +10,9 @@ public class PowUpStar extends PowerUp {
 
 	@Override
 	public void colisionaTanque(Tanque t) {
-		// TODO Auto-generated method stub
-		
+		if(t == map.getJugador()){
+			map.getJugador().subirNivel();
+		}
 	}
 	
 }
