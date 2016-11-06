@@ -51,28 +51,19 @@ public class Mapa {
     }
     
     public TanqueEnemigo crearEnemigo(){
-    	TanqueEnemigo enemigo=new TanqueBasico();
+    	TanqueEnemigo enemigo=new TanqueBasico(this);
     	enemigo.setPosicion(new Point2D(512,240));
     	this.addEnemigo(enemigo);
-    	g.getChildren().add(enemigo.getForma());
+    	enemigo.addToGroup(g);
+    	//g.getChildren().add(enemigo.getForma());
     	
     	return enemigo;
     	
     }
     
-
-    
-    
-    
-    private boolean colisiona(ObjetoDinamico od, ObjetoEstatico oe){
-    	//Shape interseccion = Shape.intersect(od.getForma(), oe.getForma());
-		//return !interseccion.getBoundsInLocal().isEmpty();
-    	return false;
-    }
-    
     protected boolean colisiona(Shape s1, Shape s2){
-    	Shape intersepcion = Shape.intersect(s1, s2); 
-		return !intersepcion.getBoundsInLocal().isEmpty();
+    	Shape interseccion = Shape.intersect(s1, s2);
+    	return !interseccion.getBoundsInLocal().isEmpty();
     	//return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
     }
     
@@ -99,25 +90,37 @@ public class Mapa {
 						for(Obstaculo o: obstaculos){
 							if (colisiona(b.getForma(), o.getForma())){
 									colisionesBala.add(o);
-									if((jugador.MisBalas().contains(b))){
+									/*if((jugador.MisBalas().contains(b))){
 										jugador.MisBalas().remove(b);
-									}
+									}*/
 							}		
 						
 						}
+						
+						if(!jugador.MisBalas().contains(b) && colisiona(b.getForma(), jugador.getForma())){
+							//TODO: matar jugador
+							jugador.afectar();
+							b.colisiona();
+							if(b.getResistencia() <= 0){
+								Platform.runLater(new SyncRemover(b.getForma(),g));
+								bullets.remove(b);	
+							}
+						}
+						
 						for(TanqueEnemigo tenemigo: enemigos){
 							if((jugador.MisBalas().contains(b))&&(colisiona(b.getForma(),tenemigo.getForma()))){
 								int nuevaRT=tenemigo.getResistencia()-b.getResistencia();
 								int nuevaRB=b.getResistencia()-tenemigo.getResistencia();
 								tenemigo.setResistencia(nuevaRT);
-								b.setResistencia(nuevaRB);
+								//b.setResistencia(nuevaRB);
+								b.colisiona();
 								if(tenemigo.getResistencia()<=0){
 									eliminarEnemigo(tenemigo);
 								}
 								if(b.getResistencia()<=0){
 									Platform.runLater(new SyncRemover(b.getForma(),g));
 									bullets.remove(b);	
-									jugador.MisBalas().remove(b);
+									/*jugador.MisBalas().remove(b);*/
 								}
 								
 								
@@ -140,27 +143,6 @@ public class Mapa {
 								Platform.runLater(new SyncRemover(b.getForma(),g));
 								bullets.remove(b);
 							}
-							
-								
-							
-							
-							/*Platform.runLater(new Runnable() {
-								public void run() {
-									if (ob.GetVida() == 0) {
-										gr.getChildren().remove(ob.getForma());
-									}
-									
-									if(b.getResistencia() == 0){
-										g.getChildren().remove(b.getForma());
-									}
-									
-									
-									bullets.remove(b);	
-									obstaculos.remove(ob);
-							}
-							});*/
-						
-						
 						}
 					
 					}	
@@ -168,14 +150,24 @@ public class Mapa {
 					for(Obstaculo o : obstaculos){
 						if(colisiona(o.getForma(),jugador.getForma()))
 							o.colisionaTanque(jugador);
+						
 						for(TanqueEnemigo ene: enemigos){
-							if(colisiona(o.getForma(),ene.getForma()))
-								o.colisionaTanque(ene);
-							if(colisiona(jugador.getForma(),ene.getForma())){
-								//ene.colisiona();
-								//jugador.colisiona();
+							
+							if(colisiona(o.getForma(),ene.getLineaTiro())){
+								ene.setTiroLimpio(false);
 							}
-							ene.apuntar(jugador.getPosicion());
+							
+							if(colisiona(o.getForma(),ene.getForma())){
+								ene.setTiroLimpio(false);
+								o.colisionaTanque(ene);
+								ene.setTiroLimpio(false);
+							}
+							
+							if(colisiona(jugador.getForma(),ene.getForma())){
+								ene.colisiona();
+								jugador.colisiona();
+							}
+							//ene.apuntar(jugador.getPosicion());
 						}
 					}
 					
@@ -252,13 +244,22 @@ public class Mapa {
     public void eliminarEnemigo(TanqueEnemigo o){
     	int puntosEnemigo = o.getPuntos();
     	jugador.setPuntos((jugador.getPuntos())+puntosEnemigo);
-    	Platform.runLater(new SyncRemover(o.getForma(),g));
+    	Platform.runLater(new SyncRemover(o,g));
     	enemigos.remove(o);
     	System.out.println(jugador.getPuntos());
     }
     
-    public void addBullet(Bullet b){
+    public void addBullet(final Bullet b){
     	bullets.add(b);
+    	Platform.runLater(new Runnable(){
+
+			@Override
+			public void run() {
+				g.getChildren().add(b.getForma());
+			}
+    		
+    	});
+    	
     }
 
     /**
