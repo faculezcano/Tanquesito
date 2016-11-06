@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -25,6 +26,17 @@ public abstract class Tanque extends ObjetoDinamico {
     protected ImagePattern huella;
     protected LinkedList<Shape> pisadas;
     
+    protected Tanque(){
+    	vel_mov = 1;
+    	vel_disparo = 1;
+    	puntos = 100;
+    	bullets = new LinkedList<Bullet>();
+    	pisadas = new LinkedList<Shape>();
+    	cuerpo = new Rectangle(0,0,64,64);
+    	canon = new Rectangle(0,0,64,64);
+    	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
+    }
+    
     /**
      * @param vel
      */
@@ -32,8 +44,13 @@ public abstract class Tanque extends ObjetoDinamico {
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
 		Point2D pos = new Point2D(getX()+35*Math.cos(rad)-10,getY()+35*Math.sin(rad)-5);
-		Bullet bala = new Bullet(pos,velBala);
+		Bullet bala = new Bullet(this,pos,velBala);
+		bullets.add(bala);
 		return bala;
+    }
+    
+    public void removeBullet(Bullet b){
+    	bullets.remove(b);
     }
 
     /**
@@ -176,5 +193,15 @@ public abstract class Tanque extends ObjetoDinamico {
     public LinkedList<Bullet> MisBalas(){
     	return bullets;
     }
+    
+    public void addToGroup(Group g){
+		g.getChildren().add(cuerpo);
+		g.getChildren().add(canon);
+	}
+    
+    public void removeFromGroup(Group g){
+		g.getChildren().remove(cuerpo);
+		g.getChildren().remove(canon);
+	}
 
 }

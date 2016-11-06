@@ -28,12 +28,8 @@ public class Jugador extends Tanque {
     public Jugador() {
     	resistencia = 3;
         puntos = 0;
-        bullets = new LinkedList<Bullet>();
-       	cuerpo = new Rectangle(0,0,64,64);
-        canon = new Rectangle(0,0,64,64);
         canonAng = 0;
-        huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
-        pisadas = new LinkedList<Shape>();
+
         nivel = new NivelUno();
         vel_disparo = nivel.getVelocidadDisparo();
         vel_mov = nivel.getVelocidad();
@@ -52,7 +48,6 @@ public class Jugador extends Tanque {
     public Bullet disparar() {
     	Bullet b = super.disparar();
     	b.setRompeMetal(nivel.RompeMetal());
-    	bullets.add(b);
 		return  b;
     }
     
@@ -64,12 +59,6 @@ public class Jugador extends Tanque {
     public Nivel getNivel() {
     	return nivel;
     }
-    
-    //TODO: chequear esto
-    public void addToGroup(Group g){
-		g.getChildren().add(cuerpo);
-		g.getChildren().add(canon);
-	}
 		
 	public int velMovimiento(){
 		return nivel.getVelocidad();
@@ -85,7 +74,7 @@ public class Jugador extends Tanque {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		pisadas(p);
+		//pisadas(p);
 
 		super.setPosicion(p);
 		
