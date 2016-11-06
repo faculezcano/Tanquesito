@@ -24,6 +24,7 @@ public class Bullet extends ObjetoDinamico {
 	protected Shape forma;
     protected Point2D origen;
 	protected Random r = new Random();
+	protected Tanque t;
 	//protected MediaPlayer disparoSound;
 	
 	//private LinkedList<Circle> humo;
@@ -38,7 +39,8 @@ public class Bullet extends ObjetoDinamico {
     /**
      *
      */
-    public Bullet(Point2D pos,Point2D vel) {
+    public Bullet(Tanque t,Point2D pos,Point2D vel) {
+    	this.t = t;
     	forma = new Rectangle(0,0,20,10);
     	forma.setTranslateX(pos.getX());
 		forma.setTranslateY(pos.getY());
@@ -184,6 +186,9 @@ public class Bullet extends ObjetoDinamico {
 //			t.setDaemon(true);
 //			t.start();
 			}
+			if(resistencia <= 0){
+				t.removeBullet(this);
+			}
 	}
 
 	@Override
@@ -191,7 +196,8 @@ public class Bullet extends ObjetoDinamico {
 		g.getChildren().add(forma);
 	}
 
-//	public Jugador getJugador() {
-//		return tank;
-//	}
+	@Override
+	public void removeFromGroup(Group g) {
+		g.getChildren().remove(forma);
+	}
 }
