@@ -58,5 +58,7 @@ public abstract class ObjetoDinamico {
     }
     
     public abstract void addToGroup(Group g);
+    
+    public abstract void removeFromGroup(Group g);
 
 }
