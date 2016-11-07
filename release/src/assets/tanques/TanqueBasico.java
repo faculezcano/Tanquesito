@@ -120,14 +120,14 @@ public class TanqueBasico extends TanqueEnemigo {
 				dir = 0;
 			else
 				dir = 2;
-		if(calleSinSalida){
+		/*if(calleSinSalida){
 			dir = (direccion+ultimoGiro)%4;
 			if(dir < 0)
 				dir = 4+dir;
 		}
 		else
 			ultimoGiro = dir-direccion;
-		
+		*/
 		return dir;
 	}
 	
