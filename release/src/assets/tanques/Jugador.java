@@ -69,7 +69,7 @@ public class Jugador extends Tanque {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		pisadas(p);
+		//pisadas(p);
 
 		super.setPosicion(p);
 		

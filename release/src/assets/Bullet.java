@@ -113,7 +113,7 @@ public class Bullet extends ObjetoDinamico {
 		
 		//Sistema que deja humo durante el avance de la bala
 		if(origen.distance(p) >=SIZE.getY()*0.3){
-			Circle nuevoHumo = crearHumo();
+			/*Circle nuevoHumo = crearHumo();
 			Group g = (Group)forma.getParent();
 			g.getChildren().add(nuevoHumo);
 			FadeTransition fd = new FadeTransition(Duration.millis(2000));
@@ -130,7 +130,7 @@ public class Bullet extends ObjetoDinamico {
 					g.getChildren().remove(fd.getNode());
 				}
 				
-			});
+			});*/
 			
 //			Circle nuevoHumo = crearHumo();
 //			Group g = (Group)forma.getParent();
