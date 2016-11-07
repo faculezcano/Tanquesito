@@ -12,8 +12,8 @@ import javafx.scene.paint.ImagePattern;
  */
 public class Ladrillo extends Obstaculo {
 
-	public Ladrillo (){
-		super();
+	public Ladrillo (double x, double y){
+		super(x,y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/ladrillo.png"))));
 		vida = 1;
 	}

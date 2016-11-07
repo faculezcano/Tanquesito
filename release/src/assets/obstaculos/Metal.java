@@ -14,8 +14,8 @@ import assets.Tanque;
 public class Metal extends Obstaculo {
 	protected Rectangle rect;
 	
-	public Metal () {
-		super();
+	public Metal (double x, double y){
+		super(x,y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/metalWall.png"))));
 		vida = 4;
 	}

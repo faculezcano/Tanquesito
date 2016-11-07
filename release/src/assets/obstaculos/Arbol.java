@@ -12,7 +12,8 @@ import javafx.scene.paint.ImagePattern;
  */
 public class Arbol extends Obstaculo {
 
-	public Arbol(){
+	public Arbol(double x, double y){
+		super(x,y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/arbol.png"))));
 	}
 	

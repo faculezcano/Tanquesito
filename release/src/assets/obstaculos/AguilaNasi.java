@@ -8,6 +8,10 @@ import assets.Tanque;
  * 
  */
 public class AguilaNasi extends Obstaculo {
+	
+	public AguilaNasi(double x, double y){
+		super(x,y);
+	}
 
 	@Override
 	public void colisionaBala(Bullet b) {

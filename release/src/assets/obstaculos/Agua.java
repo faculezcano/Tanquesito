@@ -11,7 +11,8 @@ import javafx.scene.paint.ImagePattern;
  */
 public class Agua extends Obstaculo {
 	
-	public Agua(){
+	public Agua(double x, double y){
+		super(x,y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/agua.png"))));
 	}
 

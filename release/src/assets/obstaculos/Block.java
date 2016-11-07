@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 public class Block extends Obstaculo {
 	
 	
-	public Block() {
-		super();
+	public Block(double x, double y){
+		super(x,y);
 		forma.setFill(Color.BLACK);
 	}
 

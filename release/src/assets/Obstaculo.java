@@ -8,11 +8,13 @@ import javafx.scene.shape.*;
  */
 public abstract class Obstaculo extends ObjetoEstatico {
 
+	public static final int SIZE = 24;
+	
     protected int vida;
     protected Rectangle forma;
     
-    protected Obstaculo(){
-    	forma = new Rectangle(0,0,32,32);
+    protected Obstaculo(double x, double y){
+    	forma = new Rectangle(x,y,SIZE,SIZE);
     	vida = 1;
     }
     
