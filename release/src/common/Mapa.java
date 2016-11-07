@@ -16,6 +16,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.shape.Shape;
 
 import assets.*;
+import assets.obstaculos.Agua;
+import assets.obstaculos.Arbol;
 import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
 import assets.tanques.*;
@@ -291,18 +293,27 @@ public class Mapa {
 			while(cadena != null){
 				for(int col=0;col<cadena.length();col++){
 					System.out.print(cadena.charAt(col));
-					if (cadena.charAt(col) == '1') {
-						Ladrillo l = new Ladrillo();
-						gr.getChildren().add(l.getForma());
-						obstaculos.add(l);
-						l.setPosicion(new Point2D(0+col*32,0+fila*32));
+					Obstaculo nuevo = null;
+					switch (cadena.charAt(col)){
+					case '1':
+						nuevo = new Ladrillo();
+						break;
+					case '2':
+						nuevo = new Metal();
+						break;
+					case '3':
+						nuevo = new Arbol();
+						break;
+					case '4':
+						nuevo = new Agua();
+						break;
+					}			
+					if(nuevo != null){
+						gr.getChildren().add(nuevo.getForma());
+						obstaculos.add(nuevo);
+						nuevo.setPosicion(new Point2D(0+col*32,0+fila*32));
 					}
-					if (cadena.charAt(col) == '2') {
-						Metal m = new Metal();
-						gr.getChildren().add(m.getForma());
-						obstaculos.add(m);
-						m.setPosicion(new Point2D(0+col*32,0+fila*32));
-					}
+						
 						
 				}
 				System.out.println();
