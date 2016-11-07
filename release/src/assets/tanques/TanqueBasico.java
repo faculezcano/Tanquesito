@@ -20,8 +20,8 @@ public class TanqueBasico extends TanqueEnemigo {
     /**
      *
      */
-    public TanqueBasico(Mapa m) {
-    	super(m);
+    public TanqueBasico(Mapa m,double x, double y) {
+    	super(m,x,y);
     	vel_mov = 1;
     	puntos = 100;
     	vel_disparo = 1;
@@ -69,6 +69,7 @@ public class TanqueBasico extends TanqueEnemigo {
 				if(bullets.isEmpty()){
 					Bullet b = disparar();
 					map.addBullet(b);
+					setVelocidad(getVelocidad().multiply(-1));
 				}
 				this.tiro.setStroke(Color.GREEN);
 			}
@@ -78,7 +79,7 @@ public class TanqueBasico extends TanqueEnemigo {
 			this.tiro.setStroke(Color.BLACK);
 		}
 		
-		//pisadas(p);
+		pisadas(p);
 
 		super.setPosicion(p);
 		
@@ -97,14 +98,17 @@ public class TanqueBasico extends TanqueEnemigo {
 		
 		tiroLimpio = false;
 		setVelocidad(new Point2D(0,0));
+		tiroLimpio = false;
 		super.colisiona();
 		tiroLimpio = false;
 		
 		direccion=giroAleatorio();
 		setVelocidad(velAleatoria(direccion));
 		
+		tiroLimpio = false;
 		cantPisadas = 0;
 		calleSinSalida=true;
+		//tiroLimpio = false;
 	}
 	
 	protected int giroAleatorio(){

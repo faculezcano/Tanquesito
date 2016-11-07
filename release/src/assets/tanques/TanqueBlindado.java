@@ -1,6 +1,5 @@
 package assets.tanques;
 
-import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
 import assets.TanqueEnemigo;
 import common.Mapa;
@@ -10,8 +9,8 @@ import common.Mapa;
  */
 public class TanqueBlindado extends TanqueEnemigo {
 
-	public TanqueBlindado(Mapa m) {
-    	super(m);
+	public TanqueBlindado(Mapa m,double x, double y) {
+    	super(m,x,y);
     	cuerpo = new Rectangle(0,0,64,64);
     	vel_mov = 1;
     	puntos = 400;

@@ -2,9 +2,9 @@ package assets;
 
 import java.util.Random;
 
-import assets.tanques.Jugador;
 import common.Mapa;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
@@ -16,16 +16,17 @@ public abstract class TanqueEnemigo extends Tanque {
 	
 	protected Random rand = new Random();
 	protected Mapa map;
-	protected int distanciaTiro = 320;
+	protected int distanciaTiro = 240;
 	protected int punteria = 7; // 0 - 10
-	protected boolean tiroLimpio = true;
+	protected boolean tiroLimpio = false;
 	
 	//Linea para saber si tiene un tiro limpio
 	protected Line tiro = new Line(0,0,0,0);
 	
-	protected TanqueEnemigo(Mapa map){
+	protected TanqueEnemigo(Mapa map,double x, double y){
+		super(x,y);
 		this.map = map;
-		tiro.setStrokeWidth(10);
+		tiro.setStrokeWidth(Bullet.SIZE.getY());
 		tiro.setVisible(false);
 	}
 	
@@ -72,6 +73,11 @@ public abstract class TanqueEnemigo extends Tanque {
 	
 	public void afectar(){
 		
+	}
+	
+	public void removeFromGroup(Group g){
+		super.removeFromGroup(g);
+		g.getChildren().remove(tiro);
 	}
 	
 }

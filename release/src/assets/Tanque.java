@@ -2,18 +2,27 @@ package assets;
 
 import java.util.LinkedList;
 
+import common.AnimatedGif;
+import common.SyncAdder;
+import common.SyncRemover;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  * 
  */
 public abstract class Tanque extends ObjetoDinamico {
 	
+	public static final int SIZE = 48;
 	
     protected int vel_mov;
     protected int vel_disparo;
@@ -26,14 +35,14 @@ public abstract class Tanque extends ObjetoDinamico {
     protected ImagePattern huella;
     protected LinkedList<Shape> pisadas;
     
-    protected Tanque(){
+    protected Tanque(double x, double y){
     	vel_mov = 1;
     	vel_disparo = 1;
     	puntos = 100;
     	bullets = new LinkedList<Bullet>();
     	pisadas = new LinkedList<Shape>();
-    	cuerpo = new Rectangle(0,0,64,64);
-    	canon = new Rectangle(0,0,64,64);
+    	cuerpo = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
+    	canon = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
     }
     
@@ -43,9 +52,27 @@ public abstract class Tanque extends ObjetoDinamico {
     public Bullet disparar() {
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
-		Point2D pos = new Point2D(getX()+35*Math.cos(rad)-10,getY()+35*Math.sin(rad)-5);
-		Bullet bala = new Bullet(this,pos,velBala);
+		Point2D pos = new Point2D(getX()+Bullet.SIZE.getX()/2+(SIZE/2)*Math.cos(rad)-10,getY()+Bullet.SIZE.getY()/2+(SIZE/2)*Math.sin(rad)-5);
+		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
+		
+		Rectangle explo = new Rectangle(getX()-16+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-16+32*Math.sin(rad),32,32);
+		//explo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/explo.gif"))));
+		explo.setRotate(canon.getRotate()+180);
+		AnimatedGif ag = new AnimatedGif(explo,"img/explo.gif",500);
+		ag.setOnFinished(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				AnimatedGif ag = (AnimatedGif)event.getSource();
+				Group g = (Group)ag.getShape().getParent();
+				Platform.runLater(new SyncRemover(ag.getShape(),g));
+			}
+			
+		});
+		Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
+		ag.play();
+		
 		return bala;
     }
     
@@ -91,16 +118,41 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     protected void pisadas(Point2D pos){
-    	if(origen.distance(pos)>=64){
-			Rectangle pisada = new Rectangle(getX()-32,getY()-32,64,64);
+    	if(origen.distance(pos)>=SIZE){
+			final Rectangle pisada = new Rectangle(getX()-SIZE/2,getY()-SIZE/2,SIZE,SIZE);
 			pisada.setFill(huella);
 			pisada.setRotate(cuerpo.getRotate());
 			
-			Group g = (Group)cuerpo.getParent();
 			
-			g.getChildren().add(pisada);
-			pisada.toBack();
-			pisadas.addLast(pisada);
+			Platform.runLater(new Runnable(){
+
+				@Override
+				public void run() {
+					Group g = (Group)cuerpo.getParent();
+					g.getChildren().add(pisada);
+					pisada.toBack();
+				}
+				
+			});
+			
+			
+			FadeTransition fd = new FadeTransition(Duration.seconds(10));
+			//fd.setFromValue(1.0);
+			fd.setToValue(0.0);
+			fd.setNode(pisada);
+			fd.play();
+			fd.setOnFinished(new EventHandler<ActionEvent>(){
+
+				@Override
+				public void handle(ActionEvent event) {
+					FadeTransition fd = (FadeTransition)event.getSource();
+					Group g = (Group)fd.getNode().getParent();
+					g.getChildren().remove(fd.getNode());
+				}
+				
+			});
+			
+			/*pisadas.addLast(pisada);
 			
 			Shape s = pisadas.getLast();
 			if(s.getOpacity()<=0){
@@ -110,7 +162,7 @@ public abstract class Tanque extends ObjetoDinamico {
 			
 			for(Shape pis : pisadas){
 				pis.setOpacity(pis.getOpacity()-0.1);
-			}
+			}*/
 			
 			origen = new Point2D(pos.getX(),pos.getY());
 			
@@ -138,9 +190,7 @@ public abstract class Tanque extends ObjetoDinamico {
     public void setAngle(double ang) {
     	if(cuerpo.getRotate()!=ang){
 			cuerpo.setRotate(ang);
-			origen = new Point2D(getX(),getY());
-			setPosicion(new Point2D(Math.round(getX()/32)*32,Math.round(getY()/32)*32));
-			origen = new Point2D(getX(),getY());
+			this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
 		}
     }
 
@@ -165,15 +215,25 @@ public abstract class Tanque extends ObjetoDinamico {
     // TODO: fijarse si implementar este metodo general aca o que siga abstracto
     @Override
 	public void setPosicion(Point2D p) {
-		cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
+    	cuerpo.setX(p.getX()-cuerpo.getWidth()/2);
+		cuerpo.setY(p.getY()-cuerpo.getHeight()/2);
+		canon.setX(p.getX()-canon.getWidth()/2);
+		canon.setY(p.getY()-canon.getHeight()/2);
+    	/*cuerpo.setX(p.getX());
+    	cuerpo.setY(p.getY());
+    	canon.setX(p.getX());
+    	canon.setY(p.getY());*/
+		/*cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
 		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
 		canon.setTranslateX(p.getX()-canon.getWidth()/2);
-		canon.setTranslateY(p.getY()-canon.getHeight()/2);
+		canon.setTranslateY(p.getY()-canon.getHeight()/2);*/
 	}
 
 	@Override
 	public Point2D getPosicion() {
-		return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth()/2,cuerpo.getTranslateY()+cuerpo.getHeight()/2);
+		return new Point2D(cuerpo.getX()+cuerpo.getWidth()/2,cuerpo.getY()+cuerpo.getHeight()/2);
+		//return new Point2D(cuerpo.getX(),cuerpo.getY());
+		//return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth()/2,cuerpo.getTranslateY()+cuerpo.getHeight()/2);
 	}
 
     public int getPuntos() {
@@ -181,8 +241,15 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     public void colisiona(){
+    	this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
     	//if(velocidad.magnitude() == 0){
-    		setPosicion(new Point2D(Math.round(getX()/32)*32,Math.round(getY()/32)*32));
+    	/*Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				//setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
+			}
+    	});*/
+    		
     	/*}else{
     		setPosicion(getPosicion().add(getVelocidad().multiply(-1)));
     	}*/
