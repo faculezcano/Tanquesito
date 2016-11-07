@@ -49,6 +49,7 @@ public class Mapa {
     protected Group tanques;
     protected Group balasObstaculos;
     protected Group arboles;
+    protected Group powerups;
     
     protected LinkedList<Image> expT;
     
@@ -62,6 +63,7 @@ public class Mapa {
         tanques = new Group();
         balasObstaculos = new Group();
         arboles = new Group();
+        powerups = new Group();
         
         g.getChildren().addAll(pisadasAgua, tanques, balasObstaculos, arboles );
         
@@ -112,78 +114,17 @@ public class Mapa {
 				long time;
 				double deltaT = 1.0/fps;
 				
-				
-				LinkedList<Obstaculo> colisionesBala = new LinkedList<Obstaculo>();
 				LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
 				
 				while(true) { 
 					
 					time = System.nanoTime();
 					
-					for(final Bullet b:bullets){
+					for(Bullet b:bullets){
 						
-						for(Obstaculo o: obstaculos){
-							if (colisiona(b.getForma(), o.getForma())){
-									colisionesBala.add(o);
-									/*if((jugador.MisBalas().contains(b))){
-										jugador.MisBalas().remove(b);
-									}*/
-							}		
+						colisionesObstBullet(b);
 						
-						}
-						
-						if(!jugador.MisBalas().contains(b) && colisiona(b.getForma(), jugador.getForma())){
-							//TODO: matar jugador
-							jugador.afectar();
-							b.colisiona();
-							if(b.getResistencia() <= 0){
-								Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
-								bullets.remove(b);	
-							}
-						}
-						
-						for(TanqueEnemigo tenemigo: enemigos){
-							if((jugador.MisBalas().contains(b))&&(colisiona(b.getForma(),tenemigo.getForma()))){
-								int nuevaRT=tenemigo.getResistencia()-b.getResistencia();
-								int nuevaRB=b.getResistencia()-tenemigo.getResistencia();
-								tenemigo.setResistencia(nuevaRT);
-								//b.setResistencia(nuevaRB);
-								b.colisiona();
-								if(tenemigo.getResistencia()<=0){
-									Rectangle r = new Rectangle(tenemigo.getX()-64,tenemigo.getY()-64,128,128);
-									Animation ani = new Animation (r,expT,500);
-									ani.play();
-									Platform.runLater(new SyncAdder(r,tanques));
-									eliminarEnemigo(tenemigo);
-								}
-								if(b.getResistencia()<=0){
-									Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
-									bullets.remove(b);	
-									/*jugador.MisBalas().remove(b);*/
-								}
-								
-								
-							}
-							
-						}
-						
-						
-						
-						while (!colisionesBala.isEmpty()){
-							Obstaculo ob = colisionesBala.remove();
-							ob.colisionaBala(b);
-							
-							if (ob.GetVida() == 0) {
-								Platform.runLater(new SyncRemover(ob.getForma(),balasObstaculos));
-								obstaculos.remove(ob);
-							}
-							
-							if (b.getResistencia() == 0) {
-								Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
-								bullets.remove(b);
-							}
-						}
-					
+						colisionesTanquesBullet(b);						
 					}
 					
 					for(PowerUp pu: powerUps){
@@ -278,6 +219,61 @@ public class Mapa {
 			}});
     	colisiones.setDaemon(true);
     	colisiones.start();
+    }
+    
+    private void colisionesObstBullet(Bullet b){
+    	LinkedList<Obstaculo> colisionesBala = new LinkedList<Obstaculo>();
+    	for(Obstaculo o: obstaculos){
+			if (colisiona(b.getForma(), o.getForma())){
+					colisionesBala.add(o);
+			}		
+		
+		}
+		
+		while (!colisionesBala.isEmpty()){
+			Obstaculo ob = colisionesBala.remove();
+			ob.colisionaBala(b);
+			
+			if (ob.GetVida() == 0) {
+				Platform.runLater(new SyncRemover(ob.getForma(),balasObstaculos));
+				obstaculos.remove(ob);
+			}
+			
+			if (b.getResistencia() == 0) {
+				Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+				bullets.remove(b);
+			}
+		}
+    }
+    
+    private void colisionesTanquesBullet(Bullet b){
+    	if(jugador.MisBalas().contains(b)){
+			for(TanqueEnemigo tenemigo: enemigos){
+				if(colisiona(tenemigo.getForma(),b.getForma())){
+					tenemigo.afectar();
+					b.colisiona();
+					if(tenemigo.getResistencia()<=0){
+						Rectangle r = new Rectangle(tenemigo.getX()-64,tenemigo.getY()-64,128,128);
+						Animation ani = new Animation (r,expT,500);
+						ani.play();
+						Platform.runLater(new SyncAdder(r,tanques));
+						eliminarEnemigo(tenemigo);
+					}
+					if(b.getResistencia()<=0){
+						Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+						bullets.remove(b);	
+					}
+				}
+			}
+		}else if(colisiona(b.getForma(), jugador.getForma())){
+			//TODO: matar jugador
+			jugador.afectar();
+			b.colisiona();
+			if(b.getResistencia() <= 0){
+				Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+				bullets.remove(b);	
+			}
+		}
     }
 
     /**
@@ -374,7 +370,7 @@ public class Mapa {
 						break;
 					case '5':
 						PowerUp granada= new PowUPGranade(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
-						balasObstaculos.getChildren().add(granada.getForma());
+						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
 						break;
 					}		
