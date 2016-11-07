@@ -4,14 +4,16 @@ package assets.obstaculos;
 import assets.Bullet;
 import assets.Obstaculo;
 import assets.Tanque;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 /**
  * 
  */
-public class Arboles extends Obstaculo {
+public class Arbol extends Obstaculo {
 
-	public Arboles(){
-		super();
+	public Arbol(){
+		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/arbol.png"))));
 	}
 	
 	@Override
