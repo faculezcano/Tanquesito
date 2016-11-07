@@ -52,11 +52,11 @@ public abstract class Tanque extends ObjetoDinamico {
     public Bullet disparar() {
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
-		Point2D pos = new Point2D(getX()+Bullet.SIZE.getX()/2+(SIZE/2)*Math.cos(rad)-10,getY()+Bullet.SIZE.getY()/2+(SIZE/2)*Math.sin(rad)-5);
+		Point2D pos = new Point2D(getX()+Bullet.SIZE.getX()/2+32*Math.cos(rad)-10,getY()+Bullet.SIZE.getY()/2+32*Math.sin(rad)-5);
 		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
 		
-		Rectangle explo = new Rectangle(getX()-16+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-16+32*Math.sin(rad),32,32);
+		Rectangle explo = new Rectangle(getX()-8+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-8+32*Math.sin(rad),16,16);
 		//explo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/explo.gif"))));
 		explo.setRotate(canon.getRotate()+180);
 		AnimatedGif ag = new AnimatedGif(explo,"img/explo.gif",500);
