@@ -65,7 +65,7 @@ public class Mapa {
         arboles = new Group();
         powerups = new Group();
         
-        g.getChildren().addAll(pisadasAgua, tanques, balasObstaculos, arboles );
+        g.getChildren().addAll(pisadasAgua, tanques, balasObstaculos, arboles, powerups );
         
         enemigos = new ConcurrentLinkedQueue<TanqueEnemigo>();
         bullets = new ConcurrentLinkedQueue<Bullet>();
