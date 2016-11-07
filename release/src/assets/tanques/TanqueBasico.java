@@ -27,8 +27,8 @@ public class TanqueBasico extends TanqueEnemigo {
     	vel_disparo = 1;
     	resistencia = 1;
     	
-    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/Enemigo.png"))));
-    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/canon.png"))));
+    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_tanque.png"))));
+    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_canon.png"))));
     	
     	direccion = rand.nextInt(4);
     	setVelocidad(velAleatoria(direccion));
@@ -79,7 +79,7 @@ public class TanqueBasico extends TanqueEnemigo {
 			this.tiro.setStroke(Color.BLACK);
 		}
 		
-		pisadas(p);
+		//pisadas(p);
 
 		super.setPosicion(p);
 		
