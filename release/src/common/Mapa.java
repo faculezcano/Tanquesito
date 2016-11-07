@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -351,6 +352,9 @@ public class Mapa {
 		
 		DropShadow ds = new DropShadow();
 		ds.setRadius(10);
+		InnerShadow is = new InnerShadow ();
+		is.setRadius(15);
+		pisadasAgua.setEffect(is);
 		arboles.setEffect(ds);
 		tanques.setEffect(ds);
 		balasObstaculos.setEffect(ds);
