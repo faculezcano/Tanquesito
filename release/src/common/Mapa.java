@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -73,7 +74,9 @@ public class Mapa {
         expT = new LinkedList<Image>() ;
         try {
 	        File carpeta = new File("src/img/ExplosionSimpleProto1");
-	        for (File img:carpeta.listFiles()){
+	        File[] imgs = carpeta.listFiles();
+	        Arrays.sort(imgs);
+	        for (File img:imgs){
 	        	expT.addLast(new Image(new FileInputStream(img)));
 			} 
 	    }
