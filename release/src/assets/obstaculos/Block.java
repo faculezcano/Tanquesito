@@ -15,14 +15,14 @@ public class Block extends Obstaculo {
 
 	@Override
 	public void colisionaBala(Bullet b) {
-		// TODO Auto-generated method stub
-
+		if(b!=null){
+			b.colisiona();
+		}
 	}
 
 	@Override
 	public void colisionaTanque(Tanque t) {
-		// TODO Auto-generated method stub
-
+		t.colisiona();
 	}
 
 }
