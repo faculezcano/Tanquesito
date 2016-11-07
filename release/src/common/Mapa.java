@@ -63,6 +63,7 @@ public class Mapa {
         enemigos = new ConcurrentLinkedQueue<TanqueEnemigo>();
         bullets = new ConcurrentLinkedQueue<Bullet>();
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
+        powerUps = new ConcurrentLinkedQueue<PowerUp>();
         
         startColisiones();
     }
