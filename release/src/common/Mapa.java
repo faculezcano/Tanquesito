@@ -162,7 +162,14 @@ public class Mapa {
 							}
 						}
 					
-					}	
+					}
+					
+					for(PowerUp pu: powerUps){
+						if(colisiona(pu.getForma(),jugador.getForma())){
+							pu.colisionaTanque(jugador);
+							eliminarPowerUp(pu);
+						}
+					}
 					
 					for(Obstaculo o : obstaculos){
 						if(colisiona(o.getForma(),jugador.getForma()))
@@ -257,6 +264,13 @@ public class Mapa {
     public void addEnemigo(TanqueEnemigo o) {
         enemigos.add(o);
         o.addToGroup(tanques);
+    }
+    
+    public void eliminarPowerUp(PowerUp p){
+    	if(!powerUps.isEmpty()){
+    		Platform.runLater(new SyncRemover(p.getForma(),balasObstaculos));
+    		powerUps.remove(p);
+    	}
     }
     
     public void eliminarEnemigo(TanqueEnemigo o){
