@@ -32,6 +32,9 @@ public class Animation extends Transition {
     public Animation( Shape s,LinkedList<Image> sequence, double durationMs) {
     	this.s = s;
         init( sequence, durationMs);
+        if(sequence.size()>0){
+        	s.setFill(new ImagePattern(sequence.getFirst()));
+        }
     }
 
     protected void init( LinkedList<Image> sequence, double durationMs) {
