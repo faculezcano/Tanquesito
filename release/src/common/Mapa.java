@@ -25,6 +25,7 @@ import assets.obstaculos.Arbol;
 import assets.obstaculos.Block;
 import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
+import assets.powerUps.PowUPGranade;
 import assets.tanques.*;
 
 /**
@@ -333,9 +334,12 @@ public class Mapa {
 						pisadasAgua.getChildren().add(obstaculo.getForma());
 						obstaculos.add(obstaculo);
 						break;
-					}			
-						
-						
+					case '5':
+						PowerUp granada= new PowUPGranade(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						balasObstaculos.getChildren().add(granada.getForma());
+						powerUps.add(granada);
+						break;
+					}		
 				}
 				System.out.println();
 				fila++;
