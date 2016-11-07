@@ -27,6 +27,7 @@ public abstract class Tanque extends ObjetoDinamico {
     protected int vel_mov;
     protected int vel_disparo;
     protected int puntos;
+    protected Point2D tempPos;
     protected Point2D origen;
     protected LinkedList<Bullet> bullets;
     protected Rectangle cuerpo;
@@ -34,6 +35,8 @@ public abstract class Tanque extends ObjetoDinamico {
     protected double canonAng = 0;
     protected ImagePattern huella;
     protected LinkedList<Shape> pisadas;
+    protected Group formas;
+    
     
     protected Tanque(double x, double y){
     	vel_mov = 1;
@@ -44,6 +47,10 @@ public abstract class Tanque extends ObjetoDinamico {
     	cuerpo = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
     	canon = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
+    	formas = new Group();
+    	formas.getChildren().add(cuerpo);
+    	formas.getChildren().add(canon);
+    	origen = new Point2D(x,y);
     }
     
     /**
@@ -118,7 +125,7 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     protected void pisadas(Point2D pos){
-    	if(origen.distance(pos)>=SIZE){
+    	if(tempPos.distance(pos)>=SIZE){
 			final Rectangle pisada = new Rectangle(getX()-SIZE/2,getY()-SIZE/2,SIZE,SIZE);
 			pisada.setFill(huella);
 			pisada.setRotate(cuerpo.getRotate());
@@ -164,7 +171,7 @@ public abstract class Tanque extends ObjetoDinamico {
 				pis.setOpacity(pis.getOpacity()-0.1);
 			}*/
 			
-			origen = new Point2D(pos.getX(),pos.getY());
+			tempPos = new Point2D(pos.getX(),pos.getY());
 			
 		}
     }
@@ -255,7 +262,10 @@ public abstract class Tanque extends ObjetoDinamico {
     	}*/
     }
     
-    public abstract void afectar();
+    public void afectar(){
+    	if(resistencia>0)
+    		resistencia--;
+    }
     
     public LinkedList<Bullet> MisBalas(){
     	return bullets;
