@@ -1,12 +1,14 @@
 package assets;
 
-import java.util.LinkedList;
 import java.util.Random;
 
-//import assets.tanques.Jugador;
+import common.AnimatedGif;
+import common.SyncAdder;
 import common.SyncRemover;
-
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -15,11 +17,14 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  * 
  */
 public class Bullet extends ObjetoDinamico {
+	
+	public final static Point2D SIZE = new Point2D(10,5);
 	
 	protected Shape forma;
     protected Point2D origen;
@@ -41,7 +46,7 @@ public class Bullet extends ObjetoDinamico {
      */
     public Bullet(Tanque t,Point2D pos,Point2D vel) {
     	this.t = t;
-    	forma = new Rectangle(0,0,20,10);
+    	forma = new Rectangle(0,0,SIZE.getX(),SIZE.getY());
     	forma.setTranslateX(pos.getX());
 		forma.setTranslateY(pos.getY());
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
@@ -91,7 +96,7 @@ public class Bullet extends ObjetoDinamico {
      * @return
      */
     public Point2D getPosicion() {
-    	return new Point2D(getX()-5,getY()-5);
+    	return new Point2D(getX()-SIZE.getX()/2,getY()-SIZE.getY()/2);
 	}
 
    
@@ -107,8 +112,26 @@ public class Bullet extends ObjetoDinamico {
 	public void setPosicion(Point2D p) {
 		
 		//Sistema que deja humo durante el avance de la bala
-		if(origen.distance(p) >=6){
+		if(origen.distance(p) >=SIZE.getY()*0.3){
+			Circle nuevoHumo = crearHumo();
+			Group g = (Group)forma.getParent();
+			g.getChildren().add(nuevoHumo);
+			FadeTransition fd = new FadeTransition(Duration.millis(2000));
+			//fd.setFromValue(1.0);
+			fd.setToValue(0.0);
+			fd.setNode(nuevoHumo);
+			fd.play();
+			fd.setOnFinished(new EventHandler<ActionEvent>(){
 
+				@Override
+				public void handle(ActionEvent event) {
+					FadeTransition fd = (FadeTransition)event.getSource();
+					Group g = (Group)fd.getNode().getParent();
+					g.getChildren().remove(fd.getNode());
+				}
+				
+			});
+			
 //			Circle nuevoHumo = crearHumo();
 //			Group g = (Group)forma.getParent();
 //			g.getChildren().add(nuevoHumo);
@@ -128,12 +151,12 @@ public class Bullet extends ObjetoDinamico {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		forma.setTranslateX(p.getX()+5);
-		forma.setTranslateY(p.getY()+5);
+		forma.setTranslateX(p.getX()+SIZE.getX()/2);
+		forma.setTranslateY(p.getY()+SIZE.getY()/2);
 	}
 	
 	private Circle crearHumo(){
-		Circle c = new Circle(getX()+10-10*Math.cos(Math.toRadians(forma.getRotate()))+r.nextGaussian()*2,getY()+5-10*Math.sin(Math.toRadians(forma.getRotate()))+r.nextGaussian()*2,8);
+		Circle c = new Circle(getX()+SIZE.getX()/2-SIZE.getX()/2*Math.cos(Math.toRadians(forma.getRotate()))+r.nextGaussian(),getY()+SIZE.getY()/2-SIZE.getX()/2*Math.sin(Math.toRadians(forma.getRotate()))+r.nextGaussian(),SIZE.getY()*.8);
 		double col = (r.nextInt(2)+2)/10.0;
 		c.setFill(Color.color(col, col,col));
 		c.setOpacity(0.6);
@@ -187,7 +210,31 @@ public class Bullet extends ObjetoDinamico {
 //			t.start();
 			}
 			if(resistencia <= 0){
+				Platform.runLater(new Runnable(){
+
+					@Override
+					public void run() {
+						Rectangle explo = new Rectangle(getX()-24-0*Math.cos(Math.toRadians(forma.getRotate())),getY()-24-0*Math.sin(Math.toRadians(forma.getRotate())),48,48);
+						//explo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/explo2.gif"))));
+						explo.setRotate(getForma().getRotate()-90);
+
+						AnimatedGif ag = new AnimatedGif(explo,"img/explo3.gif",1000);
+						ag.setOnFinished(new EventHandler<ActionEvent>(){
+
+							@Override
+							public void handle(ActionEvent event) {
+								AnimatedGif ag = (AnimatedGif)event.getSource();
+								Group g = (Group)ag.getShape().getParent();
+								Platform.runLater(new SyncRemover(ag.getShape(),g));
+							}
+							
+						});
+						Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
+						ag.play();
+						//g.getChildren().add(explo);
+					}});
 				t.removeBullet(this);
+				
 			}
 	}
 
