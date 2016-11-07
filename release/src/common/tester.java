@@ -40,7 +40,7 @@ public class tester extends Application {
 		g = new Group();
 		s = new Scene(g,1024,600, Color.BEIGE);
 		enemigo=null;
-		j = new Jugador();
+		j = new Jugador(0,0);
 		j.addToGroup(g);
 		//g.getChildren().add(enemigo.getForma());
 		puntos= new Text("PUNTOS="+j.getPuntos());
@@ -86,12 +86,6 @@ public class tester extends Application {
 
 						@Override
 						public void run() {
-							int balasJmapa=0;
-							for(Bullet bm:map.getBullets()){
-								if(j.MisBalas().contains(bm)){
-									balasJmapa++;
-								}
-							}
 							if(j.getNivel().getDisparosSimul()> j.MisBalas().size()){
 								
 								Bullet b = j.disparar();

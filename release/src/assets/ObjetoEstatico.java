@@ -1,7 +1,5 @@
 package assets;
 
-import java.util.LinkedList;
-
 import javafx.scene.shape.Shape;
 
 /**

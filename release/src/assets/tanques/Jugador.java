@@ -1,17 +1,13 @@
 package assets.tanques;
 
-import java.util.LinkedList;
-
+import assets.Bullet;
+import assets.Nivel;
+import assets.NivelUno;
+import assets.Tanque;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
-import assets.*;
-
 
 /**
  * 
@@ -22,10 +18,8 @@ public class Jugador extends Tanque {
     protected int disparos_simul;
     protected int vida;
 
-    /**
-     * 
-     */
-    public Jugador() {
+    public Jugador(double x, double y){
+    	super(x,y);
     	resistencia = 3;
         puntos = 0;
         canonAng = 0;
@@ -43,6 +37,7 @@ public class Jugador extends Tanque {
 		ds.setRadius(10);
 		cuerpo.setEffect(ds);
 		canon.setEffect(ds);
+
     }
     
     public Bullet disparar() {
@@ -74,7 +69,7 @@ public class Jugador extends Tanque {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		//pisadas(p);
+		pisadas(p);
 
 		super.setPosicion(p);
 		

@@ -13,6 +13,9 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import assets.*;
@@ -53,8 +56,7 @@ public class Mapa {
     }
     
     public TanqueEnemigo crearEnemigo(){
-    	TanqueEnemigo enemigo=new TanqueBasico(this);
-    	enemigo.setPosicion(new Point2D(512,240));
+    	TanqueEnemigo enemigo=new TanqueBasico(this,400,150);
     	this.addEnemigo(enemigo);
     	enemigo.addToGroup(g);
     	//g.getChildren().add(enemigo.getForma());
@@ -87,7 +89,7 @@ public class Mapa {
 					
 					time = System.nanoTime();
 					
-					for(Bullet b:bullets){
+					for(final Bullet b:bullets){
 						
 						for(Obstaculo o: obstaculos){
 							if (colisiona(b.getForma(), o.getForma())){
@@ -296,22 +298,21 @@ public class Mapa {
 					Obstaculo nuevo = null;
 					switch (cadena.charAt(col)){
 					case '1':
-						nuevo = new Ladrillo();
+						nuevo = new Ladrillo(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						break;
 					case '2':
-						nuevo = new Metal();
+						nuevo = new Metal(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						break;
 					case '3':
-						nuevo = new Arbol();
+						nuevo = new Arbol(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						break;
 					case '4':
-						nuevo = new Agua();
+						nuevo = new Agua(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						break;
 					}			
 					if(nuevo != null){
 						gr.getChildren().add(nuevo.getForma());
 						obstaculos.add(nuevo);
-						nuevo.setPosicion(new Point2D(0+col*32,0+fila*32));
 					}
 						
 						
