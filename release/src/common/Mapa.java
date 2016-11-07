@@ -25,7 +25,6 @@ import assets.obstaculos.Arbol;
 import assets.obstaculos.Block;
 import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
-import assets.powerUps.PowUPGranade;
 import assets.tanques.*;
 
 /**
@@ -63,7 +62,6 @@ public class Mapa {
         enemigos = new ConcurrentLinkedQueue<TanqueEnemigo>();
         bullets = new ConcurrentLinkedQueue<Bullet>();
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
-        powerUps= new ConcurrentLinkedQueue<PowerUp>();
         
         startColisiones();
     }
@@ -163,13 +161,6 @@ public class Mapa {
 						}
 					
 					}	
-					
-					for(PowerUp pu: powerUps){
-						if(colisiona(pu.getForma(),jugador.getForma())){
-							pu.colisionaTanque(jugador);
-							eliminarPowerUp(pu);
-						}
-					}
 					
 					for(Obstaculo o : obstaculos){
 						if(colisiona(o.getForma(),jugador.getForma()))
@@ -307,15 +298,15 @@ public class Mapa {
 			
 			BufferedReader b = new BufferedReader(f);
 			
-			int fila = 0;
+			int fila = -1;
 			String cadena = b.readLine();
 			//enemigo = enemigos.poll();
 			
 			while(cadena != null){
-				for(int col=0;col<cadena.length();col++){
-					System.out.print(cadena.charAt(col));
+				for(int col=-1;col<cadena.length()-1;col++){
+					System.out.print(cadena.charAt(col+1));
 					Obstaculo obstaculo;
-					switch (cadena.charAt(col)){
+					switch (cadena.charAt(col+1)){
 					
 					case '9':
 						obstaculo = new Block(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
@@ -341,11 +332,6 @@ public class Mapa {
 						obstaculo = new Agua(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						pisadasAgua.getChildren().add(obstaculo.getForma());
 						obstaculos.add(obstaculo);
-						break;
-					case '5':
-						PowerUp granada= new PowUPGranade(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
-						balasObstaculos.getChildren().add(granada.getForma());
-						powerUps.add(granada);
 						break;
 					}			
 						
@@ -384,13 +370,6 @@ public class Mapa {
     	
     	
     }
-    
-    public void eliminarPowerUp(PowerUp p){
-    	if(!powerUps.isEmpty()){
-    		Platform.runLater(new SyncRemover(p.getForma(),balasObstaculos));
-    		powerUps.remove(p);
-    	}
-    }
 
     /**
      * @return
@@ -420,8 +399,6 @@ public class Mapa {
     public ConcurrentLinkedQueue<Bullet> getBullets(){
     	return bullets;
     }
-    
-    
     
 
 }
