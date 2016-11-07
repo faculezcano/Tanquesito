@@ -71,7 +71,7 @@ public class Mapa {
     public TanqueEnemigo crearEnemigo(){
     	TanqueEnemigo enemigo=new TanqueBasico(this,400,150);
     	this.addEnemigo(enemigo);
-    	enemigo.addToGroup(tanques);
+    	
     	//g.getChildren().add(enemigo.getForma());
     	
     	return enemigo;
@@ -256,6 +256,7 @@ public class Mapa {
      */
     public void addEnemigo(TanqueEnemigo o) {
         enemigos.add(o);
+        o.addToGroup(tanques);
     }
     
     public void eliminarEnemigo(TanqueEnemigo o){

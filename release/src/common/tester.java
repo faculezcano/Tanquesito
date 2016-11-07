@@ -29,6 +29,7 @@ public class tester extends Application {
 	protected Group g;
 	protected Mapa map;
 	protected TanqueEnemigo enemigo;
+	protected TanqueEnemigo enemigo2;
 	protected Text puntos;
 
 	@Override
@@ -148,6 +149,29 @@ public class tester extends Application {
 							enemigo=null;
 						}
 				}
+				if(e.getCode()==KeyCode.P){
+					
+					if(enemigo2 == null){
+						enemigo2 = new TanqueBlindado(map,400,200);
+						map.addEnemigo(enemigo2);
+						//enemigo.addToGroup(g);
+						//g.getChildren().add(enemigo.getForma());
+						//enemigo.setPosicion(new Point2D(512,240));
+						//map.addEnemigo(enemigo);
+						//g.getChildren().add(enemigo.getForma());
+						//map.addEnemigo(enemigo);
+						//enemigo.setPosicion(new Point2D(32,97));
+					}else{
+						//int puntosEnemigo = enemigo.getPuntos();
+						//map.eliminarEnemigo(enemigo);
+						//g.getChildren().remove(enemigo.getForma());
+						map.eliminarEnemigo(enemigo2);
+						//j.setPuntos((j.getPuntos())+puntosEnemigo);
+						puntos.setText("PUNTOS="+j.getPuntos());
+						//map.eliminarEnemigo(enemigo);
+						enemigo2=null;
+					}
+			}
 				if(e.getCode()==KeyCode.K){
 					
 					map.eliminarObstaculo();
