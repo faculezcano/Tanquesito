@@ -1,5 +1,7 @@
 package common;
 
+import java.util.LinkedList;
+
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.application.Platform;
@@ -16,7 +18,7 @@ public class Animation extends Transition {
 
     private int lastIndex;
 
-    private Image[] sequence;
+    private LinkedList<Image> sequence;
     
     protected Shape s;
     protected Image current;
@@ -27,19 +29,27 @@ public class Animation extends Transition {
     	this.s = s;
     }
 
-    public Animation( Shape s,Image[] sequence, double durationMs) {
+    public Animation( Shape s,LinkedList<Image> sequence, double durationMs) {
     	this.s = s;
         init( sequence, durationMs);
     }
 
-    protected void init( Image[] sequence, double durationMs) {
+    protected void init( LinkedList<Image> sequence, double durationMs) {
         this.sequence = sequence;
-        this.count = sequence.length;
+        this.count = sequence.size();
 
         setCycleCount(1);
         setCycleDuration(Duration.millis(durationMs));
         setInterpolator(Interpolator.LINEAR);
 
+    }
+    
+    protected void init(Image[] sequence, double durationMs){
+    	LinkedList<Image> lista = new LinkedList<Image>();
+    	for(int i = 0; i<sequence.length; i++){
+    		lista.add(sequence[i]);
+    	}
+    	init(lista,durationMs);
     }
 
     protected void interpolate(double k) {
@@ -47,12 +57,12 @@ public class Animation extends Transition {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {
             if(s!=null){
-            	current = sequence[index];
+            	current = sequence.get(index);
             	pintar();
             }
             lastIndex = index;
         }
-        if(index == sequence.length-1 && finishEvent != null)
+        if(index == sequence.size()-1 && finishEvent != null)
         	finishEvent.notifyAll();
 
     }
