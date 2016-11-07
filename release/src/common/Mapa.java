@@ -1,6 +1,8 @@
 package common;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -47,6 +49,8 @@ public class Mapa {
     protected Group balasObstaculos;
     protected Group arboles;
     
+    protected LinkedList<Image> expT;
+    
 	/**
      * @param cantX 
      * @param cantY 
@@ -66,6 +70,17 @@ public class Mapa {
         powerUps = new ConcurrentLinkedQueue<PowerUp>();
         
         startColisiones();
+        expT = new LinkedList<Image>() ;
+        try {
+	        File carpeta = new File("src/img/ExplosionSimpleProto1");
+	        for (File img:carpeta.listFiles()){
+	        	expT.addLast(new Image(new FileInputStream(img)));
+			} 
+	    }
+        catch (FileNotFoundException | NullPointerException e) {
+			e.printStackTrace();
+		}
+        
     }
     
     public TanqueEnemigo crearEnemigo(){
@@ -132,6 +147,10 @@ public class Mapa {
 								//b.setResistencia(nuevaRB);
 								b.colisiona();
 								if(tenemigo.getResistencia()<=0){
+									Rectangle r = new Rectangle(tenemigo.getX()-64,tenemigo.getY()-64,128,128);
+									Animation ani = new Animation (r,expT,500);
+									ani.play();
+									Platform.runLater(new SyncAdder(r,tanques));
 									eliminarEnemigo(tenemigo);
 								}
 								if(b.getResistencia()<=0){
