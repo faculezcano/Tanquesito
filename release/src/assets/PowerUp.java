@@ -9,12 +9,14 @@ import javafx.scene.shape.*;
  */
 public abstract class PowerUp extends ObjetoEstatico {
 	
+	public static final int SIZE = 24;
+	
 	protected Mapa map;
 	protected Shape forma;
 	
 	protected PowerUp(double x, double y, Mapa m){
-		map=m;
-		forma = new Rectangle(x,y,32,32);
+		map = m;
+		forma = new Rectangle(x,y,SIZE,SIZE);
 	}
 	
 	public Shape getForma(){
