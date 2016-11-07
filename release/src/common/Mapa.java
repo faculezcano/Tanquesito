@@ -21,6 +21,7 @@ import javafx.scene.shape.Shape;
 import assets.*;
 import assets.obstaculos.Agua;
 import assets.obstaculos.Arbol;
+import assets.obstaculos.Block;
 import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
 import assets.tanques.*;
@@ -36,10 +37,13 @@ public class Mapa {
     protected ConcurrentLinkedQueue<PowerUp> powerUps;
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos;
     protected Jugador jugador;
-    protected Group g;
-    protected Group gr;
     protected Tanque enemigo;
-    protected Group ge;
+    
+    
+    protected Group pisadasAgua;
+    protected Group tanques;
+    protected Group balasObstaculos;
+    protected Group arboles;
     
 	/**
      * @param cantX 
@@ -47,7 +51,13 @@ public class Mapa {
      * @param g
      */
     public Mapa(int cantX, int cantY, Group g) {
-        this.g = g;
+        pisadasAgua = new Group();
+        tanques = new Group();
+        balasObstaculos = new Group();
+        arboles = new Group();
+        
+        g.getChildren().addAll(pisadasAgua, tanques, balasObstaculos, arboles );
+        
         enemigos = new ConcurrentLinkedQueue<TanqueEnemigo>();
         bullets = new ConcurrentLinkedQueue<Bullet>();
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
@@ -58,7 +68,7 @@ public class Mapa {
     public TanqueEnemigo crearEnemigo(){
     	TanqueEnemigo enemigo=new TanqueBasico(this,400,150);
     	this.addEnemigo(enemigo);
-    	enemigo.addToGroup(g);
+    	enemigo.addToGroup(tanques);
     	//g.getChildren().add(enemigo.getForma());
     	
     	return enemigo;
@@ -106,7 +116,7 @@ public class Mapa {
 							jugador.afectar();
 							b.colisiona();
 							if(b.getResistencia() <= 0){
-								Platform.runLater(new SyncRemover(b.getForma(),g));
+								Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
 								bullets.remove(b);	
 							}
 						}
@@ -122,7 +132,7 @@ public class Mapa {
 									eliminarEnemigo(tenemigo);
 								}
 								if(b.getResistencia()<=0){
-									Platform.runLater(new SyncRemover(b.getForma(),g));
+									Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
 									bullets.remove(b);	
 									/*jugador.MisBalas().remove(b);*/
 								}
@@ -139,12 +149,12 @@ public class Mapa {
 							ob.colisionaBala(b);
 							
 							if (ob.GetVida() == 0) {
-								Platform.runLater(new SyncRemover(ob.getForma(),gr));
+								Platform.runLater(new SyncRemover(ob.getForma(),balasObstaculos));
 								obstaculos.remove(ob);
 							}
 							
 							if (b.getResistencia() == 0) {
-								Platform.runLater(new SyncRemover(b.getForma(),g));
+								Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
 								bullets.remove(b);
 							}
 						}
@@ -248,7 +258,7 @@ public class Mapa {
     public void eliminarEnemigo(TanqueEnemigo o){
     	int puntosEnemigo = o.getPuntos();
     	jugador.setPuntos((jugador.getPuntos())+puntosEnemigo);
-    	Platform.runLater(new SyncRemover(o,g));
+    	Platform.runLater(new SyncRemover(o,tanques));
     	enemigos.remove(o);
     	System.out.println(jugador.getPuntos());
     }
@@ -259,7 +269,7 @@ public class Mapa {
 
 			@Override
 			public void run() {
-				g.getChildren().add(b.getForma());
+				balasObstaculos.getChildren().add(b.getForma());
 			}
     		
     	});
@@ -277,7 +287,6 @@ public class Mapa {
      * @param String file
      */
     public void cargarMapa(String archivo) {
-    	gr = new Group();
 		
 		try {
 			
@@ -295,25 +304,35 @@ public class Mapa {
 			while(cadena != null){
 				for(int col=0;col<cadena.length();col++){
 					System.out.print(cadena.charAt(col));
-					Obstaculo nuevo = null;
+					Obstaculo obstaculo;
 					switch (cadena.charAt(col)){
+					
+					case '9':
+						obstaculo = new Block(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						balasObstaculos.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
 					case '1':
-						nuevo = new Ladrillo(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						obstaculo = new Ladrillo(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						balasObstaculos.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
 						break;
 					case '2':
-						nuevo = new Metal(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						obstaculo = new Metal(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						balasObstaculos.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
 						break;
 					case '3':
-						nuevo = new Arbol(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						obstaculo = new Arbol(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						arboles.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
 						break;
 					case '4':
-						nuevo = new Agua(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						obstaculo = new Agua(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						pisadasAgua.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
 						break;
 					}			
-					if(nuevo != null){
-						gr.getChildren().add(nuevo.getForma());
-						obstaculos.add(nuevo);
-					}
 						
 						
 				}
@@ -332,15 +351,16 @@ public class Mapa {
 		
 		DropShadow ds = new DropShadow();
 		ds.setRadius(10);
-		gr.setEffect(ds);
-		g.getChildren().add(gr);
+		arboles.setEffect(ds);
+		tanques.setEffect(ds);
+		balasObstaculos.setEffect(ds);
     }
     
     public void eliminarObstaculo(){
     	
     	if(!obstaculos.isEmpty()){
-	    	Obstaculo obst= obstaculos.element();
-	    	gr.getChildren().remove(obst.getForma());
+	    	Obstaculo obst = obstaculos.element();
+	    	balasObstaculos.getChildren().remove(obst.getForma());
 	    	obstaculos.remove(obst);
     	}
     	

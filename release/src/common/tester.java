@@ -40,7 +40,7 @@ public class tester extends Application {
 		g = new Group();
 		s = new Scene(g,1024,600, Color.BEIGE);
 		enemigo=null;
-		j = new Jugador(0,0);
+		j = new Jugador(64,64);
 		j.addToGroup(g);
 		//g.getChildren().add(enemigo.getForma());
 		puntos= new Text("PUNTOS="+j.getPuntos());
