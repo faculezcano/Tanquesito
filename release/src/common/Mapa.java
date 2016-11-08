@@ -98,11 +98,44 @@ public class Mapa {
     	
     }
     
-    protected boolean colisiona(Shape s1, Shape s2){
+    /*protected boolean colisiona(Shape s1, Shape s2){
+    	Shape interseccion = Shape.intersect(s1, s2);
+    	return !interseccion.getBoundsInLocal().isEmpty();
+    	//return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
+    }*/
+    
+    protected boolean colisionaShape(Shape s1, Shape s2){
     	Shape interseccion = Shape.intersect(s1, s2);
     	return !interseccion.getBoundsInLocal().isEmpty();
     	//return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
     }
+    
+    public double distancia(ObjetoEstatico oe, ObjetoDinamico od){
+    	Rectangle r = (Rectangle)oe.getForma();
+    	return od.getPosicion().distance(new Point2D(r.getX(),r.getY()));
+    }
+    
+    public boolean colisiona(ObjetoEstatico oe, ObjetoDinamico od){
+    	
+    	if( distancia(oe,od)> 96){
+    		noentran++;
+    		return false;
+    	}
+    	entran++;
+    	return colisionaShape(oe.getForma(),od.getForma());
+    }
+    
+    public boolean colisiona(ObjetoDinamico o1, ObjetoDinamico o2){
+    	if(o1.getPosicion().distance(o2.getPosicion()) > 96){
+    		noentran++;
+    		return false;
+    	}
+    	entran++;
+    	return colisionaShape(o1.getForma(),o2.getForma());
+    }
+    
+    int entran = 0;
+	int noentran = 0;
     
     private void startColisiones(){
     	Thread colisiones = new Thread(new Runnable() {
@@ -113,6 +146,8 @@ public class Mapa {
 				final int fps = 30;
 				long time;
 				double deltaT = 1.0/fps;
+				
+				
 				
 				LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
 				
@@ -128,29 +163,34 @@ public class Mapa {
 					}
 					
 					for(PowerUp pu: powerUps){
-						if(colisiona(pu.getForma(),jugador.getForma())){
+						//if(colisiona(pu.getForma(),jugador.getForma())){
+						if(colisiona(pu,jugador)){
 							pu.colisionaTanque(jugador);
 							eliminarPowerUp(pu);
 						}
 					}
 					
 					for(Obstaculo o : obstaculos){
-						if(colisiona(o.getForma(),jugador.getForma()))
+						//if(colisiona(o.getForma(),jugador.getForma()))
+						if(colisiona(o,jugador))
 							o.colisionaTanque(jugador);
 						
 						for(TanqueEnemigo ene: enemigos){
 							
-							if(colisiona(o.getForma(),ene.getLineaTiro())){
+							//if(colisiona(o.getForma(),ene.getLineaTiro())){
+							if(distancia(o,ene) < 256 && colisionaShape(o.getForma(),ene.getLineaTiro())){
 								ene.setTiroLimpio(false);
 							}
 							
-							if(colisiona(o.getForma(),ene.getForma())){
+							//if(colisiona(o.getForma(),ene.getForma())){
+							if(colisiona(o,ene)){
 								ene.setTiroLimpio(false);
 								o.colisionaTanque(ene);
 								ene.setTiroLimpio(false);
 							}
 							
-							if(colisiona(jugador.getForma(),ene.getForma())){
+							//if(colisiona(jugador.getForma(),ene.getForma())){
+							if(colisiona(jugador,ene)){
 								ene.colisiona();
 								jugador.colisiona();
 							}
@@ -207,6 +247,13 @@ public class Mapa {
 						}
 						
 					});*/
+					/*if(noentran+entran > 0){
+						double est = ((double)entran)/(entran+noentran);
+						System.out.println(est*100+"% Total: " + (entran+noentran));
+					}*/
+
+					entran = 0;
+					noentran=0;
 					
 					try {
 						while((System.nanoTime()- time) <= deltaT*1000000000){
@@ -224,7 +271,8 @@ public class Mapa {
     private void colisionesObstBullet(Bullet b){
     	LinkedList<Obstaculo> colisionesBala = new LinkedList<Obstaculo>();
     	for(Obstaculo o: obstaculos){
-			if (colisiona(b.getForma(), o.getForma())){
+			//if (colisiona(b.getForma(), o.getForma())){
+    		if (colisiona(o,b)){
 					colisionesBala.add(o);
 			}		
 		
@@ -249,7 +297,8 @@ public class Mapa {
     private void colisionesTanquesBullet(Bullet b){
     	if(jugador.MisBalas().contains(b)){
 			for(TanqueEnemigo tenemigo: enemigos){
-				if(colisiona(tenemigo.getForma(),b.getForma())){
+				//if(colisiona(tenemigo.getForma(),b.getForma())){
+				if(colisiona(tenemigo,b)){
 					tenemigo.afectar();
 					b.colisiona();
 					if(tenemigo.getResistencia()<=0){
@@ -265,7 +314,8 @@ public class Mapa {
 					}
 				}
 			}
-		}else if(colisiona(b.getForma(), jugador.getForma())){
+		}else //if(colisiona(b.getForma(), jugador.getForma())){
+			if(colisiona(b,jugador)){
 			//TODO: matar jugador
 			jugador.afectar();
 			b.colisiona();
@@ -286,7 +336,7 @@ public class Mapa {
     
     public void eliminarPowerUp(PowerUp p){
     	if(!powerUps.isEmpty()){
-    		Platform.runLater(new SyncRemover(p.getForma(),balasObstaculos));
+    		Platform.runLater(new SyncRemover(p.getForma(),powerups));
     		powerUps.remove(p);
     	}
     }

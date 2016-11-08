@@ -62,14 +62,17 @@ public class TanqueBasico extends TanqueEnemigo {
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
-		
-		if(map.getJugador().getPosicion().distance(getPosicion()) <= distanciaTiro){
+		double distanciaJug = map.getJugador().getPosicion().distance(getPosicion());
+		if( distanciaJug <= distanciaTiro){
 			apuntar(map.getJugador().getPosicion());
 			if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
 				if(bullets.isEmpty()){
 					Bullet b = disparar();
-					map.addBullet(b);
-					setVelocidad(getVelocidad().multiply(-1));
+					if(b!=null){
+						map.addBullet(b);
+						if(distanciaJug >= distanciaTiro*.75)
+							setVelocidad(getVelocidad().multiply(-1));
+					}
 				}
 				this.tiro.setStroke(Color.GREEN);
 			}

@@ -68,8 +68,10 @@ public class TanqueBlindado extends TanqueEnemigo {
 			if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
 				if(bullets.isEmpty()){
 					Bullet b = disparar();
-					map.addBullet(b);
-					setVelocidad(getVelocidad().multiply(-1));
+					if(b!=null){
+						map.addBullet(b);
+						//setVelocidad(getVelocidad().multiply(-1));
+					}
 				}
 				this.tiro.setStroke(Color.GREEN);
 			}

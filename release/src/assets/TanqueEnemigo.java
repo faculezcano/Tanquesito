@@ -19,6 +19,7 @@ public abstract class TanqueEnemigo extends Tanque {
 	protected int distanciaTiro = 240;
 	protected int punteria = 7; // 0 - 10
 	protected boolean tiroLimpio = false;
+	protected boolean puedeDisparar = true;
 	
 	//Linea para saber si tiene un tiro limpio
 	protected Line tiro = new Line(0,0,0,0);
@@ -42,6 +43,25 @@ public abstract class TanqueEnemigo extends Tanque {
 		super.setPosicion(p);
 		tiro.setStartX(p.getX());
 		tiro.setStartY(p.getY());
+	}
+	
+	@Override
+	public Bullet disparar(){
+		if(puedeDisparar){
+			puedeDisparar=false;
+			Thread t = new Thread(new Runnable(){
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(1000);
+						puedeDisparar=true;
+					} catch (InterruptedException e) {}
+				}
+			});
+			t.start();
+			return super.disparar();
+		}
+		return null;
 	}
 	
 	public Shape getLineaTiro(){
@@ -69,10 +89,6 @@ public abstract class TanqueEnemigo extends Tanque {
 		default:
 			return (new Point2D(-1,0).multiply(vel_mov));
 		}
-	}
-	
-	public void afectar(){
-		
 	}
 	
 	public void removeFromGroup(Group g){
