@@ -198,6 +198,15 @@ public class Mapa {
 						}
 					}
 					
+					for(TanqueEnemigo ene1: enemigos){
+						for(TanqueEnemigo ene2: enemigos){
+							if(ene1 != ene2 && colisiona(ene1,ene2)){
+								ene1.colisiona();
+								ene2.colisiona();
+							}
+						}
+					}
+					
 					for(final Bullet b: bullets){
 						Platform.runLater(new Runnable() {
 							@Override
