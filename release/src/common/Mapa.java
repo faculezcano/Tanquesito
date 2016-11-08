@@ -63,6 +63,7 @@ public class Mapa {
         enemigos = new ConcurrentLinkedQueue<TanqueEnemigo>();
         bullets = new ConcurrentLinkedQueue<Bullet>();
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
+        powerUps= new ConcurrentLinkedQueue<PowerUp>();
         
         startColisiones();
     }
@@ -162,6 +163,13 @@ public class Mapa {
 						}
 					
 					}	
+					
+					for(PowerUp pu: powerUps){
+						if(colisiona(pu.getForma(),jugador.getForma())){
+							pu.colisionaTanque(jugador);
+							eliminarPowerUp(pu);
+						}
+					}
 					
 					for(Obstaculo o : obstaculos){
 						if(colisiona(o.getForma(),jugador.getForma()))
@@ -376,6 +384,13 @@ public class Mapa {
     	
     	
     }
+    
+    public void eliminarPowerUp(PowerUp p){
+    	if(!powerUps.isEmpty()){
+    		Platform.runLater(new SyncRemover(p.getForma(),balasObstaculos));
+    		powerUps.remove(p);
+    	}
+    }
 
     /**
      * @return
@@ -405,6 +420,8 @@ public class Mapa {
     public ConcurrentLinkedQueue<Bullet> getBullets(){
     	return bullets;
     }
+    
+    
     
 
 }
