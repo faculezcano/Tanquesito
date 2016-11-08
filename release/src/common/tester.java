@@ -70,7 +70,7 @@ public class tester extends Application {
 		s.setOnMouseMoved(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent e) {
-				j.apuntar(new Point2D(e.getX(),e.getY()));
+				j.apuntar(e.getX(),e.getY());
 				Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
 				xDiscrepance = mousePos.getX()-e.getX();
 				yDiscrepance = mousePos.getY()-e.getY();

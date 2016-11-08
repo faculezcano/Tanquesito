@@ -19,7 +19,7 @@ public abstract class TanqueEnemigo extends Tanque {
 	protected int distanciaTiro = 240;
 	protected int punteria = 7; // 0 - 10
 	protected boolean tiroLimpio = false;
-	protected boolean puedeDisparar = true;
+	protected boolean puedeDisparar = false;
 	
 	//Linea para saber si tiene un tiro limpio
 	protected Line tiro = new Line(0,0,0,0);
@@ -29,36 +29,53 @@ public abstract class TanqueEnemigo extends Tanque {
 		this.map = map;
 		tiro.setStrokeWidth(Bullet.SIZE.getY());
 		tiro.setVisible(false);
+		
+		delayDisparo();		
+		
 	}
 	
-	@Override
-	public void apuntar(Point2D pos){
-		super.apuntar(pos);
-		tiro.setEndX(pos.getX());
-		tiro.setEndY(pos.getY());
-	}
-	
-	@Override
-	public void setPosicion(Point2D p){
-		super.setPosicion(p);
-		tiro.setStartX(p.getX());
-		tiro.setStartY(p.getY());
-	}
-	
-	@Override
-	public Bullet disparar(){
-		if(puedeDisparar){
-			puedeDisparar=false;
-			Thread t = new Thread(new Runnable(){
-				@Override
-				public void run() {
+	protected void delayDisparo(){
+		Thread delayDisparo = new Thread(new Runnable(){
+			@Override
+			public void run() {
 					try {
 						Thread.sleep(1000);
 						puedeDisparar=true;
 					} catch (InterruptedException e) {}
-				}
-			});
-			t.start();
+			}
+		});
+		delayDisparo.setName("Delay de disparo enemigo");
+		delayDisparo.setDaemon(true);
+		delayDisparo.start();
+	}
+	
+	@Override
+	public void apuntar(double x, double y){
+		super.apuntar(x,y);
+		tiro.setEndX(x);
+		tiro.setEndY(y);
+	}
+	
+	@Override
+	public void mover(){
+		super.mover();
+		tiro.setStartX(getX());
+		tiro.setStartY(getY());
+	}
+	
+	
+	/*@Override
+	public void setPosicion(Point2D p){
+		super.setPosicion(p);
+		tiro.setStartX(p.getX());
+		tiro.setStartY(p.getY());
+	}*/
+	
+	@Override
+	public Bullet disparar(){
+		if(puedeDisparar){
+			//puedeDisparar=false;
+			//delayDisparo();	
 			return super.disparar();
 		}
 		return null;
@@ -70,7 +87,7 @@ public abstract class TanqueEnemigo extends Tanque {
 	
 	public void setTiroLimpio(boolean tiro){
 		tiroLimpio = tiro;
-		this.tiro.setStroke(Color.RED);
+		//this.tiro.setStroke(Color.RED);
 	}
 	
 	/**

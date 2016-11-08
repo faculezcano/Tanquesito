@@ -54,6 +54,41 @@ public class TanqueBasico extends TanqueEnemigo {
     }
     
     @Override
+    public void mover(){
+    	giroLentoCanon();
+		
+		if(origen == null){
+			origen = new Point2D(getX(),getY());
+		}
+		
+		double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
+		if( distanciaJug <= distanciaTiro){
+			apuntar(map.getJugador().getX(),map.getJugador().getY());
+			if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
+				if(bullets.isEmpty()){
+					Bullet b = disparar();
+					if(b!=null){
+						map.addBullet(b);
+						//if(distanciaJug >= distanciaTiro*.75)
+							setVelocidad(getVelocidad().multiply(-1));
+					}
+				}
+				this.tiro.setStroke(Color.GREEN);
+			}
+		}
+		else{
+			apuntar(getX()+getVelocidad().getX(),getY()+getVelocidad().getY());
+			this.tiro.setStroke(Color.BLACK);
+		}
+		
+		//pisadas(p);
+
+		super.mover();
+		
+		tiroLimpio = true;
+    }
+    
+    /*@Override
 	public void setPosicion(Point2D p) {
 		
 		giroLentoCanon();
@@ -70,7 +105,7 @@ public class TanqueBasico extends TanqueEnemigo {
 					Bullet b = disparar();
 					if(b!=null){
 						map.addBullet(b);
-						if(distanciaJug >= distanciaTiro*.75)
+						//if(distanciaJug >= distanciaTiro*.75)
 							setVelocidad(getVelocidad().multiply(-1));
 					}
 				}
@@ -88,7 +123,7 @@ public class TanqueBasico extends TanqueEnemigo {
 		
 		tiroLimpio = true;
 		
-	}
+	}*/
     
     /*@Override
     public void setVelocidad(Point2D vel){

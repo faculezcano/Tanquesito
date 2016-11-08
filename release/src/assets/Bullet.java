@@ -3,6 +3,7 @@ package assets;
 import java.util.Random;
 
 import common.AnimatedGif;
+import common.Animation;
 import common.SyncAdder;
 import common.SyncRemover;
 import javafx.animation.FadeTransition;
@@ -26,10 +27,12 @@ public class Bullet extends ObjetoDinamico {
 	
 	public final static Point2D SIZE = new Point2D(10,5);
 	
-	protected Shape forma;
+	protected Rectangle forma;
     protected Point2D origen;
 	protected Random r = new Random();
 	protected Tanque t;
+	
+	protected Image[] aniImpacto;
 	//protected MediaPlayer disparoSound;
 	
 	//private LinkedList<Circle> humo;
@@ -47,8 +50,8 @@ public class Bullet extends ObjetoDinamico {
     public Bullet(Tanque t,Point2D pos,Point2D vel) {
     	this.t = t;
     	forma = new Rectangle(0,0,SIZE.getX(),SIZE.getY());
-    	forma.setTranslateX(pos.getX());
-		forma.setTranslateY(pos.getY());
+    	forma.setX(pos.getX());
+		forma.setY(pos.getY());
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
 		resistencia = 1;
 		//tank = (Jugador) t;
@@ -85,19 +88,19 @@ public class Bullet extends ObjetoDinamico {
     }
     
     public double getX(){
-		return forma.getTranslateX();
+		return forma.getX();
 	}
 	
 	public double getY(){
-		return forma.getTranslateY();
+		return forma.getY();
 	}
 
     /**
      * @return
      */
-    public Point2D getPosicion() {
+    /*public Point2D getPosicion() {
     	return new Point2D(getX()-SIZE.getX()/2,getY()-SIZE.getY()/2);
-	}
+	}*/
 
    
     /**
@@ -107,13 +110,11 @@ public class Bullet extends ObjetoDinamico {
 		return forma;
 	}
 
-
-	@Override
-	public void setPosicion(Point2D p) {
-		
-		//Sistema que deja humo durante el avance de la bala
-		if(origen.distance(p) >=SIZE.getY()*0.3){
-			/*Circle nuevoHumo = crearHumo();
+    @Override
+    public void mover(){
+    	super.mover();
+    	/*if(origen.distance(p) >=SIZE.getY()*0.3){
+			Circle nuevoHumo = crearHumo();
 			Group g = (Group)forma.getParent();
 			g.getChildren().add(nuevoHumo);
 			FadeTransition fd = new FadeTransition(Duration.millis(2000));
@@ -130,30 +131,28 @@ public class Bullet extends ObjetoDinamico {
 					g.getChildren().remove(fd.getNode());
 				}
 				
-			});*/
-			
-//			Circle nuevoHumo = crearHumo();
-//			Group g = (Group)forma.getParent();
-//			g.getChildren().add(nuevoHumo);
-//			humo.addLast(nuevoHumo);
-//			
-//			Shape s = humo.getFirst();
-//			if(s.getOpacity() <= 0){
-//				humo.remove(s);
-//				g.getChildren().remove(s);
-//			}
-//			
-//			for(Circle h : humo){
-//				h.setOpacity(h.getOpacity()-0.03);
-//				h.setRadius(h.getRadius()-0.1);
-//			}
+			});
+
+			origen = new Point2D(p.getX(),p.getY());
+		}*/
+		
+		//forma.setTranslateX(p.getX()+SIZE.getX()/2);
+		//forma.setTranslateY(p.getY()+SIZE.getY()/2);
+    	
+    }
+
+	/*@Override
+	public void setPosicion(Point2D p) {
+		
+		//Sistema que deja humo durante el avance de la bala
+		if(origen.distance(p) >=SIZE.getY()*0.3)
 
 			origen = new Point2D(p.getX(),p.getY());
 		}
 		
 		forma.setTranslateX(p.getX()+SIZE.getX()/2);
 		forma.setTranslateY(p.getY()+SIZE.getY()/2);
-	}
+	}*/
 	
 	private Circle crearHumo(){
 		Circle c = new Circle(getX()+SIZE.getX()/2-SIZE.getX()/2*Math.cos(Math.toRadians(forma.getRotate()))+r.nextGaussian(),getY()+SIZE.getY()/2-SIZE.getX()/2*Math.sin(Math.toRadians(forma.getRotate()))+r.nextGaussian(),SIZE.getY()*.8);
@@ -210,32 +209,34 @@ public class Bullet extends ObjetoDinamico {
 //			t.start();
 			}
 			if(resistencia <= 0){
-				Platform.runLater(new Runnable(){
-
-					@Override
-					public void run() {
-						Rectangle explo = new Rectangle(getX()-24-0*Math.cos(Math.toRadians(forma.getRotate())),getY()-24-0*Math.sin(Math.toRadians(forma.getRotate())),48,48);
-						//explo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/explo2.gif"))));
-						explo.setRotate(getForma().getRotate()-90);
-
-						AnimatedGif ag = new AnimatedGif(explo,"img/explo3.gif",1000);
-						ag.setOnFinished(new EventHandler<ActionEvent>(){
-
-							@Override
-							public void handle(ActionEvent event) {
-								AnimatedGif ag = (AnimatedGif)event.getSource();
-								Group g = (Group)ag.getShape().getParent();
-								Platform.runLater(new SyncRemover(ag.getShape(),g));
-							}
-							
-						});
-						Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
-						ag.play();
-						//g.getChildren().add(explo);
-					}});
+				animacionImpacto();
 				t.removeBullet(this);
-				
 			}
+	}
+	
+	public void setAnimacionImpacto(Image[] a){
+		aniImpacto = a;
+	}
+	
+	protected void animacionImpacto(){
+		if(aniImpacto!=null){
+			Rectangle explo = new Rectangle(getX()-24-0*Math.cos(Math.toRadians(forma.getRotate())),getY()-24-0*Math.sin(Math.toRadians(forma.getRotate())),48,48);
+			explo.setRotate(getForma().getRotate()-90);
+	
+			Animation ag = new Animation(explo,aniImpacto,1000);
+			ag.setOnFinished(new EventHandler<ActionEvent>(){
+	
+				@Override
+				public void handle(ActionEvent event) {
+					Animation ag = (Animation)event.getSource();
+					Group g = (Group)ag.getShape().getParent();
+					Platform.runLater(new SyncRemover(ag.getShape(),g));
+				}
+				
+			});
+			Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
+			ag.play();
+		}
 	}
 
 	@Override
@@ -246,5 +247,15 @@ public class Bullet extends ObjetoDinamico {
 	@Override
 	public void removeFromGroup(Group g) {
 		g.getChildren().remove(forma);
+	}
+
+	@Override
+	public void setX(double x) {
+		forma.setX(x);
+	}
+
+	@Override
+	public void setY(double y) {
+		forma.setY(y);
 	}
 }

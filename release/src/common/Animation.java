@@ -18,7 +18,7 @@ public class Animation extends Transition {
 
     private int lastIndex;
 
-    private LinkedList<Image> sequence;
+    private Image[] sequence;
     
     protected Shape s;
     protected Image current;
@@ -32,27 +32,35 @@ public class Animation extends Transition {
     public Animation( Shape s,LinkedList<Image> sequence, double durationMs) {
     	this.s = s;
         init( sequence, durationMs);
-        if(sequence.size()>0){
-        	s.setFill(new ImagePattern(sequence.getFirst()));
-        }
+    }
+    
+    public Animation( Shape s,Image[] sequence, double durationMs) {
+    	this.s = s;
+        init( sequence, durationMs);
     }
 
     protected void init( LinkedList<Image> sequence, double durationMs) {
-        this.sequence = sequence;
-        this.count = sequence.size();
+    	Image[] seqImg = new Image[sequence.size()];
+    	for(int i = 0; i<sequence.size(); i++){
+    		seqImg[i]=sequence.get(i);
+    	}
+    	init(seqImg,durationMs);
+    }
+    
+    protected void init(Image[] sequence, double durationMs){
+    	
+    	this.sequence = sequence;
+        this.count = sequence.length;
 
         setCycleCount(1);
         setCycleDuration(Duration.millis(durationMs));
         setInterpolator(Interpolator.LINEAR);
-
-    }
-    
-    protected void init(Image[] sequence, double durationMs){
-    	LinkedList<Image> lista = new LinkedList<Image>();
-    	for(int i = 0; i<sequence.length; i++){
-    		lista.add(sequence[i]);
-    	}
-    	init(lista,durationMs);
+        
+        if(sequence!=null && s != null && sequence.length > 0){
+        	current = sequence[0];
+        	pintar();
+        }
+        
     }
 
     protected void interpolate(double k) {
@@ -60,12 +68,12 @@ public class Animation extends Transition {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {
             if(s!=null){
-            	current = sequence.get(index);
+            	current = sequence[index];
             	pintar();
             }
             lastIndex = index;
         }
-        if(index == sequence.size()-1 && finishEvent != null)
+        if(index == sequence.length-1 && finishEvent != null)
         	finishEvent.notifyAll();
 
     }

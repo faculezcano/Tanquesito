@@ -59,8 +59,20 @@ public class Jugador extends Tanque {
 		return nivel.getVelocidad();
 	}
 	
-
 	@Override
+	public void mover(){
+		giroLentoCanon();
+		
+		if(origen == null){
+			origen = new Point2D(getX(),getY());
+		}
+		
+		//pisadas(p);
+		
+		super.mover();		
+	}
+
+	/*@Override
 	public void setPosicion(Point2D p) {
 		
 		giroLentoCanon();
@@ -73,7 +85,7 @@ public class Jugador extends Tanque {
 
 		super.setPosicion(p);
 		
-	}
+	}*/
 	
 	public void setPuntos(int p){
 		puntos=p;

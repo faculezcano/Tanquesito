@@ -2,7 +2,7 @@ package assets;
 
 import java.util.LinkedList;
 
-import common.AnimatedGif;
+import common.Animation;
 import common.SyncAdder;
 import common.SyncRemover;
 import javafx.animation.FadeTransition;
@@ -37,6 +37,8 @@ public abstract class Tanque extends ObjetoDinamico {
     protected LinkedList<Shape> pisadas;
     protected Group formas;
     
+    protected Image[] aniDisparo;
+    
     
     protected Tanque(double x, double y){
     	vel_mov = 1;
@@ -63,24 +65,34 @@ public abstract class Tanque extends ObjetoDinamico {
 		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
 		
-		Rectangle explo = new Rectangle(getX()-8+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-8+32*Math.sin(rad),16,16);
-		//explo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/explo.gif"))));
-		explo.setRotate(canon.getRotate()+180);
-		AnimatedGif ag = new AnimatedGif(explo,"img/explo.gif",500);
-		ag.setOnFinished(new EventHandler<ActionEvent>(){
-
-			@Override
-			public void handle(ActionEvent event) {
-				AnimatedGif ag = (AnimatedGif)event.getSource();
-				Group g = (Group)ag.getShape().getParent();
-				Platform.runLater(new SyncRemover(ag.getShape(),g));
-			}
-			
-		});
-		Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
-		ag.play();
+		animacionDisparo();
 		
 		return bala;
+    }
+    
+    protected void animacionDisparo(){
+    	if(aniDisparo!=null){
+    		double rad = Math.toRadians(canon.getRotate()+90);
+    		Rectangle explo = new Rectangle(getX()-8+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-8+32*Math.sin(rad),16,16);
+    		explo.setRotate(canon.getRotate()+180);
+    		Animation ag = new Animation(explo,aniDisparo,500);
+    		ag.setOnFinished(new EventHandler<ActionEvent>(){
+
+    			@Override
+    			public void handle(ActionEvent event) {
+    				Animation ag = (Animation)event.getSource();
+    				Group g = (Group)ag.getShape().getParent();
+    				Platform.runLater(new SyncRemover(ag.getShape(),g));
+    			}
+    			
+    		});
+    		Platform.runLater(new SyncAdder(explo,(Group)getForma().getParent()));
+    		ag.play();
+    	}
+    }
+    
+    public void setAnimacionDisparo(Image[] a){
+    	aniDisparo = a;
     }
     
     public void removeBullet(Bullet b){
@@ -197,17 +209,18 @@ public abstract class Tanque extends ObjetoDinamico {
     public void setAngle(double ang) {
     	if(cuerpo.getRotate()!=ang){
 			cuerpo.setRotate(ang);
-			this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
+			this.setX(Math.round(getX()/(SIZE/2))*(SIZE/2));
+			this.setY(Math.round(getY()/(SIZE/2))*(SIZE/2));
 		}
     }
 
     /**
      * @param pos
      */
-    public void apuntar(Point2D pos) {
+    public void apuntar(double x, double y) {
     	//Correccion de la base ortogonal de la gui y el angulo devuelto por arcTan
-    	double deltax = pos.getX() - getX();
-		double deltay = -pos.getY() + getY();
+    	double deltax = x - getX();
+		double deltay = -y + getY();
 		double angle = Math.atan2(deltay, deltax);
 		angle = (angle < 0 ? -angle : (2*Math.PI - angle));
 		
@@ -220,35 +233,47 @@ public abstract class Tanque extends ObjetoDinamico {
 	}
     
     // TODO: fijarse si implementar este metodo general aca o que siga abstracto
-    @Override
+    /*@Override
 	public void setPosicion(Point2D p) {
     	cuerpo.setX(p.getX()-cuerpo.getWidth()/2);
 		cuerpo.setY(p.getY()-cuerpo.getHeight()/2);
 		canon.setX(p.getX()-canon.getWidth()/2);
 		canon.setY(p.getY()-canon.getHeight()/2);
-    	/*cuerpo.setX(p.getX());
-    	cuerpo.setY(p.getY());
-    	canon.setX(p.getX());
-    	canon.setY(p.getY());*/
-		/*cuerpo.setTranslateX(p.getX()-cuerpo.getWidth()/2);
-		cuerpo.setTranslateY(p.getY()-cuerpo.getHeight()/2);
-		canon.setTranslateX(p.getX()-canon.getWidth()/2);
-		canon.setTranslateY(p.getY()-canon.getHeight()/2);*/
-	}
+	}*/
+    
+    public void setX(double x){
+    	cuerpo.setX(x-cuerpo.getWidth()/2);
+    	canon.setX(x-canon.getWidth()/2);
+    }
+    
+    public void setY(double y){
+    	cuerpo.setY(y-cuerpo.getHeight()/2);
+    	canon.setY(y-canon.getHeight()/2);
+    }
+    
+    public double getX(){
+    	return cuerpo.getX()+cuerpo.getWidth()/2;
+    }
+    
+    public double getY(){
+    	return cuerpo.getY()+cuerpo.getHeight()/2;
+    }
 
-	@Override
+	/*@Override
 	public Point2D getPosicion() {
 		return new Point2D(cuerpo.getX()+cuerpo.getWidth()/2,cuerpo.getY()+cuerpo.getHeight()/2);
 		//return new Point2D(cuerpo.getX(),cuerpo.getY());
 		//return new Point2D(cuerpo.getTranslateX()+cuerpo.getWidth()/2,cuerpo.getTranslateY()+cuerpo.getHeight()/2);
-	}
+	}*/
 
     public int getPuntos() {
         return puntos;
     }
     
     public void colisiona(){
-    	this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
+    	this.setX(Math.round(getX()/(SIZE/2))*(SIZE/2));
+    	this.setY(Math.round(getY()/(SIZE/2))*(SIZE/2));
+    	//this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
     	//if(velocidad.magnitude() == 0){
     	/*Platform.runLater(new Runnable(){
 			@Override

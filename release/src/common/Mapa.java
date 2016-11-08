@@ -1,5 +1,6 @@
 package common;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,11 +14,13 @@ import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -51,7 +54,10 @@ public class Mapa {
     protected Group arboles;
     protected Group powerups;
     
+    GifDecoder gifDecoder = new GifDecoder();
     protected LinkedList<Image> expT;
+    protected Image[] aniDisparo;
+    protected Image[] aniImpactoBala;
     
 	/**
      * @param cantX 
@@ -86,12 +92,42 @@ public class Mapa {
 			e.printStackTrace();
 		}
         
+        aniDisparo = cargarGif("img/explo.gif");
+        aniImpactoBala = cargarGif("img/explo3.gif");
+        
+        Thread gc = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				while(true){
+					try {
+						Thread.sleep(3000);
+						System.gc();
+					} catch (InterruptedException e) {}
+				}
+			}});
+        gc.setDaemon(true);
+        gc.start();
+        
+    }
+    
+    public Image[] cargarGif(String filename){
+    	gifDecoder.read( getClass().getClassLoader().getResourceAsStream(filename));
+
+        Image[] sequence = new Image[ gifDecoder.getFrameCount()];
+        for( int i=0; i < gifDecoder.getFrameCount(); i++) {
+
+            WritableImage wimg = null;
+            BufferedImage bimg = gifDecoder.getFrame(i);
+            sequence[i] = SwingFXUtils.toFXImage( bimg, wimg);
+
+        }
+        return sequence;
     }
     
     public TanqueEnemigo crearEnemigo(){
     	TanqueEnemigo enemigo=new TanqueBasico(this,400,150);
-    	this.addEnemigo(enemigo);
-    	
+    	addEnemigo(enemigo);
     	//g.getChildren().add(enemigo.getForma());
     	
     	return enemigo;
@@ -105,14 +141,15 @@ public class Mapa {
     }*/
     
     protected boolean colisionaShape(Shape s1, Shape s2){
-    	Shape interseccion = Shape.intersect(s1, s2);
-    	return !interseccion.getBoundsInLocal().isEmpty();
+    	//Shape interseccion = Shape.intersect(s1, s2);
+    	//return !interseccion.getBoundsInLocal().isEmpty();
+    	return false;
     	//return s1.getBoundsInParent().intersects(s2.getBoundsInParent());
     }
     
     public double distancia(ObjetoEstatico oe, ObjetoDinamico od){
     	Rectangle r = (Rectangle)oe.getForma();
-    	return od.getPosicion().distance(new Point2D(r.getX(),r.getY()));
+    	return ObjetoDinamico.distancia(r.getX(),r.getY(),od);
     }
     
     public boolean colisiona(ObjetoEstatico oe, ObjetoDinamico od){
@@ -121,17 +158,34 @@ public class Mapa {
     		noentran++;
     		return false;
     	}
-    	entran++;
-    	return colisionaShape(oe.getForma(),od.getForma());
+    	
+    	Rectangle r1 = (Rectangle)oe.getForma();
+    	Rectangle r2 = (Rectangle)od.getForma();
+    	
+    	return colisiona(r1,r2);
+    	
+    	//entran++;
+    	//return colisionaShape(oe.getForma(),od.getForma());
+    }
+    
+    public boolean colisiona(Rectangle r1, Rectangle r2){
+    	return ((int)r1.getX() < (int)r2.getX() + (int)r2.getWidth() &&
+ 			   (int)r1.getX() + (int)r1.getWidth() > (int)r2.getX() &&
+ 			   (int)r1.getY() < (int)r2.getY() + (int)r2.getHeight() &&
+ 			   (int)r1.getHeight() + (int)r1.getY() > (int)r2.getY());
     }
     
     public boolean colisiona(ObjetoDinamico o1, ObjetoDinamico o2){
-    	if(o1.getPosicion().distance(o2.getPosicion()) > 96){
+    	if(ObjetoDinamico.distancia(o1, o2) > 96){
     		noentran++;
     		return false;
     	}
-    	entran++;
-    	return colisionaShape(o1.getForma(),o2.getForma());
+    	Rectangle r1 = (Rectangle)o1.getForma();
+    	Rectangle r2 = (Rectangle)o2.getForma();
+    	
+    	return colisiona(r1,r2);
+    	//entran++;
+    	//return colisionaShape(o1.getForma(),o2.getForma());
     }
     
     int entran = 0;
@@ -178,9 +232,9 @@ public class Mapa {
 						for(TanqueEnemigo ene: enemigos){
 							
 							//if(colisiona(o.getForma(),ene.getLineaTiro())){
-							if(distancia(o,ene) < 256 && colisionaShape(o.getForma(),ene.getLineaTiro())){
+							/*if(distancia(o,ene) < 256 && colisionaShape(o.getForma(),ene.getLineaTiro())){
 								ene.setTiroLimpio(false);
-							}
+							}*/
 							
 							//if(colisiona(o.getForma(),ene.getForma())){
 							if(colisiona(o,ene)){
@@ -211,8 +265,9 @@ public class Mapa {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								Point2D vel = b.getVelocidad();
-								b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
+								//Point2D vel = b.getVelocidad();
+								//b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
+								b.mover();
 							}
 						});
 					}
@@ -220,8 +275,9 @@ public class Mapa {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							Point2D vel = jugador.getVelocidad();
-							jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
+							//Point2D vel = jugador.getVelocidad();
+							//jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
+							jugador.mover();
 						}
 					});
 					
@@ -229,33 +285,13 @@ public class Mapa {
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
-								Point2D velEn=en.getVelocidad();
-								en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
+								//Point2D velEn=en.getVelocidad();
+								//en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
+								en.mover();
 							}
 						});
 					}
 					
-					/*Platform.runLater(new Runnable() {
-
-						@Override
-						public void run() {
-							
-							for(Bullet b: bullets){
-								Point2D vel = b.getVelocidad();
-								b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
-							}
-							
-							Point2D vel = jugador.getVelocidad();
-							jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
-							
-							for(TanqueEnemigo en: enemigos){
-								Point2D velEn=en.getVelocidad();
-								en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
-							}
-							
-						}
-						
-					});*/
 					/*if(noentran+entran > 0){
 						double est = ((double)entran)/(entran+noentran);
 						System.out.println(est*100+"% Total: " + (entran+noentran));
@@ -273,6 +309,7 @@ public class Mapa {
 				}
     		
 			}});
+    	colisiones.setName("Colisiones");
     	colisiones.setDaemon(true);
     	colisiones.start();
     }
@@ -341,6 +378,7 @@ public class Mapa {
     public void addEnemigo(TanqueEnemigo o) {
         enemigos.add(o);
         o.addToGroup(tanques);
+        o.setAnimacionDisparo(aniDisparo);
     }
     
     public void eliminarPowerUp(PowerUp p){
@@ -360,6 +398,7 @@ public class Mapa {
     
     public void addBullet(final Bullet b){
     	bullets.add(b);
+    	b.setAnimacionImpacto(aniImpactoBala);
     	Platform.runLater(new Runnable(){
 
 			@Override
@@ -487,6 +526,7 @@ public class Mapa {
      */
     public void setJugador(Jugador j) {
        	jugador = j;
+       	j.setAnimacionDisparo(aniDisparo);
     }
     
     public ConcurrentLinkedQueue<Obstaculo> getObstaculos(){
