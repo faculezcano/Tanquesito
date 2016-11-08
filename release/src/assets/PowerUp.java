@@ -12,8 +12,9 @@ public abstract class PowerUp extends ObjetoEstatico {
 	protected Mapa map;
 	protected Shape forma;
 	
-	public PowerUp(){
-		forma = new Rectangle(0,0,32,32);
+	protected PowerUp(double x, double y, Mapa m){
+		map=m;
+		forma = new Rectangle(x,y,32,32);
 	}
 	
 	public Shape getForma(){
