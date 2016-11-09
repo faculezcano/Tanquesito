@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
@@ -100,19 +102,19 @@ public class Mapa {
         aniDisparo = cargarGif("img/explo.gif");
         aniImpactoBala = cargarGif("img/explo3.gif");
         
-        Thread gc = new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				while(true){
-					try {
-						Thread.sleep(3000);
-						System.gc();
-					} catch (InterruptedException e) {}
-				}
-			}});
-        gc.setDaemon(true);
-        gc.start();
+//        Thread gc = new Thread(new Runnable(){
+//
+//			@Override
+//			public void run() {
+//				while(true){
+//					try {
+//						Thread.sleep(3000);
+//						System.gc();
+//					} catch (InterruptedException e) {}
+//				}
+//			}});
+//        gc.setDaemon(true);
+//        gc.start();
         
     }
     
@@ -379,6 +381,18 @@ public class Mapa {
     	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
 		Animation ani = new Animation (r,expT,500);
 		ani.play();
+		
+		ani.setOnFinished(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				Animation ani = (Animation)event.getSource();
+				Group g = (Group)ani.getShape().getParent();
+				Platform.runLater(new SyncRemover(ani.getShape(),g));
+			}
+			
+		});
+		
 		Platform.runLater(new SyncAdder(r,tanques));
 		if(jugador.getVida()>0){
 			jugador.setX(jugador.getXinicial());
@@ -402,6 +416,20 @@ public class Mapa {
 						ani.play();
 						Platform.runLater(new SyncAdder(r,tanques));
 						eliminarEnemigo(tenemigo);
+						
+						ani.setOnFinished(new EventHandler<ActionEvent>(){
+
+			    			@Override
+			    			public void handle(ActionEvent event) {
+			    				Animation ani = (Animation)event.getSource();
+			    				Group g = (Group)ani.getShape().getParent();
+			    				Platform.runLater(new SyncRemover(ani.getShape(),g));
+			    			}
+			    			
+			    		});
+						
+						
+						
 					}
 					if(b.getResistencia()<=0){
 						Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
