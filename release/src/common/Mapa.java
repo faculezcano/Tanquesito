@@ -32,6 +32,7 @@ import assets.obstaculos.Block;
 import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
 import assets.powerUps.PowUPGranade;
+import assets.powerUps.PowUPTime;
 import assets.tanques.*;
 
 /**
@@ -58,6 +59,8 @@ public class Mapa {
     protected LinkedList<Image> expT;
     protected Image[] aniDisparo;
     protected Image[] aniImpactoBala;
+    
+    protected boolean enemigosCongelados=false;
     
 	/**
      * @param cantX 
@@ -281,6 +284,19 @@ public class Mapa {
 						}
 					});
 					
+					if(!enemigosCongelados){
+						for(final TanqueEnemigo en: enemigos){
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									//Point2D velEn=en.getVelocidad();
+									//en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
+									en.mover();
+								}
+							});
+						}
+					}
+					
 					for(final TanqueEnemigo en: enemigos){
 						Platform.runLater(new Runnable() {
 							@Override
@@ -467,7 +483,7 @@ public class Mapa {
 						obstaculos.add(obstaculo);
 						break;
 					case '5':
-						PowerUp granada= new PowUPGranade(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						PowerUp granada= new PowUPTime(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
 						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
 						break;
@@ -536,6 +552,25 @@ public class Mapa {
     public ConcurrentLinkedQueue<Bullet> getBullets(){
     	return bullets;
     }
+    
+    public void CongelarEnemigos(){
+    	enemigosCongelados=true;
+    	Thread t=new Thread(new Runnable(){
+    		public void run(){
+    			try{
+    				Thread.sleep(20000);
+    			}catch(InterruptedException e){}  
+    			
+    			enemigosCongelados=false;
+    		}
+    	});
+    	t.setDaemon(true);
+    	t.start();
+    }
+    
+    
+    
+    
     
 
 }
