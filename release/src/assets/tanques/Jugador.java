@@ -91,4 +91,12 @@ public class Jugador extends Tanque {
 			//TODO: PERDIIII!
 		}
 	}
+	
+	public int getVida(){
+		return vida;
+	}
+	
+	public void setVida(int v){
+		vida=v;
+	}
 }
