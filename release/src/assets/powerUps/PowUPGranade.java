@@ -20,7 +20,7 @@ public class PowUPGranade extends PowerUp {
 	
 	@Override
 	public void colisionaTanque(Tanque t) {
-		if(t==map.getJugador()){
+		if(t == map.getJugador()){
 			for(TanqueEnemigo te: map.getEnemigos()){
 				map.eliminarEnemigo(te);
 			}

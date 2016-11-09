@@ -7,11 +7,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -27,15 +33,10 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+
 import assets.*;
-import assets.obstaculos.Agua;
-import assets.obstaculos.Arbol;
-import assets.obstaculos.Block;
-import assets.obstaculos.Ladrillo;
-import assets.obstaculos.Metal;
-import assets.powerUps.PowUPGranade;
-import assets.powerUps.PowUPTime;
-import assets.powerUps.PowUpHelm;
+import assets.obstaculos.*;
+import assets.powerUps.*;
 import assets.tanques.*;
 
 /**
@@ -98,6 +99,7 @@ public class Mapa {
         catch (FileNotFoundException | NullPointerException e) {
 			e.printStackTrace();
 		}
+       
         
         aniDisparo = cargarGif("img/explo.gif");
         aniImpactoBala = cargarGif("img/explo3.gif");
@@ -218,9 +220,11 @@ public class Mapa {
 					
 					for(Bullet b:bullets){
 						
+						colisionesTanquesBullet(b);
+						
 						colisionesObstBullet(b);
 						
-						colisionesTanquesBullet(b);
+						
 //						if(!jugadorInvulnerable){
 //							colisionesJugadorBullet(b);
 //						}
@@ -411,25 +415,7 @@ public class Mapa {
 					tenemigo.afectar();
 					b.colisiona();
 					if(tenemigo.getResistencia()<=0){
-						Rectangle r = new Rectangle(tenemigo.getX()-64,tenemigo.getY()-64,128,128);
-						Animation ani = new Animation (r,expT,500);
-						ani.play();
-						Platform.runLater(new SyncAdder(r,tanques));
-						eliminarEnemigo(tenemigo);
-						
-						ani.setOnFinished(new EventHandler<ActionEvent>(){
-
-			    			@Override
-			    			public void handle(ActionEvent event) {
-			    				Animation ani = (Animation)event.getSource();
-			    				Group g = (Group)ani.getShape().getParent();
-			    				Platform.runLater(new SyncRemover(ani.getShape(),g));
-			    			}
-			    			
-			    		});
-						
-						
-						
+						eliminarEnemigo(tenemigo);		
 					}
 					if(b.getResistencia()<=0){
 						Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
@@ -479,6 +465,26 @@ public class Mapa {
     	Platform.runLater(new SyncRemover(o,tanques));
     	enemigos.remove(o);
     	System.out.println(jugador.getPuntos());
+    	
+    	
+    	Rectangle r = new Rectangle(o.getX()-64,o.getY()-64,128,128);
+		Animation ani = new Animation (r,expT,500);
+		ani.play();
+		
+		Platform.runLater(new SyncAdder(r,tanques));
+		
+		
+		ani.setOnFinished(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				Animation ani = (Animation)event.getSource();
+				Group g = (Group)ani.getShape().getParent();
+				Platform.runLater(new SyncRemover(ani.getShape(),g));
+			}
+			
+		});
+		
     }
     
     public void addBullet(final Bullet b){
