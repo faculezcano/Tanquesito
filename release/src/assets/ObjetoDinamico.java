@@ -10,6 +10,7 @@ import javafx.scene.shape.Shape;
 public abstract class ObjetoDinamico {
 	protected int resistencia;
     protected Point2D velocidad = new Point2D(0,0);
+    protected double x,y;
     
     public static double distancia(ObjetoDinamico o1, ObjetoDinamico o2){
     	return Math.sqrt(Math.pow(o1.getX()-o2.getX(), 2) + Math.pow(o1.getY()-o2.getY(), 2));
@@ -36,8 +37,8 @@ public abstract class ObjetoDinamico {
     public abstract void setY(double y);
     
     public void mover(){
-    	setX(getX()+velocidad.getX());
-    	setY(getY()+velocidad.getY());
+    	setX(x+velocidad.getX());
+    	setY(y+velocidad.getY());
     }
 
     public Point2D getVelocidad() {

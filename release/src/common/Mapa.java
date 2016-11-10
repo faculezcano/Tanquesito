@@ -244,6 +244,67 @@ public class Mapa {
 	int noentran = 0;
     
     public void startColisiones(){
+    	
+    	final Runnable colisiones = (new Runnable(){
+
+			@Override
+			public void run() {
+				
+				for(Bullet b:bullets){
+					
+					colisionesTanquesBullet(b);
+					
+					colisionesObstBullet(b);
+				}
+				
+				for(PowerUp pu: powerUps){
+					if(colisiona(pu,jugador)){
+						pu.colisionaTanque(jugador);
+						eliminarPowerUp(pu);
+					}
+				}
+				
+				for(Obstaculo o : obstaculos){
+					
+					if(colisiona(o,jugador))
+						o.colisionaTanque(jugador);
+					
+					for(TanqueEnemigo ene: enemigos){
+						
+						
+						if(colisiona(o,ene)){
+							ene.setTiroLimpio(false);
+							o.colisionaTanque(ene);
+							ene.setTiroLimpio(false);
+						}
+
+						if(colisiona(jugador,ene)){
+							ene.colisiona();
+							jugador.colisiona();
+						}
+					}
+				}
+				
+				for(TanqueEnemigo ene1: enemigos){
+					for(TanqueEnemigo ene2: enemigos){
+						if(ene1 != ene2 && colisiona(ene1,ene2)){
+							ene1.colisiona();
+							ene2.colisiona();
+						}
+					}
+				}
+				
+				/*try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+			
+			}
+    		
+    	});
+    	
     	AnimationTimer anim = (new AnimationTimer(){
     		
     		final int fps = 30;
@@ -259,67 +320,21 @@ public class Mapa {
 
 			@Override
 			public void handle(long now) {
+				
+				Thread t = new Thread(colisiones);
+				t.setDaemon(true);
+				t.start();
 					
 					esLibre = true;
-					x=(libreX-1)*Tanque.SIZE/2;
-					y=(libreY-1)*Tanque.SIZE/2;
-					
-					for(Bullet b:bullets){
-						
-						colisionesTanquesBullet(b);
-						
-						colisionesObstBullet(b);
-					}
-					
-					for(PowerUp pu: powerUps){
-						if(colisiona(pu,jugador)){
-							pu.colisionaTanque(jugador);
-							eliminarPowerUp(pu);
-						}
-					}
+					x=libreX*Tanque.SIZE/2;
+					y=libreY*Tanque.SIZE/2;
 					
 					for(Obstaculo o : obstaculos){
 						
 						if(esLibre && colisiona(x,y,Tanque.SIZE,Tanque.SIZE,o))
 							esLibre=false;
-						
-						if(colisiona(o,jugador))
-							o.colisionaTanque(jugador);
-						
-						for(TanqueEnemigo ene: enemigos){
-							
-							
-							if(colisiona(o,ene)){
-								ene.setTiroLimpio(false);
-								o.colisionaTanque(ene);
-								ene.setTiroLimpio(false);
-							}
+					}
 
-							if(colisiona(jugador,ene)){
-								ene.colisiona();
-								jugador.colisiona();
-							}
-						}
-					}
-					
-					for(TanqueEnemigo ene1: enemigos){
-						if(esLibre && ObjetoDinamico.distancia(x, y,ene1) < 240)
-							esLibre=false;
-						for(TanqueEnemigo ene2: enemigos){
-							if(ene1 != ene2 && colisiona(ene1,ene2)){
-								ene1.colisiona();
-								ene2.colisiona();
-							}
-						}
-					}
-					
-					if(esLibre && jugador != null && ObjetoDinamico.distancia(x, y,jugador) < 240)
-						esLibre=false;
-					
-					if(esLibre){
-						addEnemigoAleatorio(x+Tanque.SIZE/2,y+Tanque.SIZE/2);
-					}
-					
 					for(final Bullet b: bullets){
 						b.mover();
 					}
@@ -328,13 +343,18 @@ public class Mapa {
 		
 					if(!enemigosCongelados){
 						for(final TanqueEnemigo en: enemigos){
+							if(esLibre && ObjetoDinamico.distancia(x, y,en) < 240)
+								esLibre=false;
 							en.mover();
 						}
 					}
-
-
-					entran = 0;
-					noentran=0;
+					
+					if(esLibre && jugador != null && ObjetoDinamico.distancia(x, y,jugador) < 240)
+						esLibre=false;
+					
+					if(esLibre){
+						addEnemigoAleatorio(x,y);
+					}
 					
 					libreX = rand.nextInt(43);
 					libreY = rand.nextInt(23);
@@ -485,7 +505,7 @@ public class Mapa {
     	System.out.println(jugador.getPuntos());
     	
     	
-    	Rectangle r = new Rectangle(o.getX()-64,o.getY()-64,128,128);
+    	Rectangle r = new Rectangle(o.getX()-40,o.getY()-40,128,128);
 		Animation ani = new Animation (r,expT,500);
 		ani.play();
 		

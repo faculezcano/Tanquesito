@@ -48,10 +48,12 @@ public class Bullet extends ObjetoDinamico {
      *
      */
     public Bullet(Tanque t,Point2D pos,Point2D vel) {
+    	this.x = pos.getX();
+    	this.y = pos.getY();
     	this.t = t;
     	forma = new Rectangle(0,0,SIZE.getX(),SIZE.getY());
-    	forma.setX(pos.getX());
-		forma.setY(pos.getY());
+    	forma.setX(x);
+		forma.setY(y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
 		resistencia = 1;
 		//tank = (Jugador) t;
@@ -88,11 +90,11 @@ public class Bullet extends ObjetoDinamico {
     }
     
     public double getX(){
-		return forma.getX();
+		return x;
 	}
 	
 	public double getY(){
-		return forma.getY();
+		return y;
 	}
 
     /**
@@ -113,6 +115,8 @@ public class Bullet extends ObjetoDinamico {
     @Override
     public void mover(){
     	super.mover();
+    	forma.setX(x);
+    	forma.setY(y);
     	/*if(origen.distance(p) >=SIZE.getY()*0.3){
 			Circle nuevoHumo = crearHumo();
 			Group g = (Group)forma.getParent();
@@ -251,11 +255,11 @@ public class Bullet extends ObjetoDinamico {
 
 	@Override
 	public void setX(double x) {
-		forma.setX(x);
+		this.x = x;
 	}
 
 	@Override
 	public void setY(double y) {
-		forma.setY(y);
+		this.y = y;
 	}
 }

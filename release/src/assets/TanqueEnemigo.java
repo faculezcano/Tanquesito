@@ -53,15 +53,15 @@ public abstract class TanqueEnemigo extends Tanque {
 	@Override
 	public void apuntar(double x, double y){
 		super.apuntar(x,y);
-		tiro.setEndX(x);
-		tiro.setEndY(y);
+		/*tiro.setEndX(x);
+		tiro.setEndY(y);*/
 	}
 	
 	@Override
 	public void mover(){
 		super.mover();
-		tiro.setStartX(getX());
-		tiro.setStartY(getY());
+		/*tiro.setStartX(getX());
+		tiro.setStartY(getY());*/
 	}
 	
 	

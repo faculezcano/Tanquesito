@@ -33,6 +33,7 @@ public abstract class Tanque extends ObjetoDinamico {
     protected Rectangle cuerpo;
     protected Rectangle canon;
     protected double canonAng = 0;
+    protected double angle = 0; 
     protected ImagePattern huella;
     protected LinkedList<Shape> pisadas;
     
@@ -40,16 +41,29 @@ public abstract class Tanque extends ObjetoDinamico {
     
     
     protected Tanque(double x, double y){
+    	this.x = x;
+    	this.y = y;
     	vel_mov = 1;
     	vel_disparo = 1;
     	puntos = 100;
     	bullets = new LinkedList<Bullet>();
     	pisadas = new LinkedList<Shape>();
-    	cuerpo = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
-    	canon = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
+    	cuerpo = new Rectangle(this.x,this.y,SIZE,SIZE);
+    	canon = new Rectangle(this.x,this.y,SIZE,SIZE);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
+    	
     	tempX = x;
     	tempY = y;
+    }
+    
+    @Override
+    public void mover(){
+    	super.mover();
+    	setAngle(angle);
+    	cuerpo.setX(x);
+    	cuerpo.setY(y);
+    	canon.setX(x);
+    	canon.setY(y);
     }
     
     /**
@@ -58,7 +72,7 @@ public abstract class Tanque extends ObjetoDinamico {
     public Bullet disparar() {
 		double rad = Math.toRadians(canon.getRotate()+90);
 		Point2D velBala = new Point2D(vel_disparo*Math.cos(rad), vel_disparo*Math.sin(rad));
-		Point2D pos = new Point2D(getX()+Bullet.SIZE.getX()/2+32*Math.cos(rad)-10,getY()+Bullet.SIZE.getY()/2+32*Math.sin(rad)-5);
+		Point2D pos = new Point2D(getX()+SIZE/2+Bullet.SIZE.getX()/2+32*Math.cos(rad)-10,getY()+SIZE/2+Bullet.SIZE.getY()/2+32*Math.sin(rad)-5);
 		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
 		
@@ -70,7 +84,7 @@ public abstract class Tanque extends ObjetoDinamico {
     protected void animacionDisparo(){
     	if(aniDisparo!=null){
     		double rad = Math.toRadians(canon.getRotate()+90);
-    		Rectangle explo = new Rectangle(getX()-8+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()-8+32*Math.sin(rad),16,16);
+    		Rectangle explo = new Rectangle(getX()+SIZE/2-8+(32+Bullet.SIZE.getX()/2)*Math.cos(rad),getY()+SIZE/2-8+32*Math.sin(rad),16,16);
     		explo.setRotate(canon.getRotate()+180);
     		Animation ag = new Animation(explo,aniDisparo,500);
     		ag.setOnFinished(new EventHandler<ActionEvent>(){
@@ -191,13 +205,13 @@ public abstract class Tanque extends ObjetoDinamico {
     	super.setVelocidad(vel);
     	if(vel.magnitude()!=0){
     		if(vel.getX()>0)
-    			setAngle(270);
+    			angle = 270;
     		else if (vel.getX()<0)
-    			setAngle(90);
+    			angle = 90;
     		if(vel.getY() > 0)
-    			setAngle(0);
+    			angle = 0;
     		else if(vel.getY()<0)
-    			setAngle(180);
+    			angle = 180;
     	}
     }
 
@@ -240,21 +254,26 @@ public abstract class Tanque extends ObjetoDinamico {
 	}*/
     
     public void setX(double x){
-    	cuerpo.setX(x-cuerpo.getWidth()/2);
-    	canon.setX(x-canon.getWidth()/2);
+    	this.x = x;
+    	/*cuerpo.setX(x-cuerpo.getWidth()/2);
+    	canon.setX(x-canon.getWidth()/2);*/
     }
     
     public void setY(double y){
+    	/*
     	cuerpo.setY(y-cuerpo.getHeight()/2);
-    	canon.setY(y-canon.getHeight()/2);
+    	canon.setY(y-canon.getHeight()/2);*/
+    	this.y = y;
     }
     
     public double getX(){
-    	return cuerpo.getX()+cuerpo.getWidth()/2;
+    	/*return cuerpo.getX()+cuerpo.getWidth()/2;*/
+    	return x;
     }
     
     public double getY(){
-    	return cuerpo.getY()+cuerpo.getHeight()/2;
+    	//return cuerpo.getY()+cuerpo.getHeight()/2;
+    	return y;
     }
 
 	/*@Override
