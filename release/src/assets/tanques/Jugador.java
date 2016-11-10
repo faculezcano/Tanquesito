@@ -16,22 +16,23 @@ public class Jugador extends Tanque {
 	
 	protected Nivel nivel;
     protected int disparos_simul;
-    protected int vida;
+    protected int vidas;
     protected double Xinicial;
     protected double Yinicial;
-    protected int ResistenciaInicial;
+    
 
     public Jugador(double x, double y){
     	super(x,y);
-    	resistencia= ResistenciaInicial = 1;
+    	
         puntos = 0;
         canonAng = 0;
 
         nivel = new NivelUno();
+        resistencia = nivel.getGolpesResiste();
         vel_disparo = nivel.getVelocidadDisparo();
         vel_mov = nivel.getVelocidad();
     	disparos_simul = 1;
-    	vida = 3;
+    	vidas = 3;
     	Xinicial=x;
     	Yinicial=y;
     	
@@ -102,20 +103,17 @@ public class Jugador extends Tanque {
 	@Override
 	public void afectar() {
 		resistencia--;
-		if(resistencia <= 0){
-			vida--;
-		}
-		if(vida <= 0){
-			//TODO: PERDIIII!
-		}
+		if(resistencia <= 0)
+			resistencia = 0;
+
 	}
 	
 	public int getVida(){
-		return vida;
+		return vidas;
 	}
 	
 	public void setVida(int v){
-		vida=v;
+		vidas = v;
 	}
 	
 	public double getXinicial(){
@@ -125,7 +123,7 @@ public class Jugador extends Tanque {
 		return Yinicial;
 	}
 	public int getResistenciaInicial(){
-		return ResistenciaInicial;
+		return resistencia;
 	}
 	
 	
