@@ -401,15 +401,17 @@ public class Mapa {
 			
 		});
 		
-		Platform.runLater(new SyncAdder(r,tanques));
-		if(jugador.getVida()>0){
-			jugador.setX(jugador.getXinicial());
-			jugador.setY(jugador.getYinicial());
-			jugador.setResistencia(jugador.getResistenciaInicial());
-		}else{
-			jugador=null;
-		}
+//		Platform.runLater(new SyncAdder(r,tanques));
+//		if(jugador.getVida()>0){
+//			jugador.setX(jugador.getXinicial());
+//			jugador.setY(jugador.getYinicial());
+//			//jugador.setResistencia(jugador.getResistenciaInicial());
+//		}else{
+//			jugador=null;
+//		}
     }
+    
+    
     
     private void colisionesTanquesBullet(Bullet b){
     	if(jugador.MisBalas().contains(b)){
