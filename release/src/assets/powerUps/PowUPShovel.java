@@ -9,14 +9,16 @@ import common.Mapa;
  */
 public class PowUPShovel extends PowerUp {
 
-	protected PowUPShovel(double x, double y, Mapa m) {
+	public PowUPShovel(double x, double y, Mapa m) {
 		super(x, y, m);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void colisionaTanque(Tanque t) {
-		// TODO Auto-generated method stub
+		if(t==map.getJugador()){
+			map.reforzarAguila();
+		}
 		
 	}
 	

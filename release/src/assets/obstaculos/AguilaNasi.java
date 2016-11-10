@@ -17,9 +17,14 @@ public class AguilaNasi extends Obstaculo {
 	public void colisionaBala(Bullet b) {
 		if(b!=null){
 			b.colisiona();
-			if(vida>0)
+			if(vida>0){
 				vida--;
+			//}else{
+				//morir
+			//}
+				
 		}
+	}
 	}
 
 	@Override
