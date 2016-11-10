@@ -35,6 +35,7 @@ public abstract class TanqueEnemigo extends Tanque {
 	}
 	
 	protected void delayDisparo(){
+		puedeDisparar=false;
 		Thread delayDisparo = new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -74,8 +75,7 @@ public abstract class TanqueEnemigo extends Tanque {
 	@Override
 	public Bullet disparar(){
 		if(puedeDisparar){
-			//puedeDisparar=false;
-			//delayDisparo();	
+			delayDisparo();	
 			return super.disparar();
 		}
 		return null;

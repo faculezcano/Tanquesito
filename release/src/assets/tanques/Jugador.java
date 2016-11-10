@@ -70,10 +70,6 @@ public class Jugador extends Tanque {
 	public void mover(){
 		giroLentoCanon();
 		
-		if(origen == null){
-			origen = new Point2D(getX(),getY());
-		}
-		
 		//pisadas(p);
 		
 		super.mover();		

@@ -3,6 +3,7 @@ package assets;
 import java.util.LinkedList;
 
 import common.Animation;
+import common.Mapa;
 import common.SyncAdder;
 import common.SyncRemover;
 import javafx.animation.FadeTransition;
@@ -27,15 +28,13 @@ public abstract class Tanque extends ObjetoDinamico {
     protected int vel_mov;
     protected int vel_disparo;
     protected int puntos;
-    protected Point2D tempPos;
-    protected Point2D origen;
+    protected double tempX,tempY;
     protected LinkedList<Bullet> bullets;
     protected Rectangle cuerpo;
     protected Rectangle canon;
     protected double canonAng = 0;
     protected ImagePattern huella;
     protected LinkedList<Shape> pisadas;
-    protected Group formas;
     
     protected Image[] aniDisparo;
     
@@ -49,10 +48,8 @@ public abstract class Tanque extends ObjetoDinamico {
     	cuerpo = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
     	canon = new Rectangle(x-SIZE/2,y-SIZE/2,SIZE,SIZE);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
-    	formas = new Group();
-    	formas.getChildren().add(cuerpo);
-    	formas.getChildren().add(canon);
-    	origen = new Point2D(x,y);
+    	tempX = x;
+    	tempY = y;
     }
     
     /**
@@ -136,8 +133,8 @@ public abstract class Tanque extends ObjetoDinamico {
 		}
     }
     
-    protected void pisadas(Point2D pos){
-    	if(tempPos.distance(pos)>=SIZE){
+    protected void pisadas(double x, double y){
+    	if(Mapa.distancia(tempX, tempY, x, y)>=SIZE){
 			final Rectangle pisada = new Rectangle(getX()-SIZE/2,getY()-SIZE/2,SIZE,SIZE);
 			pisada.setFill(huella);
 			pisada.setRotate(cuerpo.getRotate());
@@ -183,7 +180,8 @@ public abstract class Tanque extends ObjetoDinamico {
 				pis.setOpacity(pis.getOpacity()-0.1);
 			}*/
 			
-			tempPos = new Point2D(pos.getX(),pos.getY());
+			tempX = x;
+			tempY = y;
 			
 		}
     }

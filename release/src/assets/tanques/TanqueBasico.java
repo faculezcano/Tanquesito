@@ -39,8 +39,8 @@ public class TanqueBasico extends TanqueEnemigo {
     }
     
     @Override
-    protected void pisadas(Point2D pos){
-    	if(origen.distance(pos)>=64){
+    protected void pisadas(double x, double y){
+    	/*if(origen.distance(pos)>=64){
     		calleSinSalida = false;
     		cantPisadas++;
     		if(cantPisadas>=giroAleatorio){
@@ -49,17 +49,13 @@ public class TanqueBasico extends TanqueEnemigo {
     			cantPisadas = 0;
     			giroAleatorio = rand.nextInt(5)+2;
     		}
-    	}
-    	super.pisadas(pos);
+    	}*/
+    	super.pisadas(x,y);
     }
     
     @Override
     public void mover(){
     	giroLentoCanon();
-		
-		if(origen == null){
-			origen = new Point2D(getX(),getY());
-		}
 		
 		double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
 		if( distanciaJug <= distanciaTiro){
@@ -69,7 +65,7 @@ public class TanqueBasico extends TanqueEnemigo {
 					Bullet b = disparar();
 					if(b!=null){
 						map.addBullet(b);
-						//if(distanciaJug >= distanciaTiro*.75)
+						if(distanciaJug >= distanciaTiro*.75)
 							setVelocidad(getVelocidad().multiply(-1));
 					}
 				}
@@ -87,49 +83,6 @@ public class TanqueBasico extends TanqueEnemigo {
 		
 		tiroLimpio = true;
     }
-    
-    /*@Override
-	public void setPosicion(Point2D p) {
-		
-		giroLentoCanon();
-		
-		if(origen == null){
-			origen = new Point2D(p.getX(),p.getY());
-		}
-		
-		double distanciaJug = map.getJugador().getPosicion().distance(getPosicion());
-		if( distanciaJug <= distanciaTiro){
-			apuntar(map.getJugador().getPosicion());
-			if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
-				if(bullets.isEmpty()){
-					Bullet b = disparar();
-					if(b!=null){
-						map.addBullet(b);
-						//if(distanciaJug >= distanciaTiro*.75)
-							setVelocidad(getVelocidad().multiply(-1));
-					}
-				}
-				this.tiro.setStroke(Color.GREEN);
-			}
-		}
-		else{
-			apuntar(getPosicion().add(getVelocidad()));
-			this.tiro.setStroke(Color.BLACK);
-		}
-		
-		//pisadas(p);
-
-		super.setPosicion(p);
-		
-		tiroLimpio = true;
-		
-	}*/
-    
-    /*@Override
-    public void setVelocidad(Point2D vel){
-    	super.setVelocidad(vel);
-    	setAngle(vel.angle(new Point2D(1,0)));
-    }*/
 
 	@Override
 	public void colisiona() {

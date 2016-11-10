@@ -37,29 +37,10 @@ public class TanqueBlindado extends TanqueEnemigo {
     	giroAleatorio = rand.nextInt(5)+2;
     	cantPisadas = 0;
 	}
-
-	@Override
-    protected void pisadas(Point2D pos){
-    	if(origen.distance(pos)>=64){
-    		calleSinSalida = false;
-    		cantPisadas++;
-    		if(cantPisadas>=giroAleatorio){
-    			direccion=giroAleatorio();
-    			setVelocidad(velAleatoria(direccion));
-    			cantPisadas = 0;
-    			giroAleatorio = rand.nextInt(5)+2;
-    		}
-    	}
-    	super.pisadas(pos);
-    }
     
 	@Override
     public void mover(){
     	giroLentoCanon();
-		
-		if(origen == null){
-			origen = new Point2D(getX(),getY());
-		}
 		
 		double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
 		if( distanciaJug <= distanciaTiro){

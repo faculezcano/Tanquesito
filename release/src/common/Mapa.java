@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -29,6 +30,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -50,6 +52,7 @@ public class Mapa {
     protected ConcurrentLinkedQueue<PowerUp> powerUps;
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos;
     protected ConcurrentLinkedQueue<Obstaculo> limites;
+    protected ConcurrentLinkedQueue<Point2D> posicionesLibres;
     
     protected Jugador jugador;
     protected Obstaculo aguila;
@@ -62,13 +65,15 @@ public class Mapa {
     protected Group arboles;
     protected Group powerups;
     
-    GifDecoder gifDecoder = new GifDecoder();
+    protected GifDecoder gifDecoder = new GifDecoder();
     protected LinkedList<Image> expT;
     protected Image[] aniDisparo;
     protected Image[] aniImpactoBala;
     
     protected boolean enemigosCongelados=false;
     protected boolean jugadorInvulnerable=false;
+    
+    protected Random rand = new Random();
     
 	/**
      * @param cantX 
@@ -89,6 +94,7 @@ public class Mapa {
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
         powerUps = new ConcurrentLinkedQueue<PowerUp>();
         limites = new ConcurrentLinkedQueue<Obstaculo>();
+        posicionesLibres = new ConcurrentLinkedQueue<Point2D>();
         
         startColisiones();
         expT = new LinkedList<Image>() ;
@@ -122,6 +128,10 @@ public class Mapa {
 //        gc.setDaemon(true);
 //        gc.start();
         
+    }
+    
+    public static double distancia(double x1, double y1, double x2, double y2){
+    	return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
     }
     
     public Image[] cargarGif(String filename){
@@ -188,6 +198,34 @@ public class Mapa {
  			   (int)r1.getHeight() + (int)r1.getY() > (int)r2.getY());
     }
     
+    public boolean colisiona(int x, int y, int width, int height,Rectangle r2){
+    	return (x < (int)r2.getX() + (int)r2.getWidth() &&
+  			   x + width > (int)r2.getX() &&
+  			   y < (int)r2.getY() + (int)r2.getHeight() &&
+  			   height + y > (int)r2.getY());
+    }
+    
+    public boolean colisiona(int x, int y, int width, int height, ObjetoDinamico od){
+    	if( ObjetoDinamico.distancia(x,y,od)> 96){
+    		noentran++;
+    		return false;
+    	}
+
+    	Rectangle r2 = (Rectangle)od.getForma();
+    	
+    	return colisiona(x,y,width,height,r2);
+    }
+    
+    public boolean colisiona(int x, int y, int width, int height, ObjetoEstatico oe){
+
+    	
+    	Rectangle r1 = (Rectangle)oe.getForma();
+    	
+    	return colisiona(x,y,width,height,r1);
+    }
+    
+    
+    
     public boolean colisiona(ObjetoDinamico o1, ObjetoDinamico o2){
     	if(ObjetoDinamico.distancia(o1, o2) > 96){
     		noentran++;
@@ -214,11 +252,24 @@ public class Mapa {
 				long time;
 				double deltaT = 1.0/fps;
 				
+				int libreX = rand.nextInt(43);
+				int libreY = rand.nextInt(23);
 				
+				int x,y,w,h;
 				
-				LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
+				boolean esLibre;
+				
+				//LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {}
 				
 				while(true) { 
+					
+					esLibre = true;
+					x=(libreX-1)*Tanque.SIZE/2;
+					y=(libreY-1)*Tanque.SIZE/2;
 					
 					time = System.nanoTime();
 					
@@ -244,6 +295,10 @@ public class Mapa {
 					}
 					
 					for(Obstaculo o : obstaculos){
+						
+						if(esLibre && colisiona(x,y,Tanque.SIZE,Tanque.SIZE,o))
+							esLibre=false;
+						
 						//if(colisiona(o.getForma(),jugador.getForma()))
 						if(colisiona(o,jugador))
 							o.colisionaTanque(jugador);
@@ -272,12 +327,21 @@ public class Mapa {
 					}
 					
 					for(TanqueEnemigo ene1: enemigos){
+						if(esLibre && ObjetoDinamico.distancia(x, y,ene1) < 240)
+							esLibre=false;
 						for(TanqueEnemigo ene2: enemigos){
 							if(ene1 != ene2 && colisiona(ene1,ene2)){
 								ene1.colisiona();
 								ene2.colisiona();
 							}
 						}
+					}
+					
+					if(esLibre && jugador != null && ObjetoDinamico.distancia(x, y,jugador) < 240)
+						esLibre=false;
+					
+					if(esLibre){
+						addEnemigoAleatorio(x+Tanque.SIZE/2,y+Tanque.SIZE/2);
 					}
 					
 					for(final Bullet b: bullets){
@@ -323,11 +387,14 @@ public class Mapa {
 					entran = 0;
 					noentran=0;
 					
+					libreX = rand.nextInt(43);
+					libreY = rand.nextInt(23);
+					
 					try {
 						while((System.nanoTime()- time) <= deltaT*1000000000){
 							Thread.sleep(1);
 						}
-					} catch (InterruptedException e) {}
+					} catch (InterruptedException e) {System.out.println("Error");}
 					
 				}
     		
@@ -352,8 +419,7 @@ public class Mapa {
 			ob.colisionaBala(b);
 			
 			if (ob.GetVida() == 0) {
-				Platform.runLater(new SyncRemover(ob.getForma(),balasObstaculos));
-				obstaculos.remove(ob);
+				removeObstaculo(ob);
 			}
 			
 			if (b.getResistencia() == 0) {
@@ -361,6 +427,12 @@ public class Mapa {
 				bullets.remove(b);
 			}
 		}
+    }
+    
+    protected void addEnemigoAleatorio(double x, double y){
+    	if(enemigos.size() < 5){
+    		addEnemigo(new TanqueBasico(this,x,y));
+    	}
     }
     
 //    private void colisionesJugadorBullet(Bullet b){
@@ -454,7 +526,7 @@ public class Mapa {
      */
     public void addEnemigo(TanqueEnemigo o) {
         enemigos.add(o);
-        o.addToGroup(tanques);
+        Platform.runLater(new SyncAdder(o,tanques));
         o.setAnimacionDisparo(aniDisparo);
     }
     
@@ -524,6 +596,8 @@ public class Mapa {
 			//FileReader f;
 			//f = new FileReader(archivo);
 			
+			posicionesLibres.clear();
+			
 			InputStreamReader f = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(archivo));
 			
 			BufferedReader b = new BufferedReader(f);
@@ -577,9 +651,15 @@ public class Mapa {
 							aguila = obstaculo;
 						}
 						break;
-					}		
+					}
+					
+					if(cadena.charAt(col+1) == '0' || cadena.charAt(col+1) == '3'){
+						posicionesLibres.add(new Point2D(col*Obstaculo.SIZE,fila*Obstaculo.SIZE));
+					}
 					
 				}
+				
+				
 				System.out.println();
 				fila++;
 				cadena=b.readLine();
@@ -600,20 +680,9 @@ public class Mapa {
 		pisadasAgua.setEffect(is);
 		arboles.setEffect(ds);
 		tanques.setEffect(ds);
-		balasObstaculos.setEffect(ds);
+		balasObstaculos.setEffect(ds);		
     }
-    
-    public void eliminarObstaculo(){
-    	
-    	if(!obstaculos.isEmpty()){
-	    	Obstaculo obst = obstaculos.element();
-	    	balasObstaculos.getChildren().remove(obst.getForma());
-	    	obstaculos.remove(obst);
-    	}
-    	
-    	
-    }
-    
+
     protected void reemplazarMetal(double x, double y){
     	Obstaculo sacar = getObstaculo(x,y);
     	if(!limites.contains(sacar)){
@@ -717,6 +786,8 @@ public class Mapa {
     
     protected void removeObstaculo(Obstaculo o){
     	if(o!=null){
+    		Rectangle forma = (Rectangle)o.getForma();
+        	posicionesLibres.add(new Point2D(forma.getX(),forma.getY()));
     		Group g = (Group)o.getForma().getParent();
 	    	Platform.runLater(new SyncRemover(o.getForma(),g));
 			obstaculos.remove(o);
