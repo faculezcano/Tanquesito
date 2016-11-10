@@ -17,10 +17,13 @@ public class Jugador extends Tanque {
 	protected Nivel nivel;
     protected int disparos_simul;
     protected int vida;
+    protected double Xinicial;
+    protected double Yinicial;
+    protected int ResistenciaInicial;
 
     public Jugador(double x, double y){
     	super(x,y);
-    	resistencia = 3;
+    	resistencia= ResistenciaInicial = 1;
         puntos = 0;
         canonAng = 0;
 
@@ -29,6 +32,9 @@ public class Jugador extends Tanque {
         vel_mov = nivel.getVelocidad();
     	disparos_simul = 1;
     	vida = 3;
+    	Xinicial=x;
+    	Yinicial=y;
+    	
     	
     	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/cuerpo.png"))));
 		canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/canon.png"))));
@@ -111,4 +117,16 @@ public class Jugador extends Tanque {
 	public void setVida(int v){
 		vida=v;
 	}
+	
+	public double getXinicial(){
+		return Xinicial;
+	}
+	public double getYinicial(){
+		return Yinicial;
+	}
+	public int getResistenciaInicial(){
+		return ResistenciaInicial;
+	}
+	
+	
 }

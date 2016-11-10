@@ -216,7 +216,9 @@ public class Mapa {
 						
 						colisionesObstBullet(b);
 						
-						colisionesTanquesBullet(b);						
+						colisionesTanquesBullet(b);
+						
+						colisionesJugadorBullet(b);
 					}
 					
 					for(PowerUp pu: powerUps){
@@ -297,16 +299,7 @@ public class Mapa {
 						}
 					}
 					
-					for(final TanqueEnemigo en: enemigos){
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								//Point2D velEn=en.getVelocidad();
-								//en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
-								en.mover();
-							}
-						});
-					}
+					
 					
 					/*if(noentran+entran > 0){
 						double est = ((double)entran)/(entran+noentran);
@@ -353,6 +346,38 @@ public class Mapa {
 				Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
 				bullets.remove(b);
 			}
+		}
+    }
+    
+    private void colisionesJugadorBullet(Bullet b){
+    	if(!(jugador.MisBalas().contains(b))){
+    		if(colisiona(jugador,b)){
+    			//jugador.afectar();
+    			int nuevaResistencia=jugador.getResistencia()-b.getResistencia();
+    			jugador.setResistencia(nuevaResistencia);
+    			b.colisiona();
+    			if(jugador.getResistencia()<=0){
+    				this.matarJugador();
+    			}
+    			if(b.getResistencia()<=0){
+					Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+					bullets.remove(b);	
+				}
+    		}
+    	}
+    }
+    
+    private void matarJugador(){
+    	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
+		Animation ani = new Animation (r,expT,500);
+		ani.play();
+		Platform.runLater(new SyncAdder(r,tanques));
+		if(jugador.getVida()>0){
+			jugador.setX(jugador.getXinicial());
+			jugador.setY(jugador.getYinicial());
+			jugador.setResistencia(jugador.getResistenciaInicial());
+		}else{
+			jugador=null;
 		}
     }
     
@@ -558,7 +583,7 @@ public class Mapa {
     	Thread t=new Thread(new Runnable(){
     		public void run(){
     			try{
-    				Thread.sleep(20000);
+    				Thread.sleep(5000);
     			}catch(InterruptedException e){}  
     			
     			enemigosCongelados=false;

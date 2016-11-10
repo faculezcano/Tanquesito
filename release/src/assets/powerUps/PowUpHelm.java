@@ -9,7 +9,7 @@ import common.Mapa;
  */
 public class PowUpHelm extends PowerUp {
 
-	protected PowUpHelm(double x, double y, Mapa m) {
+	public PowUpHelm(double x, double y, Mapa m) {
 		super(x, y, m);
 		
 	}
