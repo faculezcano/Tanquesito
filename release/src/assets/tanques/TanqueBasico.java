@@ -16,6 +16,7 @@ public class TanqueBasico extends TanqueEnemigo {
 	protected int giroAleatorio;
 	protected int cantPisadas;
 	protected boolean calleSinSalida = false;
+	protected boolean disparoPorChoque = false;
 
     /**
      *
@@ -64,6 +65,7 @@ public class TanqueBasico extends TanqueEnemigo {
 				if(bullets.isEmpty()){
 					Bullet b = disparar();
 					if(b!=null){
+						disparoPorChoque = false;
 						map.addBullet(b);
 						if(distanciaJug >= distanciaTiro*.75)
 							setVelocidad(getVelocidad().multiply(-1));
@@ -87,18 +89,38 @@ public class TanqueBasico extends TanqueEnemigo {
 	@Override
 	public void colisiona() {
 		
+		int i = rand.nextInt(2);
+		
+		if(i == 0 && bullets.isEmpty()){
+			Bullet b = disparar();
+			if(b!=null){
+				disparoPorChoque = true;
+				map.addBullet(b);
+			}
+		}
+		
+		if(i!=0){
+			disparoPorChoque = false;
+		}
+		
+		Point2D velvieja = getVelocidad();
+		
 		tiroLimpio = false;
 		setVelocidad(new Point2D(0,0));
 		tiroLimpio = false;
 		super.colisiona();
 		tiroLimpio = false;
 		
+		setVelocidad(velvieja);
+		
+		if(!disparoPorChoque){
 		direccion=giroAleatorio();
 		setVelocidad(velAleatoria(direccion));
 		
 		tiroLimpio = false;
 		cantPisadas = 0;
 		calleSinSalida=true;
+		}
 		//tiroLimpio = false;
 	}
 	
