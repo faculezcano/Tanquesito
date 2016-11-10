@@ -425,12 +425,12 @@ public class Mapa {
 			}
 		}else //if(colisiona(b.getForma(), jugador.getForma())){
 			if(colisiona(b,jugador)){
-			//TODO: matar jugador
-			if(!jugadorInvulnerable){
-				jugador.afectar();
-				if(jugador.getResistencia()<=0){
-					this.matarJugador();
-				}
+				//TODO: matar jugador
+				if(!jugadorInvulnerable){
+					jugador.afectar();
+					if(jugador.getResistencia()==0){
+						this.matarJugador();
+					}
 				
 			}
 			
@@ -562,7 +562,13 @@ public class Mapa {
 						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
 						break;
+					case '8':
+						obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						pisadasAgua.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
 					}		
+					
 				}
 				System.out.println();
 				fila++;

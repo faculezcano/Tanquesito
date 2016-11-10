@@ -3,14 +3,19 @@ package assets.obstaculos;
 import assets.Bullet;
 import assets.Obstaculo;
 import assets.Tanque;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 /**
  * 
  */
 public class AguilaNasi extends Obstaculo {
 	
+	
+	
 	public AguilaNasi(double x, double y){
 		super(x,y);
+		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/LaAguilaNazi.png"))));
 	}
 
 	@Override
