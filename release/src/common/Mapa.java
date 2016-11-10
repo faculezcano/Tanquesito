@@ -49,7 +49,10 @@ public class Mapa {
     protected ConcurrentLinkedQueue<Bullet> bullets;
     protected ConcurrentLinkedQueue<PowerUp> powerUps;
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos;
+    protected ConcurrentLinkedQueue<Obstaculo> limites;
+    
     protected Jugador jugador;
+    protected Obstaculo aguila;
     protected Tanque enemigo;
     
     
@@ -85,6 +88,7 @@ public class Mapa {
         bullets = new ConcurrentLinkedQueue<Bullet>();
         obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
         powerUps = new ConcurrentLinkedQueue<PowerUp>();
+        limites = new ConcurrentLinkedQueue<Obstaculo>();
         
         startColisiones();
         expT = new LinkedList<Image>() ;
@@ -536,6 +540,7 @@ public class Mapa {
 						obstaculo = new Block(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 						balasObstaculos.getChildren().add(obstaculo.getForma());
 						obstaculos.add(obstaculo);
+						limites.add(obstaculo);
 						break;
 					case '1':
 						obstaculo = new Ladrillo(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
@@ -563,9 +568,12 @@ public class Mapa {
 						powerUps.add(granada);
 						break;
 					case '8':
-						obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
-						pisadasAgua.getChildren().add(obstaculo.getForma());
-						obstaculos.add(obstaculo);
+						if(aguila == null){
+							obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+							pisadasAgua.getChildren().add(obstaculo.getForma());
+							obstaculos.add(obstaculo);
+							aguila = obstaculo;
+						}
 						break;
 					}		
 					
@@ -602,6 +610,42 @@ public class Mapa {
     	}
     	
     	
+    }
+    
+    protected void reemplazarMetal(double x, double y){
+    	Obstaculo sacar = getObstaculo(x,y);
+    	if(!limites.contains(sacar)){
+			removeObstaculo(sacar);
+			addObstaculo(new Metal(x,y),balasObstaculos);
+    	}
+    }
+    
+    public void reforzarAguila(){
+    	if(aguila  != null){
+    		Rectangle formaAguila = (Rectangle)aguila.getForma();
+    		double aguilaX = formaAguila.getX();
+    		double aguilaY = formaAguila.getY();
+    		Obstaculo nuevo = null;
+    		Obstaculo sacar = null;
+    		double x,y;
+    		for(int i = -2; i < 2; i++){
+    			x = i*Obstaculo.SIZE+aguilaX;
+    			y = -2*Obstaculo.SIZE+aguilaY;
+    			reemplazarMetal(x,y);
+    			
+    			x = i*Obstaculo.SIZE+aguilaX;
+    			y = 2*Obstaculo.SIZE+aguilaY;
+    			reemplazarMetal(x,y);
+    			
+    			x = -2*Obstaculo.SIZE+aguilaX;
+    			y = i*Obstaculo.SIZE+aguilaY;
+    			reemplazarMetal(x,y);
+    			
+    			x = 2*Obstaculo.SIZE+aguilaX;
+    			y = i*Obstaculo.SIZE+aguilaY;
+    			reemplazarMetal(x,y);
+    		}
+    	}
     }
 
     /**
@@ -664,9 +708,28 @@ public class Mapa {
     	t.start();    	
     }
     
+    protected void addObstaculo(Obstaculo o, Group g){
+    	g.getChildren().add(o.getForma());
+		obstaculos.add(o);
+    }
     
+    protected void removeObstaculo(Obstaculo o){
+    	if(o!=null){
+    		Group g = (Group)o.getForma().getParent();
+	    	g.getChildren().remove(o.getForma());
+			obstaculos.remove(o);
+    	}
+    }
     
-    
+    protected Obstaculo getObstaculo(double x, double y){
+    	Rectangle forma = null;
+    	for(Obstaculo o: obstaculos){
+    		forma = (Rectangle)o.getForma();
+    		if(forma.getX() == x && forma.getY() == y)
+    			return o;
+    	}
+    	return null;
+    }
     
 
 }
