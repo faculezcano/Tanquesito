@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -96,7 +97,7 @@ public class Mapa {
         limites = new ConcurrentLinkedQueue<Obstaculo>();
         posicionesLibres = new ConcurrentLinkedQueue<Point2D>();
         
-        startColisiones();
+        //startColisiones();
         expT = new LinkedList<Image>() ;
         try {
 	        File carpeta = new File("src/img/ExplosionSimpleProto1");
@@ -242,52 +243,35 @@ public class Mapa {
     int entran = 0;
 	int noentran = 0;
     
-    private void startColisiones(){
-    	Thread colisiones = new Thread(new Runnable() {
+    public void startColisiones(){
+    	AnimationTimer anim = (new AnimationTimer(){
+    		
+    		final int fps = 30;
+			long time;
+			double deltaT = 1.0/fps;
+			
+			int libreX = rand.nextInt(43);
+			int libreY = rand.nextInt(23);
+			
+			int x,y,w,h;
+			
+			boolean esLibre;
 
 			@Override
-			public void run() {
-				
-				final int fps = 30;
-				long time;
-				double deltaT = 1.0/fps;
-				
-				int libreX = rand.nextInt(43);
-				int libreY = rand.nextInt(23);
-				
-				int x,y,w,h;
-				
-				boolean esLibre;
-				
-				//LinkedList<TanqueEnemigo> colisionesEnemigo= new LinkedList<TanqueEnemigo>();
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {}
-				
-				while(true) { 
+			public void handle(long now) {
 					
 					esLibre = true;
 					x=(libreX-1)*Tanque.SIZE/2;
 					y=(libreY-1)*Tanque.SIZE/2;
-					
-					time = System.nanoTime();
 					
 					for(Bullet b:bullets){
 						
 						colisionesTanquesBullet(b);
 						
 						colisionesObstBullet(b);
-						
-						
-//						if(!jugadorInvulnerable){
-//							colisionesJugadorBullet(b);
-//						}
-						
 					}
 					
 					for(PowerUp pu: powerUps){
-						//if(colisiona(pu.getForma(),jugador.getForma())){
 						if(colisiona(pu,jugador)){
 							pu.colisionaTanque(jugador);
 							eliminarPowerUp(pu);
@@ -299,30 +283,22 @@ public class Mapa {
 						if(esLibre && colisiona(x,y,Tanque.SIZE,Tanque.SIZE,o))
 							esLibre=false;
 						
-						//if(colisiona(o.getForma(),jugador.getForma()))
 						if(colisiona(o,jugador))
 							o.colisionaTanque(jugador);
 						
 						for(TanqueEnemigo ene: enemigos){
 							
-							//if(colisiona(o.getForma(),ene.getLineaTiro())){
-							/*if(distancia(o,ene) < 256 && colisionaShape(o.getForma(),ene.getLineaTiro())){
-								ene.setTiroLimpio(false);
-							}*/
 							
-							//if(colisiona(o.getForma(),ene.getForma())){
 							if(colisiona(o,ene)){
 								ene.setTiroLimpio(false);
 								o.colisionaTanque(ene);
 								ene.setTiroLimpio(false);
 							}
-							
-							//if(colisiona(jugador.getForma(),ene.getForma())){
+
 							if(colisiona(jugador,ene)){
 								ene.colisiona();
 								jugador.colisiona();
 							}
-							//ene.apuntar(jugador.getPosicion());
 						}
 					}
 					
@@ -345,63 +321,27 @@ public class Mapa {
 					}
 					
 					for(final Bullet b: bullets){
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								//Point2D vel = b.getVelocidad();
-								//b.setPosicion(b.getPosicion().add(vel.multiply(30.0/fps)));
-								b.mover();
-							}
-						});
+						b.mover();
 					}
 					
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							//Point2D vel = jugador.getVelocidad();
-							//jugador.setPosicion(jugador.getPosicion().add(vel.multiply(30.0/fps)));
-							jugador.mover();
-						}
-					});
-					
+					jugador.mover();
+		
 					if(!enemigosCongelados){
 						for(final TanqueEnemigo en: enemigos){
-							Platform.runLater(new Runnable() {
-								@Override
-								public void run() {
-									//Point2D velEn=en.getVelocidad();
-									//en.setPosicion(en.getPosicion().add(velEn.multiply(30.0/fps)));
-									en.mover();
-								}
-							});
+							en.mover();
 						}
 					}
-					
-					
-					
-					/*if(noentran+entran > 0){
-						double est = ((double)entran)/(entran+noentran);
-						System.out.println(est*100+"% Total: " + (entran+noentran));
-					}*/
+
 
 					entran = 0;
 					noentran=0;
 					
 					libreX = rand.nextInt(43);
 					libreY = rand.nextInt(23);
-					
-					try {
-						while((System.nanoTime()- time) <= deltaT*1000000000){
-							Thread.sleep(1);
-						}
-					} catch (InterruptedException e) {System.out.println("Error");}
-					
-				}
-    		
+
 			}});
-    	colisiones.setName("Colisiones");
-    	colisiones.setDaemon(true);
-    	colisiones.start();
+
+    	anim.start();
     }
     
     private void colisionesObstBullet(Bullet b){

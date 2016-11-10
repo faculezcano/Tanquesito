@@ -64,6 +64,8 @@ public class tester extends Application {
 		stage.setScene(s);
 		stage.setResizable(false);
 		stage.show();
+		
+		map.startColisiones();
 	}
 	
 	private void bindearMouse(){
