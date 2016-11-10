@@ -33,6 +33,7 @@ import assets.obstaculos.Ladrillo;
 import assets.obstaculos.Metal;
 import assets.powerUps.PowUPGranade;
 import assets.powerUps.PowUPTime;
+import assets.powerUps.PowUpHelm;
 import assets.tanques.*;
 
 /**
@@ -61,6 +62,7 @@ public class Mapa {
     protected Image[] aniImpactoBala;
     
     protected boolean enemigosCongelados=false;
+    protected boolean jugadorInvulnerable=false;
     
 	/**
      * @param cantX 
@@ -217,8 +219,10 @@ public class Mapa {
 						colisionesObstBullet(b);
 						
 						colisionesTanquesBullet(b);
+//						if(!jugadorInvulnerable){
+//							colisionesJugadorBullet(b);
+//						}
 						
-						colisionesJugadorBullet(b);
 					}
 					
 					for(PowerUp pu: powerUps){
@@ -349,25 +353,29 @@ public class Mapa {
 		}
     }
     
-    private void colisionesJugadorBullet(Bullet b){
-    	if(!(jugador.MisBalas().contains(b))){
-    		if(colisiona(jugador,b)){
-    			//jugador.afectar();
-    			int nuevaResistencia=jugador.getResistencia()-b.getResistencia();
-    			jugador.setResistencia(nuevaResistencia);
-    			b.colisiona();
-    			if(jugador.getResistencia()<=0){
-    				this.matarJugador();
-    			}
-    			if(b.getResistencia()<=0){
-					Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
-					bullets.remove(b);	
-				}
-    		}
-    	}
-    }
+//    private void colisionesJugadorBullet(Bullet b){
+//    	if(!(jugador.MisBalas().contains(b))){
+//    		if(colisiona(jugador,b)){
+//    			//jugador.afectar();
+//    			
+//    			//if(!jugadorInvulnerable){
+//	    			int nuevaResistencia=jugador.getResistencia()-b.getResistencia();
+//	        		jugador.setResistencia(nuevaResistencia);
+//		    		if(jugador.getResistencia()<=0){
+//		    			this.matarJugador();
+//		    		}
+//    			//}
+//    			
+//    			b.colisiona();
+//    			if(b.getResistencia()<=0){
+//					Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+//					bullets.remove(b);	
+//				}
+//    		}
+//    	}
+//    }
     
-    private void matarJugador(){
+    public void matarJugador(){
     	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
 		Animation ani = new Animation (r,expT,500);
 		ani.play();
@@ -404,7 +412,15 @@ public class Mapa {
 		}else //if(colisiona(b.getForma(), jugador.getForma())){
 			if(colisiona(b,jugador)){
 			//TODO: matar jugador
-			jugador.afectar();
+			if(!jugadorInvulnerable){
+				jugador.afectar();
+				if(jugador.getResistencia()<=0){
+					this.matarJugador();
+				}
+				
+			}
+			
+			
 			b.colisiona();
 			if(b.getResistencia() <= 0){
 				Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
@@ -508,7 +524,7 @@ public class Mapa {
 						obstaculos.add(obstaculo);
 						break;
 					case '5':
-						PowerUp granada= new PowUPTime(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						PowerUp granada= new PowUpHelm(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
 						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
 						break;
@@ -591,6 +607,21 @@ public class Mapa {
     	});
     	t.setDaemon(true);
     	t.start();
+    }
+    
+    public void Invulnerable(){
+    	jugadorInvulnerable=true;
+    	Thread t=new Thread(new Runnable(){
+    		public void run(){
+    			try{
+    				Thread.sleep(10000);
+    			}catch(InterruptedException e){}  
+    			
+    			jugadorInvulnerable=false;
+    		}
+    	});
+    	t.setDaemon(true);
+    	t.start();    	
     }
     
     
