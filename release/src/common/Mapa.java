@@ -563,7 +563,7 @@ public class Mapa {
 						obstaculos.add(obstaculo);
 						break;
 					case '5':
-						PowerUp granada= new PowUpHelm(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						PowerUp granada= new PowUPShovel(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
 						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
 						break;
@@ -709,14 +709,14 @@ public class Mapa {
     }
     
     protected void addObstaculo(Obstaculo o, Group g){
-    	g.getChildren().add(o.getForma());
+    	Platform.runLater(new SyncAdder(o.getForma(),g));
 		obstaculos.add(o);
     }
     
     protected void removeObstaculo(Obstaculo o){
     	if(o!=null){
     		Group g = (Group)o.getForma().getParent();
-	    	g.getChildren().remove(o.getForma());
+	    	Platform.runLater(new SyncRemover(o.getForma(),g));
 			obstaculos.remove(o);
     	}
     }
