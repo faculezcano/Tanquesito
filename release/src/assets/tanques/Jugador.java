@@ -67,12 +67,12 @@ public class Jugador extends Tanque {
 	}
 	
 	@Override
-	public void mover(){
+	public void mover(double deltaT){
 		giroLentoCanon();
 		
 		//pisadas(p);
 		
-		super.mover();		
+		super.mover(deltaT);		
 	}
 
 	/*@Override

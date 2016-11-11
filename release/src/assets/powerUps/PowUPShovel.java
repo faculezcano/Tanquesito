@@ -3,6 +3,8 @@ package assets.powerUps;
 import assets.PowerUp;
 import assets.Tanque;
 import common.Mapa;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 /**
  * 
@@ -11,7 +13,7 @@ public class PowUPShovel extends PowerUp {
 
 	public PowUPShovel(double x, double y, Mapa m) {
 		super(x, y, m);
-		// TODO Auto-generated constructor stub
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpS.png"))));
 	}
 
 	@Override

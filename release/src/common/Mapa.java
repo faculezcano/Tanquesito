@@ -244,12 +244,11 @@ public class Mapa {
 	int noentran = 0;
     
     public void startColisiones(){
-    	
     	final Runnable colisiones = (new Runnable(){
 
 			@Override
 			public void run() {
-				
+				while(true){
 				for(Bullet b:bullets){
 					
 					colisionesTanquesBullet(b);
@@ -295,21 +294,34 @@ public class Mapa {
 				}
 				
 				/*try {
-					Thread.sleep(5);
+					//synchronized(this){
+						wait();
+					//}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-			
+				
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
 			}
     		
     	});
     	
+    	Thread t = new Thread(colisiones);
+    	t.setDaemon(true);
+    	t.setName("colisiones");
+    	t.start();
+    	
     	AnimationTimer anim = (new AnimationTimer(){
     		
-    		final int fps = 30;
-			long time;
-			double deltaT = 1.0/fps;
+    		/*final int fps = 30;
+			double deltaT = 1.0/fps;*/
 			
 			int libreX = rand.nextInt(43);
 			int libreY = rand.nextInt(23);
@@ -317,13 +329,21 @@ public class Mapa {
 			int x,y,w,h;
 			
 			boolean esLibre;
+			
+			long time = System.nanoTime();
 
 			@Override
 			public void handle(long now) {
 				
-				Thread t = new Thread(colisiones);
+				double deltaT = (now - time)/50000000.0;
+				time = now;
+				
+				/*Thread t = new Thread(colisiones);
 				t.setDaemon(true);
-				t.start();
+				t.start();*/
+				synchronized(t){
+					t.notify();
+				}
 					
 					esLibre = true;
 					x=libreX*Tanque.SIZE/2;
@@ -336,16 +356,16 @@ public class Mapa {
 					}
 
 					for(final Bullet b: bullets){
-						b.mover();
+						b.mover(deltaT);
 					}
 					
-					jugador.mover();
+					jugador.mover(deltaT);
 		
 					if(!enemigosCongelados){
 						for(final TanqueEnemigo en: enemigos){
 							if(esLibre && ObjetoDinamico.distancia(x, y,en) < 240)
 								esLibre=false;
-							en.mover();
+							en.mover(deltaT);
 						}
 					}
 					
@@ -602,6 +622,11 @@ public class Mapa {
 						PowerUp granada= new PowUPShovel(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
 						powerups.getChildren().add(granada.getForma());
 						powerUps.add(granada);
+						break;
+					case '7':
+						PowerUp time= new PowUPTime(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(time.getForma());
+						powerUps.add(time);
 						break;
 					case '8':
 						if(aguila == null){

@@ -58,8 +58,8 @@ public abstract class TanqueEnemigo extends Tanque {
 	}
 	
 	@Override
-	public void mover(){
-		super.mover();
+	public void mover(double deltaT){
+		super.mover(deltaT);
 		/*tiro.setStartX(getX());
 		tiro.setStartY(getY());*/
 	}

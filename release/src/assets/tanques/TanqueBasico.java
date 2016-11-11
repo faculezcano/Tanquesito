@@ -29,7 +29,7 @@ public class TanqueBasico extends TanqueEnemigo {
     	resistencia = 1;
     	
     	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_tanque.png"))));
-    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_canon.png"))));
+    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_canon3.png"))));
     	
     	direccion = rand.nextInt(4);
     	setVelocidad(velAleatoria(direccion));
@@ -55,7 +55,7 @@ public class TanqueBasico extends TanqueEnemigo {
     }
     
     @Override
-    public void mover(){
+    public void mover(double deltaT){
     	giroLentoCanon();
 		
 		double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
@@ -81,7 +81,7 @@ public class TanqueBasico extends TanqueEnemigo {
 		
 		//pisadas(p);
 
-		super.mover();
+		super.mover(deltaT);
 		
 		tiroLimpio = true;
     }

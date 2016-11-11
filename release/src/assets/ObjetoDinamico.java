@@ -36,9 +36,9 @@ public abstract class ObjetoDinamico {
     
     public abstract void setY(double y);
     
-    public void mover(){
-    	setX(x+velocidad.getX());
-    	setY(y+velocidad.getY());
+    public void mover(double deltaT){
+    	setX(x+velocidad.getX()*deltaT);
+    	setY(y+velocidad.getY()*deltaT);
     }
 
     public Point2D getVelocidad() {

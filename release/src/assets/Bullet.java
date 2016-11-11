@@ -113,8 +113,8 @@ public class Bullet extends ObjetoDinamico {
 	}
 
     @Override
-    public void mover(){
-    	super.mover();
+    public void mover(double deltaT){
+    	super.mover(deltaT);
     	forma.setX(x);
     	forma.setY(y);
     	/*if(origen.distance(p) >=SIZE.getY()*0.3){

@@ -39,7 +39,7 @@ public class TanqueBlindado extends TanqueEnemigo {
 	}
     
 	@Override
-    public void mover(){
+    public void mover(double deltaT){
     	giroLentoCanon();
 		
 		double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
@@ -64,7 +64,7 @@ public class TanqueBlindado extends TanqueEnemigo {
 		
 		//pisadas(p);
 
-		super.mover();
+		super.mover(deltaT);
 		
 		tiroLimpio = true;
     }

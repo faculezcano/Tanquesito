@@ -57,8 +57,8 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     @Override
-    public void mover(){
-    	super.mover();
+    public void mover(double deltaT){
+    	super.mover(deltaT);
     	setAngle(angle);
     	cuerpo.setX(x);
     	cuerpo.setY(y);
