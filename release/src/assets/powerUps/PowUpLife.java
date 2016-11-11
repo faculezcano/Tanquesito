@@ -17,8 +17,8 @@ public class PowUpLife extends PowerUp {
 
 	@Override
 	public void colisionaTanque(Tanque t) {
-		if(map.getJugador()==t){
-			int nuevaVida=map.getJugador().getVida()+1;
+		if(map.getJugador() == t){
+			int nuevaVida = map.getJugador().getVidas()+1;
 			map.getJugador().setVida(nuevaVida);
 		}
 		

@@ -4,7 +4,6 @@ import assets.Bullet;
 import assets.Nivel;
 import assets.NivelUno;
 import assets.Tanque;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -26,13 +25,16 @@ public class Jugador extends Tanque {
     	
         puntos = 0;
         canonAng = 0;
-
+        vidas = 3;
+        
         nivel = new NivelUno();
+        
         resistencia = nivel.getGolpesResiste();
         vel_disparo = nivel.getVelocidadDisparo();
         vel_mov = nivel.getVelocidad();
-    	disparos_simul = 1;
-    	vidas = 3;
+    	disparos_simul = nivel.getDisparosSimul();
+    	
+    	
     	Xinicial=x;
     	Yinicial=y;
     	
@@ -55,7 +57,10 @@ public class Jugador extends Tanque {
     
     public void subirNivel(){
     	nivel = nivel.nextLvl();
-    	vel_disparo = nivel.getVelocidadDisparo();
+    	resistencia = nivel.getGolpesResiste();
+        vel_disparo = nivel.getVelocidadDisparo();
+        vel_mov = nivel.getVelocidad();
+    	disparos_simul = nivel.getDisparosSimul();
     }
     
     public Nivel getNivel() {
@@ -90,11 +95,10 @@ public class Jugador extends Tanque {
 		
 	}*/
 	
+	
 	public void setPuntos(int p){
-		puntos=p;
+		puntos = p;
 	}
-
-
 
 	@Override
 	public void afectar() {
@@ -104,7 +108,20 @@ public class Jugador extends Tanque {
 
 	}
 	
-	public int getVida(){
+	public void perderVida(){
+		if (vidas > 0)
+			vidas -= 1; 
+		nivel = new NivelUno();
+		resistencia = nivel.getGolpesResiste();
+        vel_disparo = nivel.getVelocidadDisparo();
+        vel_mov = nivel.getVelocidad();
+    	disparos_simul = nivel.getDisparosSimul();
+    	
+		puntos = 0;
+		
+	}
+	
+	public int getVidas(){
 		return vidas;
 	}
 	
@@ -118,9 +135,8 @@ public class Jugador extends Tanque {
 	public double getYinicial(){
 		return Yinicial;
 	}
-	public int getResistenciaInicial(){
+	public int getResistencia(){
 		return resistencia;
 	}
-	
 	
 }

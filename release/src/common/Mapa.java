@@ -415,29 +415,38 @@ public class Mapa {
     	}
     }
     
-//    private void colisionesJugadorBullet(Bullet b){
-//    	if(!(jugador.MisBalas().contains(b))){
-//    		if(colisiona(jugador,b)){
-//    			//jugador.afectar();
-//    			
-//    			//if(!jugadorInvulnerable){
+    private void colisionesJugadorBullet(Bullet b){
+    	if(!(jugador.MisBalas().contains(b))){
+    		if(colisiona(jugador,b)){
+    			//jugador.afectar();
+    			
+    			if(!jugadorInvulnerable){
 //	    			int nuevaResistencia=jugador.getResistencia()-b.getResistencia();
 //	        		jugador.setResistencia(nuevaResistencia);
-//		    		if(jugador.getResistencia()<=0){
-//		    			this.matarJugador();
-//		    		}
-//    			//}
-//    			
-//    			b.colisiona();
-//    			if(b.getResistencia()<=0){
-//					Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
-//					bullets.remove(b);	
-//				}
-//    		}
-//    	}
-//    }
+    				jugador.afectar();
+    				System.out.println("Resistencia del jugador actual:"+jugador.getResistencia());
+		    		if(jugador.getResistencia()<=0){
+		    			this.matarJugador();
+		    		}
+    			}
+    			
+    			b.colisiona();
+    			if(b.getResistencia()<=0){
+					Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));
+					bullets.remove(b);	
+				}
+    		}
+    	}
+    }
     
     public void matarJugador(){
+    	jugador.perderVida();
+    	jugador.setX(jugador.getXinicial());
+		jugador.setY(jugador.getYinicial());
+		if(jugador.getVidas() == 0){
+			System.out.println("Perdiste...........");
+		}
+    	
     	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
 		Animation ani = new Animation (r,expT,500);
 		ani.play();
@@ -787,6 +796,13 @@ public class Mapa {
     			return o;
     	}
     	return null;
+    }
+    
+    public void estado(){
+    	System.out.println("Estado interno del Jugador:");
+    	System.out.println("Resistencia:"+jugador.getResistencia());
+    	System.out.println("Vidas:"+jugador.getVidas()); 
+    	System.out.println("Puntos:"+jugador.getPuntos());
     }
     
 

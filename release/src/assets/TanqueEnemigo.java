@@ -5,7 +5,6 @@ import java.util.Random;
 import common.Mapa;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 

@@ -40,7 +40,7 @@ public class tester extends Application {
 		
 		g = new Group();
 		s = new Scene(g,1024,600, Color.BEIGE);
-		enemigo=null;
+		enemigo = null;
 		j = new Jugador(48,48);
 		j.addToGroup(g);
 		//g.getChildren().add(enemigo.getForma());
@@ -76,6 +76,7 @@ public class tester extends Application {
 				Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
 				xDiscrepance = mousePos.getX()-e.getX();
 				yDiscrepance = mousePos.getY()-e.getY();
+				
 			}
 			
 		});
@@ -86,13 +87,16 @@ public class tester extends Application {
 			public void handle(MouseEvent e) {
 				if(e.getButton() == MouseButton.PRIMARY){
 					Platform.runLater(new Runnable(){
-
+						
+						
 						@Override
 						public void run() {
 							if(j.getNivel().getDisparosSimul()> j.MisBalas().size()){
-								
+						
 								Bullet b = j.disparar();
 								map.addBullet(b);
+								
+				
 							}
 							
 							
@@ -157,9 +161,12 @@ public class tester extends Application {
 						map.eliminarEnemigo(map.getEnemigos().poll());
 					}
 				}
+				if(e.getCode()==KeyCode.M){
+					map.estado();
+				}
 				if(e.getCode()==KeyCode.L){
 					
-					j.subirNivel();
+					map.getJugador().subirNivel();
 				}
 				if(e.getCode()==KeyCode.B){
 					
