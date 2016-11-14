@@ -302,8 +302,8 @@ public abstract class Tanque extends ObjetoDinamico {
     }
     
     public void colisiona(){
-    	this.setX(Math.round(getX()/(SIZE/2))*(SIZE/2));
-    	this.setY(Math.round(getY()/(SIZE/2))*(SIZE/2));
+    	x = Math.round(getX()/(SIZE/2))*(SIZE/2);
+    	y = Math.round(getY()/(SIZE/2))*(SIZE/2);
     	//this.setPosicion(new Point2D(Math.round(getX()/(SIZE/2))*(SIZE/2),Math.round(getY()/(SIZE/2))*(SIZE/2)));
     	//if(velocidad.magnitude() == 0){
     	/*Platform.runLater(new Runnable(){

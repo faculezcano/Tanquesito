@@ -176,20 +176,11 @@ public class Mapa {
     	return ObjetoDinamico.distancia(r.getX(),r.getY(),od);
     }
     
-    public boolean colisiona(ObjetoEstatico oe, ObjetoDinamico od){
-    	
-    	if( distancia(oe,od)> 96){
-    		noentran++;
-    		return false;
-    	}
-    	
-    	Rectangle r1 = (Rectangle)oe.getForma();
-    	Rectangle r2 = (Rectangle)od.getForma();
-    	
-    	return colisiona(r1,r2);
-    	
-    	//entran++;
-    	//return colisionaShape(oe.getForma(),od.getForma());
+    public boolean colisiona(int x1,int y1, int w1, int h1, int x2, int y2, int w2, int h2){
+    	return (x1 < x2 + w2 &&
+   			   x1 + w1 > x2 &&
+   			   y1 < y2 + h2 &&
+   			   h1 + y1 > y2);
     }
     
     public boolean colisiona(Rectangle r1, Rectangle r2){
@@ -225,19 +216,22 @@ public class Mapa {
     	return colisiona(x,y,width,height,r1);
     }
     
+    public boolean colisiona(ObjetoEstatico o, Tanque t){
+    	Rectangle r = (Rectangle)o.getForma();
+    	return colisiona((int)r.getX(),(int)r.getY(),(int)r.getWidth(),(int)r.getHeight(),(int)t.getX(),(int)t.getY(),Tanque.SIZE,Tanque.SIZE);
+    }
     
+    public boolean colisiona(ObjetoEstatico o, Bullet b){
+    	Rectangle r = (Rectangle)o.getForma();
+    	return colisiona((int)r.getX(),(int)r.getY(),(int)r.getWidth(),(int)r.getHeight(),(int)b.getX(),(int)b.getY(),(int)Bullet.SIZE.getX(),(int)Bullet.SIZE.getY());
+    }
     
-    public boolean colisiona(ObjetoDinamico o1, ObjetoDinamico o2){
-    	if(ObjetoDinamico.distancia(o1, o2) > 96){
-    		noentran++;
-    		return false;
-    	}
-    	Rectangle r1 = (Rectangle)o1.getForma();
-    	Rectangle r2 = (Rectangle)o2.getForma();
-    	
-    	return colisiona(r1,r2);
-    	//entran++;
-    	//return colisionaShape(o1.getForma(),o2.getForma());
+    public boolean colisiona(Bullet b, Tanque t){
+    	return colisiona((int)b.getX(),(int)b.getY(),(int)Bullet.SIZE.getX(),(int)Bullet.SIZE.getY(),(int)t.getX(),(int)t.getY(),Tanque.SIZE,Tanque.SIZE);
+    }
+    
+    public boolean colisiona(Tanque t1, Tanque t2){
+    	return colisiona((int)t1.getX(),(int)t1.getY(),Tanque.SIZE,Tanque.SIZE,(int)t2.getX(),(int)t2.getY(),Tanque.SIZE,Tanque.SIZE);
     }
     
     int entran = 0;
@@ -276,9 +270,12 @@ public class Mapa {
 						
 						
 						if(colisiona(o,ene)){
+							double antesX = ene.getX(),antesY = ene.getY();
 							ene.setTiroLimpio(false);
 							o.colisionaTanque(ene);
 							ene.setTiroLimpio(false);
+							if((antesX != ene.getX() || antesY != ene.getY()) &&colisiona(o,ene))
+								eliminarEnemigo(ene);
 						}
 
 						if(colisiona(jugador,ene)){
@@ -430,7 +427,7 @@ public class Mapa {
     
     private void colisionesJugadorBullet(Bullet b){
     	if(!(jugador.MisBalas().contains(b))){
-    		if(colisiona(jugador,b)){
+    		if(colisiona(b,jugador)){
     			//jugador.afectar();
     			
     			if(!jugadorInvulnerable){
@@ -491,7 +488,7 @@ public class Mapa {
     	if(jugador.MisBalas().contains(b)){
 			for(TanqueEnemigo tenemigo: enemigos){
 				//if(colisiona(tenemigo.getForma(),b.getForma())){
-				if(colisiona(tenemigo,b)){
+				if(colisiona(b,tenemigo)){
 					tenemigo.afectar();
 					b.colisiona();
 					if(tenemigo.getResistencia()<=0){
