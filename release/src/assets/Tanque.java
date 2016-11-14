@@ -7,10 +7,12 @@ import common.Mapa;
 import common.SyncAdder;
 import common.SyncRemover;
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -50,6 +52,10 @@ public abstract class Tanque extends ObjetoDinamico {
     	pisadas = new LinkedList<Shape>();
     	cuerpo = new Rectangle(this.x,this.y,SIZE,SIZE);
     	canon = new Rectangle(this.x,this.y,SIZE,SIZE);
+    	cuerpo.setCache(true);
+    	//cuerpo.setCacheHint(CacheHint.SPEED);
+    	canon.setCache(true);
+    	//canon.setCacheHint(CacheHint.SPEED);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
     	
     	tempX = x;
@@ -58,8 +64,16 @@ public abstract class Tanque extends ObjetoDinamico {
     
     @Override
     public void mover(double deltaT){
+    	/*double deltaX = x;
+    	double deltaY = y;*/
     	super.mover(deltaT);
+    	/*deltaX-=x;
+    	deltaY-=y;*/
     	setAngle(angle);
+    	/*cuerpo.setTranslateX(cuerpo.getTranslateX()-deltaX);
+    	cuerpo.setTranslateY(cuerpo.getTranslateY()-deltaY);
+    	canon.setTranslateX(cuerpo.getTranslateX()-deltaX);
+    	canon.setTranslateY(cuerpo.getTranslateY()-deltaY);*/
     	cuerpo.setX(x);
     	cuerpo.setY(y);
     	canon.setX(x);

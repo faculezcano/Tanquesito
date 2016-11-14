@@ -242,9 +242,13 @@ public class Mapa {
     
     int entran = 0;
 	int noentran = 0;
+	
+	protected Object monitor = new Object();
+	protected boolean colisionOk = false;
     
     public void startColisiones(){
-    	final Runnable colisiones = (new Runnable(){
+    	
+    	Runnable colisiones = (new Runnable(){
 
 			@Override
 			public void run() {
@@ -294,16 +298,19 @@ public class Mapa {
 				}
 				
 				/*try {
-					//synchronized(this){
-						wait();
-					//}
+					synchronized(monitor){
+						monitor.wait();
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
 				
+				colisionOk = true;
+				
 				try {
-					Thread.sleep(50);
+					while(colisionOk == true)
+						Thread.sleep(50);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -335,15 +342,18 @@ public class Mapa {
 			@Override
 			public void handle(long now) {
 				
-				double deltaT = (now - time)/50000000.0;
-				time = now;
+				
 				
 				/*Thread t = new Thread(colisiones);
 				t.setDaemon(true);
 				t.start();*/
-				synchronized(t){
-					t.notify();
-				}
+				/*synchronized(monitor){
+					monitor.notify();
+				}*/
+					
+				if(colisionOk){
+					double deltaT = (now - time)/50000000.0;
+					time = now;
 					
 					esLibre = true;
 					x=libreX*Tanque.SIZE/2;
@@ -355,7 +365,7 @@ public class Mapa {
 							esLibre=false;
 					}
 
-					for(final Bullet b: bullets){
+					for(Bullet b: bullets){
 						b.mover(deltaT);
 					}
 					
@@ -378,6 +388,8 @@ public class Mapa {
 					
 					libreX = rand.nextInt(43);
 					libreY = rand.nextInt(23);
+					colisionOk = false;
+				}
 
 			}});
 
@@ -411,7 +423,8 @@ public class Mapa {
     
     protected void addEnemigoAleatorio(double x, double y){
     	if(enemigos.size() < 5){
-    		addEnemigo(new TanqueBasico(this,x,y));
+    		TanqueEnemigo t = new TanqueBasico(this,x,y);
+    		addEnemigo(t);
     	}
     }
     

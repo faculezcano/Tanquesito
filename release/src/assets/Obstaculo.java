@@ -1,6 +1,8 @@
 package assets;
 
 import javafx.geometry.Point2D;
+import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.shape.*;
 
 /**
@@ -15,6 +17,8 @@ public abstract class Obstaculo extends ObjetoEstatico {
     
     protected Obstaculo(double x, double y){
     	forma = new Rectangle(x,y,SIZE,SIZE);
+    	forma.setCache(true);
+    	forma.setCacheHint(CacheHint.SPEED);
     	vida = 1;
     }
     
