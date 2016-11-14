@@ -310,7 +310,7 @@ public class Mapa {
 				
 				try {
 					while(colisionOk == true)
-						Thread.sleep(50);
+						Thread.sleep(33);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

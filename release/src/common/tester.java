@@ -111,6 +111,8 @@ public class tester extends Application {
 		});
 	}
 	
+	protected KeyCode ultima;
+	
 	private void bindearTeclado(){
 		
 		s.setOnKeyPressed(new EventHandler<KeyEvent>(){
@@ -119,15 +121,19 @@ public class tester extends Application {
 				Point2D vel = j.getVelocidad();
 				if(e.getCode()==KeyCode.W){
 					vel = new Point2D(0, -j.velMovimiento());
+					ultima = e.getCode();
 					//j.setAngle(180);
 				}else if(e.getCode()==KeyCode.S){
 					vel = new Point2D(0, j.velMovimiento());
+					ultima = e.getCode();
 					//j.setAngle(0);
 				}else if(e.getCode()==KeyCode.A){
 					vel = new Point2D(-j.velMovimiento(),0);
+					ultima = e.getCode();
 					//j.setAngle(90);
 				}else if(e.getCode()==KeyCode.D){
 					vel = new Point2D(j.velMovimiento(),0);
+					ultima = e.getCode();
 					//j.setAngle(-90);
 				}
 				j.setVelocidad(vel);
@@ -185,7 +191,9 @@ public class tester extends Application {
 			@Override
 			public void handle(KeyEvent e) {
 				Point2D vel = j.getVelocidad();
-				vel = new Point2D(0,0);
+				if(ultima == e.getCode()){
+					vel = new Point2D(0,0);
+				}
 				j.setVelocidad(vel);
 				//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
 				//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);

@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -55,6 +56,8 @@ public class Bullet extends ObjetoDinamico {
     	forma.setX(x);
 		forma.setY(y);
 		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
+		forma.setCache(true);
+		forma.setCacheHint(CacheHint.SPEED);
 		resistencia = 1;
 		//tank = (Jugador) t;
 		

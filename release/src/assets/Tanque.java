@@ -53,9 +53,9 @@ public abstract class Tanque extends ObjetoDinamico {
     	cuerpo = new Rectangle(this.x,this.y,SIZE,SIZE);
     	canon = new Rectangle(this.x,this.y,SIZE,SIZE);
     	cuerpo.setCache(true);
-    	//cuerpo.setCacheHint(CacheHint.SPEED);
+    	cuerpo.setCacheHint(CacheHint.ROTATE);
     	canon.setCache(true);
-    	//canon.setCacheHint(CacheHint.SPEED);
+    	canon.setCacheHint(CacheHint.ROTATE);
     	huella = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/huella.png")));
     	
     	tempX = x;
