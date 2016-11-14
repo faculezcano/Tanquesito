@@ -180,8 +180,9 @@ public class tester extends Application {
 				}
 					
 				
-				//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
-				//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);
+				double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
+				double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
+				j.apuntar(mouseX-xDiscrepance, mouseY-yDiscrepance);
 			}
 			});
 			
