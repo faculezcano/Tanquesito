@@ -1,10 +1,15 @@
 package assets;
 
 import assets.tanques.Jugador;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -24,18 +29,33 @@ public class HUD extends HBox{
 	
 	protected Node node;
 	
+	protected ImagePattern imgVida = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/vida.png")));
+	protected ImagePattern imgBala = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png")));
+	
 	public HUD(){
 		super();
+		
 		resistencia = new Rectangle(0,0,0,5);
 		resistencia.setFill(Color.LIGHTGREEN);
-		VBox vidaResistencia = new VBox();
-		vidaResistencia.getChildren().addAll(vida,resistencia);
-		vidaResistencia.setMinWidth(100);
+		Rectangle resistenciaBack = new Rectangle(0,0,58,5);
+		resistenciaBack.setFill(Color.DARKGRAY);
+		
+		Group groupRes = new Group();
+		groupRes.getChildren().addAll(resistenciaBack,resistencia);
+		
+		vida.setSpacing(5);
+		balas.setSpacing(5);
+		balas.setPadding(new Insets(3,0,0,0));
+		VBox vidaResistencia = new VBox(5);
+		vidaResistencia.getChildren().addAll(vida,groupRes);
+		//vidaResistencia.setMinWidth();
 		HBox boxNivel = new HBox();
 		boxNivel.getChildren().addAll(new Text("Nivel: "), lvl);
 		HBox boxPuntos = new HBox();
 		boxPuntos.getChildren().addAll(new Text("Puntos: "),puntos);
 		getChildren().addAll(vidaResistencia,boxNivel,boxPuntos,balas);
+		setSpacing(20);
+		setAlignment(Pos.CENTER_LEFT);
 	}
 	
 	public void setJugador (Jugador j){
@@ -57,7 +77,7 @@ public class HUD extends HBox{
 			vida.getChildren().clear();
 			for(int i = 0; i < j.getVidas(); i ++){
 				Rectangle rVida = new Rectangle(0,0,16,16);
-				rVida.setFill(Color.RED);
+				rVida.setFill(imgVida);
 				vida.getChildren().add(rVida);
 			}
 			vidaAnterior = j.getVidas();
@@ -65,10 +85,10 @@ public class HUD extends HBox{
 	}
 	
 	private void updateResistencia(){
-		if(resAnterior != j.getResistencia()){
-			resistencia.setWidth(100.0*(double)j.getResistencia()/j.getNivel().getGolpesResiste());
-			resAnterior = j.getResistencia();
-		}
+		//if(resAnterior != j.getResistencia()){
+			resistencia.setWidth(58*(double)j.getResistencia()/j.getNivel().getGolpesResiste());
+			//resAnterior = j.getResistencia();
+		//}
 	}
 	
 	private void updatePuntos(){
@@ -90,8 +110,9 @@ public class HUD extends HBox{
 		if(balasAnterior != balasDisponibles){
 			balas.getChildren().clear();
 			for(int i = 0; i < balasDisponibles; i ++){
-				Rectangle rBala = new Rectangle(0,0,16,16);
-				rBala.setFill(Color.GRAY);
+				Rectangle rBala = new Rectangle(0,0,20,10);
+				
+				rBala.setFill(imgBala);
 				balas.getChildren().add(rBala);
 			}
 			balasAnterior = balasDisponibles;
