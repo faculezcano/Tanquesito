@@ -36,6 +36,12 @@ public class NivelCuatro extends Nivel {
 	public boolean RompeMetal() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "4";
+	}
 	
 
 }

@@ -4,16 +4,19 @@ import java.awt.MouseInfo;
 
 import assets.*;
 import assets.tanques.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -31,6 +34,7 @@ public class tester extends Application {
 	protected TanqueEnemigo enemigo;
 	protected TanqueEnemigo enemigo2;
 	protected Text puntos;
+	protected HUD hud;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -40,19 +44,24 @@ public class tester extends Application {
 		
 		g = new Group();
 		s = new Scene(g,1024,600, Color.BEIGE);
-		enemigo = null;
+		//BorderPane bp = new BorderPane();
+		
+		Group groupMapa = new Group();
+		//bp.setCenter(groupMapa);
+		map = new Mapa(8,8,groupMapa);
+		
+		hud = new HUD();
+		//bp.setBottom(hud);
+		
 		j = new Jugador(48,48);
 		j.addToGroup(g);
-		//g.getChildren().add(enemigo.getForma());
-		puntos= new Text("PUNTOS="+j.getPuntos());
-		puntos.setFont(Font.font("serif", FontWeight.BOLD, 15));
 		
-		puntos.setX(10);
-		puntos.setY(580);
-		g.getChildren().add(puntos);
-		map = new Mapa(8,8,g);
-		
+		hud.setJugador(j);
+		hud.update();
 		map.setJugador(j);
+		
+		g.getChildren().addAll(groupMapa,hud);
+		//g.getChildren().add(bp);
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
 		
@@ -62,10 +71,20 @@ public class tester extends Application {
 		bindearTeclado();
 		
 		stage.setScene(s);
-		stage.setResizable(false);
+		//stage.setResizable(false);
 		stage.show();
 		
 		map.startColisiones();
+		
+		AnimationTimer hudUpdater = (new AnimationTimer(){
+			@Override
+			public void handle(long arg0) {
+				hud.update();
+			}
+		});
+		
+		hudUpdater.start();
+		
 	}
 	
 	private void bindearMouse(){

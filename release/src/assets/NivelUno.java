@@ -35,4 +35,10 @@ public class NivelUno extends Nivel {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "1";
+	}
+
 }

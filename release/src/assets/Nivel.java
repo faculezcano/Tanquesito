@@ -17,5 +17,7 @@ public abstract class Nivel {
 	public abstract int getDisparosSimul();
 	
 	public abstract boolean RompeMetal();
+	
+	public abstract String toString();
 
 }
