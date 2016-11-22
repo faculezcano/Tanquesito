@@ -100,7 +100,7 @@ public class Mapa {
         //startColisiones();
         expT = new LinkedList<Image>() ;
         try {
-	        File carpeta = new File("src/img/ExplosionSimpleProto1");
+	        File carpeta = new File("src/ExplosionSimpleProto1/");
 	        File[] imgs = carpeta.listFiles();
 	        Arrays.sort(imgs);
 	        for (File img:imgs){
@@ -420,9 +420,45 @@ public class Mapa {
     
     protected void addEnemigoAleatorio(double x, double y){
     	if(enemigos.size() < 5){
-    		TanqueEnemigo t = new TanqueBasico(this,x,y);
+    		
+    		//int enemig = (int)rand.nextGaussian(); 
+    		/*int enemig = rand.nextInt(2);
+    		switch (enemig){
+			
+				case '0':
+					TanqueEnemigo t = new TanqueBasico(this,x,y);
+		    		addEnemigo(t);
+	    		break;
+	    		
+				case '1':
+					TanqueEnemigo t2 = new TanqueBlindado(this,x,y);
+		    		addEnemigo(t2);
+	    		break;
+	    		
+				case '2':
+					TanqueEnemigo t3 = new TanqueRapido(this,x,y);
+		    		addEnemigo(t3);
+	    		break;
+    		
+				case '3':
+					TanqueEnemigo t4 = new TanquePoder(this,x,y);
+		    		addEnemigo(t4);
+	    		break;
+    		}*/
+    		//System.out.println("el numerode enemigo es "+ enemig);
+    		TanqueEnemigo t = new TanqueRapido(this,x,y);
     		addEnemigo(t);
-    	}
+//    		if (enemig == 0){
+//    			TanqueEnemigo t = new TanqueBlindado(this,x,y);
+//    			addEnemigo(t);
+//    		}
+//    		else {
+//    			TanqueEnemigo t = new TanqueBasico(this,x,y);
+//	    		addEnemigo(t);
+//    		}
+    			
+    	}	
+    	
     }
     
     private void colisionesJugadorBullet(Bullet b){

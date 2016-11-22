@@ -19,6 +19,7 @@ public class TanqueBlindado extends TanqueEnemigo {
 	protected int giroAleatorio;
 	protected int cantPisadas;
 	protected boolean calleSinSalida = false;
+	protected boolean disparoPorChoque = false;
 
 	public TanqueBlindado(Mapa m,double x, double y) {
     	super(m,x,y);
@@ -27,8 +28,8 @@ public class TanqueBlindado extends TanqueEnemigo {
     	vel_disparo = 2;
     	resistencia = 4;
     	
-    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_tanque.png"))));
-    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_canon.png"))));
+    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/KV-2_Body.png"))));
+    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/KV-2_Cannon.png"))));
     	
     	direccion = rand.nextInt(4);
     	setVelocidad(velAleatoria(direccion));
@@ -77,6 +78,21 @@ public class TanqueBlindado extends TanqueEnemigo {
 	@Override
 	public void colisiona() {
 		
+		int i = rand.nextInt(2);
+		
+		if(i == 0 && bullets.isEmpty()){
+			Bullet b = disparar();
+			if(b!=null){
+				disparoPorChoque = true;
+				map.addBullet(b);
+			}
+		}
+		
+		if(i!=0){
+			disparoPorChoque = false;
+		}
+		
+		
 		tiroLimpio = false;
 		setVelocidad(new Point2D(0,0));
 		tiroLimpio = false;
@@ -89,7 +105,6 @@ public class TanqueBlindado extends TanqueEnemigo {
 		tiroLimpio = false;
 		cantPisadas = 0;
 		calleSinSalida=true;
-		//tiroLimpio = false;
 	}
 	
 	protected int giroAleatorio(){
