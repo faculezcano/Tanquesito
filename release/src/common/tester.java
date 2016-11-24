@@ -43,7 +43,7 @@ public class tester extends Application {
 		
 		
 		g = new Group();
-		s = new Scene(g,1024,600, Color.PERU);
+		s = new Scene(g,1024,600, Color.OLIVE);
 		//BorderPane bp = new BorderPane();
 		
 		Group groupMapa = new Group();

@@ -100,7 +100,7 @@ public class Mapa {
         //startColisiones();
         expT = new LinkedList<Image>() ;
         try {
-	        File carpeta = new File("src/ExplosionSimpleProto1/");
+	        File carpeta = new File("src/img/ExplosionSimpleProto1/");
 	        File[] imgs = carpeta.listFiles();
 	        Arrays.sort(imgs);
 	        for (File img:imgs){
