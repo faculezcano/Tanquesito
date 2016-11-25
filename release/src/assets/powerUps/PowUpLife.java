@@ -4,15 +4,16 @@ package assets.powerUps;
 import assets.PowerUp;
 import assets.Tanque;
 import common.Mapa;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 /**
- * 
  */
 public class PowUpLife extends PowerUp {
 
 	public PowUpLife(double x, double y, Mapa m) {
 		super(x, y, m);
-		// TODO Auto-generated constructor stub
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpVida.png"))));
 	}
 
 	@Override

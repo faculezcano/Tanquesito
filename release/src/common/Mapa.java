@@ -59,6 +59,7 @@ public class Mapa {
     protected Obstaculo aguila;
     protected Tanque enemigo;
     
+    protected double dificul = 0.9; 
     
     protected Group pisadasAgua;
     protected Group tanques;
@@ -76,7 +77,7 @@ public class Mapa {
     
     protected Random rand = new Random();
     
-    protected int habilitarPU=0;
+    protected int habilitarPU = 0;
     
 	/**
      * @param cantX 
@@ -440,10 +441,11 @@ public class Mapa {
     protected void addPowerUPAleatorio(double xPU, double yPU){
     	if(habilitarPU==4){
     		
-    		int randomPU=rand.nextInt(5);
+    		int randomPU = rand.nextInt(5);
     		switch(randomPU){
     		
 	    		case 0:
+	    			System.out.println();
 	    			System.out.println("se creo una granada");
 	    			PowerUp granada= new PowUPGranade(xPU,yPU,this);
 	    			powerups.getChildren().add(granada.getForma());
@@ -451,6 +453,7 @@ public class Mapa {
 					break;
 	    		
 	    		case 1:
+	    			System.out.println();
 	    			System.out.println("se creo un casco");
 	    			PowerUp casco= new PowUpHelm(xPU,yPU,this);
 	    			powerups.getChildren().add(casco.getForma());
@@ -458,28 +461,31 @@ public class Mapa {
 					break;
 	    			
 	    		case 2:
-	    			System.out.println("se creo una vida");
+	    			System.out.println();
+	    			System.out.println("se creo una vida\n");
 	    			PowerUp vida= new PowUpLife(xPU,yPU,this);
 	    			powerups.getChildren().add(vida.getForma());
 					powerUps.add(vida);
 					break;
 	    			
 	    		case 3:
-	    			System.out.println("se creo una pala");
+	    			System.out.println();
+	    			System.out.println("se creo una pala\n");
 	    			PowerUp pala= new PowUPShovel(xPU,yPU,this);
 	    			powerups.getChildren().add(pala.getForma());
 					powerUps.add(pala);
 					break;
 	    			
 	    		case 4:
-	    			System.out.println("se creo una estrella");
+	    			System.out.println();
+	    			System.out.println("se creo una estrella\n");
 	    			PowerUp estrella= new PowUpStar(xPU,yPU,this);
 	    			powerups.getChildren().add(estrella.getForma());
 					powerUps.add(estrella);
 					break;
 	    			
 	    		case 5:
-	    			System.out.println("se creo un tiempo");
+	    			System.out.println("se creo un tiempo\n");
 	    			PowerUp tiempo= new PowUPTime(xPU,yPU,this);
 	    			powerups.getChildren().add(tiempo.getForma());
 					powerUps.add(tiempo);
@@ -491,46 +497,37 @@ public class Mapa {
     	}
     }
     
+    
+    int n = 0;
     protected void addEnemigoAleatorio(double x, double y){
     	if(enemigos.size() < 5){
+    		TanqueEnemigo t = null; 
+    		double lv = rand.nextGaussian() + dificul;
     		
-    		//int enemig = (int)rand.nextGaussian(); 
-    		/*int enemig = rand.nextInt(2);
-    		switch (enemig){
-			
-				case '0':
-					TanqueEnemigo t = new TanqueBasico(this,x,y);
-		    		addEnemigo(t);
-	    		break;
-	    		
-				case '1':
-					TanqueEnemigo t2 = new TanqueBlindado(this,x,y);
-		    		addEnemigo(t2);
-	    		break;
-	    		
-				case '2':
-					TanqueEnemigo t3 = new TanqueRapido(this,x,y);
-		    		addEnemigo(t3);
-	    		break;
+    		System.out.println("num:"+n+" Lv del enemigo:"+ lv);
+    		n++;
+    		//lv = Math.abs(lv); 
     		
-				case '3':
-					TanqueEnemigo t4 = new TanquePoder(this,x,y);
-		    		addEnemigo(t4);
-	    		break;
-    		}*/
-    		//System.out.println("el numerode enemigo es "+ enemig);
-    		TanqueEnemigo t = new TanqueRapido(this,x,y);
+    		if (lv > 4)
+    			lv = 4;
+    		else
+    			if (lv < 0)
+    				lv = 0;
+    		
+    		if (lv < 1)
+    			t = new TanqueBasico(this,x,y);
+    		else
+    			if (lv < 2)
+    				t = new TanqueRapido(this,x,y);
+    			else
+    				if(lv < 3) 
+    					t = new TanquePoder(this,x,y);
+    				else
+    					if(lv <=4)
+    						t = new TanqueBlindado(this,x,y);
+    		
     		addEnemigo(t);
-//    		if (enemig == 0){
-//    			TanqueEnemigo t = new TanqueBlindado(this,x,y);
-//    			addEnemigo(t);
-//    		}
-//    		else {
-//    			TanqueEnemigo t = new TanqueBasico(this,x,y);
-//	    		addEnemigo(t);
-//    		}
-    			
-    	}	
+    	}
     	
     }
     
