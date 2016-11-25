@@ -9,7 +9,7 @@ import common.Mapa;
  */
 public class PowUpStar extends PowerUp {
 
-	protected PowUpStar(double x, double y, Mapa m) {
+	public PowUpStar(double x, double y, Mapa m) {
 		super(x, y, m);
 		// TODO Auto-generated constructor stub
 	}

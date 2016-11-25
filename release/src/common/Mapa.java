@@ -76,6 +76,8 @@ public class Mapa {
     
     protected Random rand = new Random();
     
+    protected int habilitarPU=0;
+    
 	/**
      * @param cantX 
      * @param cantY 
@@ -330,9 +332,10 @@ public class Mapa {
 			int libreX = rand.nextInt(43);
 			int libreY = rand.nextInt(23);
 			
-			int x,y,w,h;
+			int x,y,w,h,xPU,yPU;
 			
 			boolean esLibre;
+			boolean librePU;
 			
 			long time = System.nanoTime();
 
@@ -350,6 +353,10 @@ public class Mapa {
 					
 				if(colisionOk){
 					double deltaT = (now - time)/50000000.0;
+					//double deltaTPU=(now - time)/(40000000.0*jugador.getNivel().getNum()); // tiempo entre creacion de power up
+					xPU=(rand.nextInt(43)*PowerUp.SIZE/2);
+					yPU=(rand.nextInt(23)*PowerUp.SIZE/2);
+					librePU=true;
 					time = now;
 					
 					esLibre = true;
@@ -360,6 +367,10 @@ public class Mapa {
 						
 						if(esLibre && colisiona(x,y,Tanque.SIZE,Tanque.SIZE,o))
 							esLibre=false;
+						if(librePU && colisiona(xPU,yPU,PowerUp.SIZE,PowerUp.SIZE,o)){
+							librePU=false;
+						}
+						
 					}
 
 					for(Bullet b: bullets){
@@ -372,15 +383,23 @@ public class Mapa {
 						for(final TanqueEnemigo en: enemigos){
 							if(esLibre && ObjetoDinamico.distancia(x, y,en) < 240)
 								esLibre=false;
+							if(librePU && ObjetoDinamico.distancia(xPU, yPU,en) < 240){
+								librePU=false;
+							}
 							en.mover(deltaT);
 						}
 					}
 					
 					if(esLibre && jugador != null && ObjetoDinamico.distancia(x, y,jugador) < 240)
 						esLibre=false;
+					if(librePU && jugador != null && ObjetoDinamico.distancia(xPU, yPU,jugador) < 240)
+						esLibre=false;
 					
 					if(esLibre){
 						addEnemigoAleatorio(x,y);
+					}
+					if(librePU){
+						addPowerUPAleatorio(xPU,yPU);
 					}
 					
 					libreX = rand.nextInt(43);
@@ -416,6 +435,60 @@ public class Mapa {
 				bullets.remove(b);
 			}
 		}
+    }
+    
+    protected void addPowerUPAleatorio(double xPU, double yPU){
+    	if(habilitarPU==4){
+    		
+    		int randomPU=rand.nextInt(5);
+    		switch(randomPU){
+    		
+	    		case 0:
+	    			System.out.println("se creo una granada");
+	    			PowerUp granada= new PowUPGranade(xPU,yPU,this);
+	    			powerups.getChildren().add(granada.getForma());
+					powerUps.add(granada);
+					break;
+	    		
+	    		case 1:
+	    			System.out.println("se creo un casco");
+	    			PowerUp casco= new PowUpHelm(xPU,yPU,this);
+	    			powerups.getChildren().add(casco.getForma());
+					powerUps.add(casco);
+					break;
+	    			
+	    		case 2:
+	    			System.out.println("se creo una vida");
+	    			PowerUp vida= new PowUpLife(xPU,yPU,this);
+	    			powerups.getChildren().add(vida.getForma());
+					powerUps.add(vida);
+					break;
+	    			
+	    		case 3:
+	    			System.out.println("se creo una pala");
+	    			PowerUp pala= new PowUPShovel(xPU,yPU,this);
+	    			powerups.getChildren().add(pala.getForma());
+					powerUps.add(pala);
+					break;
+	    			
+	    		case 4:
+	    			System.out.println("se creo una estrella");
+	    			PowerUp estrella= new PowUpStar(xPU,yPU,this);
+	    			powerups.getChildren().add(estrella.getForma());
+					powerUps.add(estrella);
+					break;
+	    			
+	    		case 5:
+	    			System.out.println("se creo un tiempo");
+	    			PowerUp tiempo= new PowUPTime(xPU,yPU,this);
+	    			powerups.getChildren().add(tiempo.getForma());
+					powerUps.add(tiempo);
+					break;
+    		}
+    		
+    		
+    		habilitarPU=0;
+    	}
     }
     
     protected void addEnemigoAleatorio(double x, double y){
@@ -528,7 +601,9 @@ public class Mapa {
 					tenemigo.afectar();
 					b.colisiona();
 					if(tenemigo.getResistencia()<=0){
-						eliminarEnemigo(tenemigo);		
+						eliminarEnemigo(tenemigo);
+						habilitarPU++;
+						System.out.println("cantidad de enemigos muertos:"+ habilitarPU);
 					}
 					if(b.getResistencia()<=0){
 						Platform.runLater(new SyncRemover(b.getForma(),balasObstaculos));

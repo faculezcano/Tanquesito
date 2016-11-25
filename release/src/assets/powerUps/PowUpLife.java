@@ -10,7 +10,7 @@ import common.Mapa;
  */
 public class PowUpLife extends PowerUp {
 
-	protected PowUpLife(double x, double y, Mapa m) {
+	public PowUpLife(double x, double y, Mapa m) {
 		super(x, y, m);
 		// TODO Auto-generated constructor stub
 	}

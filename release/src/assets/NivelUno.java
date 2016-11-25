@@ -4,6 +4,7 @@ public class NivelUno extends Nivel {
 	
 	public NivelUno(){
 		next = new NivelDos();
+		num=1;
 	}
 
 	@Override
