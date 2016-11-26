@@ -76,6 +76,7 @@ public class tester extends Application {
 		
 		map.startColisiones();
 		
+		
 		AnimationTimer hudUpdater = (new AnimationTimer(){
 			@Override
 			public void handle(long arg0) {

@@ -74,10 +74,14 @@ public class Mapa {
     
     protected boolean enemigosCongelados=false;
     protected boolean jugadorInvulnerable=false;
+    protected boolean cortartodo = false;
     
     protected Random rand = new Random();
     
     protected int habilitarPU = 0;
+    
+    protected AnimationTimer anim;
+    protected Thread threadColisiones;
     
 	/**
      * @param cantX 
@@ -158,6 +162,12 @@ public class Mapa {
     	//g.getChildren().add(enemigo.getForma());
     	
     	return enemigo;
+    	
+    }
+    
+    public void PararHilos(){
+    	anim.stop();
+    	threadColisiones.interrupt();
     	
     }
     
@@ -257,6 +267,7 @@ public class Mapa {
 					colisionesObstBullet(b);
 				}
 				
+				
 				for(PowerUp pu: powerUps){
 					if(colisiona(pu,jugador)){
 						pu.colisionaTanque(jugador);
@@ -313,19 +324,21 @@ public class Mapa {
 						Thread.sleep(33);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				}
 			}
     		
     	});
     	
-    	Thread t = new Thread(colisiones);
-    	t.setDaemon(true);
-    	t.setName("colisiones");
-    	t.start();
     	
-    	AnimationTimer anim = (new AnimationTimer(){
+    	
+    	threadColisiones = new Thread(colisiones);
+    	threadColisiones.setDaemon(true);
+    	threadColisiones.setName("colisiones");
+    	threadColisiones.start();
+    	
+    	anim = (new AnimationTimer(){
     		
     		/*final int fps = 30;
 			double deltaT = 1.0/fps;*/
@@ -355,14 +368,14 @@ public class Mapa {
 				if(colisionOk){
 					double deltaT = (now - time)/50000000.0;
 					//double deltaTPU=(now - time)/(40000000.0*jugador.getNivel().getNum()); // tiempo entre creacion de power up
-					xPU=(rand.nextInt(43)*PowerUp.SIZE/2);
-					yPU=(rand.nextInt(23)*PowerUp.SIZE/2);
+					xPU=(rand.nextInt(43)*Obstaculo.SIZE);
+					yPU=(rand.nextInt(23)*Obstaculo.SIZE);
 					librePU=true;
 					time = now;
 					
 					esLibre = true;
-					x=libreX*Tanque.SIZE/2;
-					y=libreY*Tanque.SIZE/2;
+					x=libreX*Obstaculo.SIZE;
+					y=libreY*Obstaculo.SIZE;
 					
 					for(Obstaculo o : obstaculos){
 						
@@ -425,6 +438,13 @@ public class Mapa {
 		
 		while (!colisionesBala.isEmpty()){
 			Obstaculo ob = colisionesBala.remove();
+			
+			if(ob == aguila){
+				cortartodo = true;
+				this.PararHilos();
+				System.out.println("Perdiste MAL!!!!!!!!!!!!!!!!!!!!1");
+			}
+			
 			ob.colisionaBala(b);
 			
 			if (ob.GetVida() == 0) {
@@ -447,6 +467,7 @@ public class Mapa {
 	    		case 0:
 	    			System.out.println();
 	    			System.out.println("se creo una granada");
+	    			System.out.println();
 	    			PowerUp granada= new PowUPGranade(xPU,yPU,this);
 	    			powerups.getChildren().add(granada.getForma());
 					powerUps.add(granada);
@@ -455,6 +476,7 @@ public class Mapa {
 	    		case 1:
 	    			System.out.println();
 	    			System.out.println("se creo un casco");
+	    			System.out.println();
 	    			PowerUp casco= new PowUpHelm(xPU,yPU,this);
 	    			powerups.getChildren().add(casco.getForma());
 					powerUps.add(casco);
@@ -463,6 +485,7 @@ public class Mapa {
 	    		case 2:
 	    			System.out.println();
 	    			System.out.println("se creo una vida\n");
+	    			System.out.println();
 	    			PowerUp vida= new PowUpLife(xPU,yPU,this);
 	    			powerups.getChildren().add(vida.getForma());
 					powerUps.add(vida);
@@ -470,7 +493,8 @@ public class Mapa {
 	    			
 	    		case 3:
 	    			System.out.println();
-	    			System.out.println("se creo una pala\n");
+	    			System.out.println("se creo una pala");
+	    			System.out.println();
 	    			PowerUp pala= new PowUPShovel(xPU,yPU,this);
 	    			powerups.getChildren().add(pala.getForma());
 					powerUps.add(pala);
@@ -478,7 +502,8 @@ public class Mapa {
 	    			
 	    		case 4:
 	    			System.out.println();
-	    			System.out.println("se creo una estrella\n");
+	    			System.out.println("se creo una estrella");
+	    			System.out.println();
 	    			PowerUp estrella= new PowUpStar(xPU,yPU,this);
 	    			powerups.getChildren().add(estrella.getForma());
 					powerUps.add(estrella);
@@ -504,7 +529,7 @@ public class Mapa {
     		TanqueEnemigo t = null; 
     		double lv = rand.nextGaussian() + dificul;
     		
-    		System.out.println("num:"+n+" Lv del enemigo:"+ lv);
+    		//System.out.println("num:"+n+" Lv del enemigo:"+ lv);
     		n++;
     		//lv = Math.abs(lv); 
     		

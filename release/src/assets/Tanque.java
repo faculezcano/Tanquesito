@@ -1,5 +1,6 @@
 package assets;
 
+import java.applet.AudioClip;
 import java.util.LinkedList;
 
 import common.Animation;
@@ -15,6 +16,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -40,6 +43,7 @@ public abstract class Tanque extends ObjetoDinamico {
     protected LinkedList<Shape> pisadas;
     
     protected Image[] aniDisparo;
+    protected MediaPlayer disparoSound;
     
     
     protected Tanque(double x, double y){
@@ -92,6 +96,8 @@ public abstract class Tanque extends ObjetoDinamico {
 		
 		animacionDisparo();
 		
+		disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
+		disparoSound.play();
 		return bala;
     }
     
