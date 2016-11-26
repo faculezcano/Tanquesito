@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -55,6 +56,8 @@ public class Mapa {
     protected ConcurrentLinkedQueue<Obstaculo> limites;
     protected ConcurrentLinkedQueue<Point2D> posicionesLibres;
     
+    protected ConcurrentLinkedQueue<Node> aAgregar;
+    
     protected Jugador jugador;
     protected Obstaculo aguila;
     protected Tanque enemigo;
@@ -73,8 +76,6 @@ public class Mapa {
     protected Image[] aniImpactoBala;
     
     protected boolean enemigosCongelados=false;
-    protected boolean jugadorInvulnerable=false;
-    protected boolean cortartodo = false;
     
     protected Random rand = new Random();
     
@@ -82,6 +83,9 @@ public class Mapa {
     
     protected AnimationTimer anim;
     protected Thread threadColisiones;
+    
+    protected EventHandler<ActionEvent> eventoPerder;
+    protected EventHandler<ActionEvent> eventoGanar;
     
 	/**
      * @param cantX 
@@ -103,6 +107,7 @@ public class Mapa {
         powerUps = new ConcurrentLinkedQueue<PowerUp>();
         limites = new ConcurrentLinkedQueue<Obstaculo>();
         posicionesLibres = new ConcurrentLinkedQueue<Point2D>();
+        aAgregar = new ConcurrentLinkedQueue<Node>();
         
         //startColisiones();
         expT = new LinkedList<Image>() ;
@@ -165,10 +170,9 @@ public class Mapa {
     	
     }
     
-    public void PararHilos(){
+    public void stopColisiones(){
     	anim.stop();
     	threadColisiones.interrupt();
-    	
     }
     
     /*protected boolean colisiona(Shape s1, Shape s2){
@@ -211,10 +215,10 @@ public class Mapa {
     }
     
     public boolean colisiona(int x, int y, int width, int height, ObjetoDinamico od){
-    	if( ObjetoDinamico.distancia(x,y,od)> 96){
+    	/*if( ObjetoDinamico.distancia(x,y,od)> 96){
     		noentran++;
     		return false;
-    	}
+    	}*/
 
     	Rectangle r2 = (Rectangle)od.getForma();
     	
@@ -260,53 +264,7 @@ public class Mapa {
 			@Override
 			public void run() {
 				while(true){
-				for(Bullet b:bullets){
-					
-					colisionesTanquesBullet(b);
-					
-					colisionesObstBullet(b);
-				}
 				
-				
-				for(PowerUp pu: powerUps){
-					if(colisiona(pu,jugador)){
-						pu.colisionaTanque(jugador);
-						eliminarPowerUp(pu);
-					}
-				}
-				
-				for(Obstaculo o : obstaculos){
-					
-					if(colisiona(o,jugador))
-						o.colisionaTanque(jugador);
-					
-					for(TanqueEnemigo ene: enemigos){
-						
-						
-						if(colisiona(o,ene)){
-							double antesX = ene.getX(),antesY = ene.getY();
-							ene.setTiroLimpio(false);
-							o.colisionaTanque(ene);
-							ene.setTiroLimpio(false);
-							if((antesX != ene.getX() || antesY != ene.getY()) &&colisiona(o,ene))
-								eliminarEnemigo(ene);
-						}
-
-						if(colisiona(jugador,ene)){
-							ene.colisiona();
-							jugador.colisiona();
-						}
-					}
-				}
-				
-				for(TanqueEnemigo ene1: enemigos){
-					for(TanqueEnemigo ene2: enemigos){
-						if(ene1 != ene2 && colisiona(ene1,ene2)){
-							ene1.colisiona();
-							ene2.colisiona();
-						}
-					}
-				}
 				
 				/*try {
 					synchronized(monitor){
@@ -321,7 +279,7 @@ public class Mapa {
 				
 				try {
 					while(colisionOk == true)
-						Thread.sleep(33);
+						Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -336,7 +294,7 @@ public class Mapa {
     	threadColisiones = new Thread(colisiones);
     	threadColisiones.setDaemon(true);
     	threadColisiones.setName("colisiones");
-    	threadColisiones.start();
+    	//threadColisiones.start();
     	
     	anim = (new AnimationTimer(){
     		
@@ -364,18 +322,27 @@ public class Mapa {
 				/*synchronized(monitor){
 					monitor.notify();
 				}*/
+				
+				controlColisiones();
+				colisionOk = true;
 					
 				if(colisionOk){
 					double deltaT = (now - time)/50000000.0;
 					//double deltaTPU=(now - time)/(40000000.0*jugador.getNivel().getNum()); // tiempo entre creacion de power up
-					xPU=(rand.nextInt(43)*Obstaculo.SIZE);
-					yPU=(rand.nextInt(23)*Obstaculo.SIZE);
+					if(habilitarPU >= 4){
+						xPU=(rand.nextInt(43)*Obstaculo.SIZE);
+						yPU=(rand.nextInt(23)*Obstaculo.SIZE);
+					}
 					librePU=true;
 					time = now;
 					
 					esLibre = true;
 					x=libreX*Obstaculo.SIZE;
 					y=libreY*Obstaculo.SIZE;
+					
+					while(!aAgregar.isEmpty()){
+						balasObstaculos.getChildren().add(aAgregar.poll());
+					}
 					
 					for(Obstaculo o : obstaculos){
 						
@@ -394,7 +361,7 @@ public class Mapa {
 					jugador.mover(deltaT);
 		
 					if(!enemigosCongelados){
-						for(final TanqueEnemigo en: enemigos){
+						for(TanqueEnemigo en: enemigos){
 							if(esLibre && ObjetoDinamico.distancia(x, y,en) < 240)
 								esLibre=false;
 							if(librePU && ObjetoDinamico.distancia(xPU, yPU,en) < 240){
@@ -416,14 +383,89 @@ public class Mapa {
 						addPowerUPAleatorio(xPU,yPU);
 					}
 					
-					libreX = rand.nextInt(43);
-					libreY = rand.nextInt(23);
+					if(enemigos.size() <= 5){
+						libreX = rand.nextInt(43);
+						libreY = rand.nextInt(23);
+					}
 					colisionOk = false;
 				}
 
 			}});
 
     	anim.start();
+    }
+    
+    protected void controlColisiones(){
+    	for(Bullet b:bullets){
+			
+			colisionesTanquesBullet(b);
+			
+			colisionesObstBullet(b);
+		}
+		
+		
+		for(PowerUp pu: powerUps){
+			if(colisiona(pu,jugador)){
+				pu.colisionaTanque(jugador);
+				eliminarPowerUp(pu);
+			}
+		}
+		
+		for(Obstaculo o : obstaculos){
+			
+			if(colisiona(o,jugador))
+				o.colisionaTanque(jugador);
+			
+			for(TanqueEnemigo ene: enemigos){
+				
+				
+				if(colisiona(o,ene)){
+					double antesX = ene.getX(),antesY = ene.getY();
+					ene.setTiroLimpio(false);
+					o.colisionaTanque(ene);
+					ene.setTiroLimpio(false);
+					if((antesX != ene.getX() || antesY != ene.getY()) &&colisiona(o,ene))
+						eliminarEnemigo(ene);
+				}
+
+				if(colisiona(jugador,ene)){
+					ene.colisiona();
+					jugador.colisiona();
+				}
+			}
+		}
+		
+		if(colisiona(aguila,jugador)){
+			aguila.colisionaTanque(jugador);
+		}
+		
+		for(TanqueEnemigo ene1: enemigos){
+			if(colisiona(aguila,ene1)){
+				aguila.colisionaTanque(ene1);
+			}
+			for(TanqueEnemigo ene2: enemigos){
+				if(ene1 != ene2 && colisiona(ene1,ene2)){
+					ene1.colisiona();
+					ene2.colisiona();
+				}
+			}
+		}
+    }
+    
+    public void setOnPerder(EventHandler<ActionEvent> e){
+    	eventoPerder = e;
+    }
+    
+    protected void perder(){
+    	if(eventoPerder != null){
+    		eventoPerder.handle(new ActionEvent(this,null));
+    	}
+    }
+    
+    protected void ganar(){
+    	if(eventoGanar != null){
+    		eventoGanar.handle(new ActionEvent(this,null));
+    	}
     }
     
     private void colisionesObstBullet(Bullet b){
@@ -435,15 +477,16 @@ public class Mapa {
 			}		
 		
 		}
+    	
+    	if(colisiona(aguila,b)){
+    		if(!jugador.MisBalas().contains(b)){
+    			perder();
+    			colisionesBala.add(aguila);
+    		}
+    	}
 		
 		while (!colisionesBala.isEmpty()){
 			Obstaculo ob = colisionesBala.remove();
-			
-			if(ob == aguila ){
-				cortartodo = true;
-				this.PararHilos();
-				System.out.println("Perdiste MAL!!!!!!!!!!!!!!!!!!!!1");
-			}
 			
 			ob.colisionaBala(b);
 			
@@ -465,52 +508,36 @@ public class Mapa {
     		switch(randomPU){
     		
 	    		case 0:
-	    			System.out.println();
-	    			System.out.println("se creo una granada");
-	    			System.out.println();
 	    			PowerUp granada= new PowUPGranade(xPU,yPU,this);
 	    			powerups.getChildren().add(granada.getForma());
 					powerUps.add(granada);
 					break;
 	    		
 	    		case 1:
-	    			System.out.println();
-	    			System.out.println("se creo un casco");
-	    			System.out.println();
 	    			PowerUp casco= new PowUpHelm(xPU,yPU,this);
 	    			powerups.getChildren().add(casco.getForma());
 					powerUps.add(casco);
 					break;
 	    			
 	    		case 2:
-	    			System.out.println();
-	    			System.out.println("se creo una vida\n");
-	    			System.out.println();
 	    			PowerUp vida= new PowUpLife(xPU,yPU,this);
 	    			powerups.getChildren().add(vida.getForma());
 					powerUps.add(vida);
 					break;
 	    			
 	    		case 3:
-	    			System.out.println();
-	    			System.out.println("se creo una pala");
-	    			System.out.println();
 	    			PowerUp pala= new PowUPShovel(xPU,yPU,this);
 	    			powerups.getChildren().add(pala.getForma());
 					powerUps.add(pala);
 					break;
 	    			
 	    		case 4:
-	    			System.out.println();
-	    			System.out.println("se creo una estrella");
-	    			System.out.println();
 	    			PowerUp estrella= new PowUpStar(xPU,yPU,this);
 	    			powerups.getChildren().add(estrella.getForma());
 					powerUps.add(estrella);
 					break;
 	    			
 	    		case 5:
-	    			System.out.println("se creo un tiempo\n");
 	    			PowerUp tiempo= new PowUPTime(xPU,yPU,this);
 	    			powerups.getChildren().add(tiempo.getForma());
 					powerUps.add(tiempo);
@@ -561,7 +588,7 @@ public class Mapa {
     		if(colisiona(b,jugador)){
     			//jugador.afectar();
     			
-    			if(!jugadorInvulnerable){
+    			if(!jugador.esInvunerable()){
 //	    			int nuevaResistencia=jugador.getResistencia()-b.getResistencia();
 //	        		jugador.setResistencia(nuevaResistencia);
     				jugador.afectar();
@@ -584,8 +611,9 @@ public class Mapa {
     	jugador.perderVida();
     	jugador.setX(jugador.getXinicial());
 		jugador.setY(jugador.getYinicial());
+		Invulnerable(5);
 		if(jugador.getVidas() == 0){
-			System.out.println("Perdiste...........");
+			perder();
 		}
     	
     	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
@@ -636,7 +664,7 @@ public class Mapa {
 		}else //if(colisiona(b.getForma(), jugador.getForma())){
 			if(colisiona(b,jugador)){
 				//TODO: matar jugador
-				if(!jugadorInvulnerable){
+				if(!jugador.esInvunerable()){
 					jugador.afectar();
 					if(jugador.getResistencia()==0){
 						this.matarJugador();
@@ -658,7 +686,8 @@ public class Mapa {
      */
     public void addEnemigo(TanqueEnemigo o) {
         enemigos.add(o);
-        Platform.runLater(new SyncAdder(o,tanques));
+        //Platform.runLater(new SyncAdder(o,tanques));
+        o.addToGroup(tanques);
         o.setAnimacionDisparo(aniDisparo);
     }
     
@@ -681,7 +710,8 @@ public class Mapa {
 		Animation ani = new Animation (r,expT,500);
 		ani.play();
 		
-		Platform.runLater(new SyncAdder(r,tanques));
+		//Platform.runLater(new SyncAdder(r,tanques));
+		tanques.getChildren().add(r);
 		
 		
 		ani.setOnFinished(new EventHandler<ActionEvent>(){
@@ -700,15 +730,16 @@ public class Mapa {
     public void addBullet(final Bullet b){
     	bullets.add(b);
     	b.setAnimacionImpacto(aniImpactoBala);
-    	Platform.runLater(new Runnable(){
+    	/*Platform.runLater(new Runnable(){
 
 			@Override
 			public void run() {
 				balasObstaculos.getChildren().add(b.getForma());
 			}
     		
-    	});
-    	
+    	});*/
+    	//balasObstaculos.getChildren().add(b.getForma());
+    	aAgregar.add(b.getForma());
     }
 
     /**
@@ -784,7 +815,6 @@ public class Mapa {
 						if(aguila == null){
 							obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
 							pisadasAgua.getChildren().add(obstaculo.getForma());
-							obstaculos.add(obstaculo);
 							aguila = obstaculo;
 						}
 						break;
@@ -875,6 +905,7 @@ public class Mapa {
      */
     public void setJugador(Jugador j) {
        	jugador = j;
+       	j.addToGroup(tanques);
        	j.setAnimacionDisparo(aniDisparo);
     }
     
@@ -901,15 +932,15 @@ public class Mapa {
     	t.start();
     }
     
-    public void Invulnerable(){
-    	jugadorInvulnerable=true;
+    public void Invulnerable(int segundos){
+    	jugador.setInvunerable(true);
     	Thread t=new Thread(new Runnable(){
     		public void run(){
     			try{
-    				Thread.sleep(10000);
+    				Thread.sleep(segundos*1000);
     			}catch(InterruptedException e){}  
     			
-    			jugadorInvulnerable=false;
+    			jugador.setInvunerable(false);
     		}
     	});
     	t.setDaemon(true);
@@ -917,7 +948,8 @@ public class Mapa {
     }
     
     protected void addObstaculo(Obstaculo o, Group g){
-    	Platform.runLater(new SyncAdder(o.getForma(),g));
+    	//Platform.runLater(new SyncAdder(o.getForma(),g));
+    	g.getChildren().add(o.getForma());
 		obstaculos.add(o);
     }
     
@@ -940,13 +972,4 @@ public class Mapa {
     	}
     	return null;
     }
-    
-    public void estado(){
-    	System.out.println("Estado interno del Jugador:");
-    	System.out.println("Resistencia:"+jugador.getResistencia());
-    	System.out.println("Vidas:"+jugador.getVidas()); 
-    	System.out.println("Puntos:"+jugador.getPuntos());
-    }
-    
-
 }

@@ -19,7 +19,7 @@ public class PowUpHelm extends PowerUp {
 	@Override
 	public void colisionaTanque(Tanque t) {
 		if(t==map.getJugador()){
-			map.Invulnerable();
+			map.Invulnerable(10);
 		}
 		
 	}

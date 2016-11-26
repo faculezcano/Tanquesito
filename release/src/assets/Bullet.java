@@ -34,6 +34,7 @@ public class Bullet extends ObjetoDinamico {
 	protected Tanque t;
 	
 	protected Image[] aniImpacto;
+	protected final ImagePattern fill = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png")));
 	//protected MediaPlayer disparoSound;
 	
 	//private LinkedList<Circle> humo;
@@ -55,7 +56,7 @@ public class Bullet extends ObjetoDinamico {
     	forma = new Rectangle(0,0,SIZE.getX(),SIZE.getY());
     	forma.setX(x);
 		forma.setY(y);
-		forma.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png"))));
+		forma.setFill(fill);
 		forma.setCache(true);
 		forma.setCacheHint(CacheHint.SPEED);
 		resistencia = 1;
@@ -216,7 +217,7 @@ public class Bullet extends ObjetoDinamico {
 //			t.start();
 			}
 			if(resistencia <= 0){
-				animacionImpacto();
+				//animacionImpacto();
 				t.removeBullet(this);
 			}
 	}

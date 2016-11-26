@@ -7,6 +7,7 @@ import assets.tanques.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -49,12 +50,22 @@ public class tester extends Application {
 		Group groupMapa = new Group();
 		//bp.setCenter(groupMapa);
 		map = new Mapa(8,8,groupMapa);
+		map.setOnPerder(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("tester: EventoPerder capturado");
+				map.stopColisiones();
+				Platform.runLater(new SyncRemover(groupMapa,g));
+				
+			}
+			
+		});
 		
 		hud = new HUD();
 		//bp.setBottom(hud);
 		
 		j = new Jugador(48,48);
-		j.addToGroup(g);
 		
 		hud.setJugador(j);
 		hud.update();
@@ -158,45 +169,15 @@ public class tester extends Application {
 				}
 				j.setVelocidad(vel);
 				
-				if(e.getCode()==KeyCode.O){
-					
-						if(enemigo == null){
-							enemigo = map.crearEnemigo();
-							//map.addEnemigo(enemigo);
-							//enemigo.addToGroup(g);
-							//g.getChildren().add(enemigo.getForma());
-							//enemigo.setPosicion(new Point2D(512,240));
-							//map.addEnemigo(enemigo);
-							//g.getChildren().add(enemigo.getForma());
-							//map.addEnemigo(enemigo);
-							//enemigo.setPosicion(new Point2D(32,97));
-						}else{
-							//int puntosEnemigo = enemigo.getPuntos();
-							//map.eliminarEnemigo(enemigo);
-							//g.getChildren().remove(enemigo.getForma());
-							map.eliminarEnemigo(enemigo);
-							//j.setPuntos((j.getPuntos())+puntosEnemigo);
-							puntos.setText("PUNTOS="+j.getPuntos());
-							//map.eliminarEnemigo(enemigo);
-							enemigo=null;
-						}
-				}
 				if(e.getCode()==KeyCode.P){
 					
 					if(!map.getEnemigos().isEmpty()){
 						map.eliminarEnemigo(map.getEnemigos().poll());
 					}
 				}
-				if(e.getCode()==KeyCode.M){
-					map.estado();
-				}
 				if(e.getCode()==KeyCode.L){
 					
 					map.getJugador().subirNivel();
-				}
-				if(e.getCode()==KeyCode.B){
-					
-					System.out.println(j.getNivel().toString());
 				}
 					
 				

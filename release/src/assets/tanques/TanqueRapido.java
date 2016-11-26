@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import assets.Bullet;
+import assets.Tanque;
 import assets.TanqueEnemigo;
 import common.Mapa;
 
@@ -45,7 +46,7 @@ public class TanqueRapido extends TanqueEnemigo {
 		 giroLentoCanon();
 			
 		 double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
-		 if( distanciaJug <= distanciaTiro){
+		 if(!map.getJugador().esInvunerable() && distanciaJug <= distanciaTiro){
 			 apuntar(map.getJugador().getX(),map.getJugador().getY());
 			 if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
 				 if(bullets.isEmpty()){
@@ -61,7 +62,7 @@ public class TanqueRapido extends TanqueEnemigo {
 			 }
 		 }
 		 else {
-			 apuntar(getX()+getVelocidad().getX(),getY()+getVelocidad().getY());
+			 apuntar(getX()+Tanque.SIZE/2+getVelocidad().getX(),getY()+Tanque.SIZE/2+getVelocidad().getY());
 			 this.tiro.setStroke(Color.BLACK);
 		 }
 			

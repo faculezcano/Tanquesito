@@ -2,14 +2,15 @@ package common;
 
 import assets.ObjetoDinamico;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
 public class SyncRemover implements Runnable {
 	Group g;
-	Shape s;
+	Node s;
 	ObjetoDinamico o;
 	
-	public SyncRemover(Shape s, Group g){
+	public SyncRemover(Node s, Group g){
 		this.g = g;
 		this.s = s;
 	}

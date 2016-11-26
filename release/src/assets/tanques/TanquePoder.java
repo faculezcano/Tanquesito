@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import assets.Bullet;
+import assets.Tanque;
 import assets.TanqueEnemigo;
 import common.Mapa;
 
@@ -38,6 +39,7 @@ public class TanquePoder extends TanqueEnemigo {
     	
     	giroAleatorio = rand.nextInt(5)+2;
     	cantPisadas = 0;
+    	distanciaTiro = 480;
 	}
 	
 	
@@ -45,7 +47,7 @@ public class TanquePoder extends TanqueEnemigo {
 		 giroLentoCanon();
 			
 		 double distanciaJug = distancia(map.getJugador(),this); //map.getJugador().getPosicion().distance(getPosicion());
-		 if( distanciaJug <= distanciaTiro){
+		 if(!map.getJugador().esInvunerable() && distanciaJug <= distanciaTiro){
 			 apuntar(map.getJugador().getX(),map.getJugador().getY());
 			 if(tiroLimpio && Math.abs(canonAng - canon.getRotate()) < 1){
 				 if(bullets.isEmpty()){
@@ -53,15 +55,13 @@ public class TanquePoder extends TanqueEnemigo {
 					 if(b!=null){
 						 disparoPorChoque = false;
 						 map.addBullet(b);
-						 if(distanciaJug >= distanciaTiro*.75)
-							 setVelocidad(getVelocidad().multiply(-1));
 					 }
 				 }
 				 this.tiro.setStroke(Color.GREEN);
 			 }
 		 }
 		 else {
-			 apuntar(getX()+getVelocidad().getX(),getY()+getVelocidad().getY());
+			 apuntar(getX()+Tanque.SIZE/2+getVelocidad().getX(),getY()+Tanque.SIZE/2+getVelocidad().getY());
 			 this.tiro.setStroke(Color.BLACK);
 		 }
 			

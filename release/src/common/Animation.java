@@ -87,14 +87,15 @@ public class Animation extends Transition {
     }
     
     protected void pintar(){
-    	Platform.runLater(new Runnable(){
+    	/*Platform.runLater(new Runnable(){
 
 			@Override
 			public void run() {
 				s.setFill(new ImagePattern(current));
 			}
     		
-    	});
+    	});*/
+    	s.setFill(new ImagePattern(current));
     }
 
 }

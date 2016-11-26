@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -64,6 +65,11 @@ public abstract class Tanque extends ObjetoDinamico {
     	
     	tempX = x;
     	tempY = y;
+    	
+    	DropShadow ds = new DropShadow();
+		ds.setRadius(10);
+		canon.setEffect(ds);
+    	
     }
     
     @Override
@@ -94,10 +100,10 @@ public abstract class Tanque extends ObjetoDinamico {
 		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
 		
-		animacionDisparo();
+		//animacionDisparo();
 		
-		disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
-		disparoSound.play();
+		//disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
+		//disparoSound.play();
 		return bala;
     }
     
@@ -251,8 +257,8 @@ public abstract class Tanque extends ObjetoDinamico {
      */
     public void apuntar(double x, double y) {
     	//Correccion de la base ortogonal de la gui y el angulo devuelto por arcTan
-    	double deltax = x - getX();
-		double deltay = -y + getY();
+    	double deltax = x - getX()-Tanque.SIZE/2;
+		double deltay = -y + getY()+Tanque.SIZE/2;
 		double angle = Math.atan2(deltay, deltax);
 		angle = (angle < 0 ? -angle : (2*Math.PI - angle));
 		
