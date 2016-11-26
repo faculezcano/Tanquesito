@@ -439,7 +439,7 @@ public class Mapa {
 		while (!colisionesBala.isEmpty()){
 			Obstaculo ob = colisionesBala.remove();
 			
-			if(ob == aguila){
+			if(ob == aguila ){
 				cortartodo = true;
 				this.PararHilos();
 				System.out.println("Perdiste MAL!!!!!!!!!!!!!!!!!!!!1");
