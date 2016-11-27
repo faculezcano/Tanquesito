@@ -20,12 +20,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.sun.webkit.network.data.Handler;
+
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -36,8 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-
-
+import javafx.util.Duration;
 import assets.*;
 import assets.obstaculos.*;
 import assets.powerUps.*;
@@ -504,6 +507,35 @@ public class Mapa {
     protected void addPowerUPAleatorio(double xPU, double yPU){
     	if(habilitarPU==4){
     		
+    		boolean pararDestello=false;
+    		Rectangle rect= new Rectangle(xPU-((PowerUp.SIZE*17)/2)+12,yPU-((PowerUp.SIZE*17)/2)+12,PowerUp.SIZE*17,PowerUp.SIZE*17);
+    		rect.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/destello.png"))));
+    		
+    		rect.setCache(true);
+    		rect.setCacheHint(CacheHint.SPEED);
+    		powerups.getChildren().add(rect);
+    		
+    		FadeTransition ft = new FadeTransition(Duration.seconds(1.5), rect);
+    	     ft.setFromValue(1.0);
+    	     ft.setToValue(0.3);
+    	     ft.setCycleCount(20);
+    	     ft.setAutoReverse(true);
+    	     ft.play();
+    	     
+    	     ft.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					ft.stop();
+					Platform.runLater(new SyncRemover(rect,powerups));
+		    		powerUps.remove(rect);
+					
+				}
+			});;
+    	     
+    	     
+    	     
+    	     
     		int randomPU = rand.nextInt(5);
     		switch(randomPU){
     		
@@ -550,7 +582,9 @@ public class Mapa {
     }
     
     
-    int n = 0;
+    
+
+	int n = 0;
     protected void addEnemigoAleatorio(double x, double y){
     	if(enemigos.size() < 5){
     		TanqueEnemigo t = null; 
@@ -755,6 +789,8 @@ public class Mapa {
     public void cargarMapa(String archivo) {
 		
 		try {
+			
+			
 			
 			//FileReader f;
 			//f = new FileReader(archivo);
