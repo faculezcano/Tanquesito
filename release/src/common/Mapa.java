@@ -507,7 +507,7 @@ public class Mapa {
     protected void addPowerUPAleatorio(double xPU, double yPU){
     	if(habilitarPU==4){
     		
-    		boolean pararDestello=false;
+    		
     		Rectangle rect= new Rectangle(xPU-((PowerUp.SIZE*17)/2)+12,yPU-((PowerUp.SIZE*17)/2)+12,PowerUp.SIZE*17,PowerUp.SIZE*17);
     		rect.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/destello.png"))));
     		
