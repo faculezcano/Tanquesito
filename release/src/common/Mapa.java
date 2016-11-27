@@ -518,7 +518,7 @@ public class Mapa {
     		FadeTransition ft = new FadeTransition(Duration.seconds(1.5), rect);
     	     ft.setFromValue(1.0);
     	     ft.setToValue(0.3);
-    	     ft.setCycleCount(20);
+    	     ft.setCycleCount(5);
     	     ft.setAutoReverse(true);
     	     ft.play();
     	     
