@@ -42,14 +42,22 @@ public class tester extends Application {
 	protected Text puntos;
 	protected HUD hud;
 
-	@Override
+	@Override	
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Tanquesito");
 		stage.centerOnScreen();
-		this.stage = stage;
+		stage.setWidth(1038);
+		stage.setHeight(628);
+		stage.setResizable(false);
 		
+		this.stage = stage;
+		this.stage.setResizable(false);
+		this.stage.setWidth(1038);
+		this.stage.setHeight(628);
 		g = new Group();
+		
 		s = new Scene(g,1024,600, Color.OLIVE);
+		
 		s.setCursor(Cursor.CROSSHAIR);
 		//BorderPane bp = new BorderPane();
 		
