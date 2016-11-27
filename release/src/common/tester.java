@@ -1,6 +1,9 @@
 package common;
 
+import java.awt.AWTException;
 import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Robot;
 
 import assets.*;
 import assets.tanques.*;
@@ -10,6 +13,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -30,6 +34,7 @@ public class tester extends Application {
 	protected double yDiscrepance = 0.0;
 	protected Jugador j;
 	protected Scene s;
+	protected Stage stage;
 	protected Group g;
 	protected Mapa map;
 	protected TanqueEnemigo enemigo;
@@ -41,10 +46,11 @@ public class tester extends Application {
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Tanquesito");
 		stage.centerOnScreen();
-		
+		this.stage = stage;
 		
 		g = new Group();
 		s = new Scene(g,1024,600, Color.OLIVE);
+		s.setCursor(Cursor.CROSSHAIR);
 		//BorderPane bp = new BorderPane();
 		
 		Group groupMapa = new Group();
@@ -92,6 +98,7 @@ public class tester extends Application {
 			@Override
 			public void handle(long arg0) {
 				hud.update();
+				acomodarMouse();
 			}
 		});
 		
@@ -111,6 +118,16 @@ public class tester extends Application {
 			}
 			
 		});
+		
+		
+		
+		/*s.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent e) {
+				acomodarMouse();
+				
+			}
+		});*/
 		
 		s.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -140,6 +157,28 @@ public class tester extends Application {
 			}
 			
 		});
+	}
+	
+	protected void acomodarMouse(){
+		Point mousePos = MouseInfo.getPointerInfo().getLocation();
+		int nuevaX = (int)mousePos.getX();
+		int nuevaY = (int)mousePos.getY();
+
+		if(mousePos.getX()<s.getWindow().getX())
+			nuevaX = (int)s.getWindow().getX()+10;
+		else if(mousePos.getX()>s.getWindow().getWidth()+s.getWindow().getX())
+			nuevaX = (int)s.getWindow().getWidth() + (int)s.getWindow().getX()-10;
+		
+		if(mousePos.getY()<s.getWindow().getY())
+			nuevaY = (int)s.getWindow().getY()+50;
+		else if(mousePos.getY()>s.getWindow().getHeight()+s.getWindow().getY())
+			nuevaY = (int)s.getWindow().getHeight() + (int)s.getWindow().getY()-10;
+		
+		if(nuevaX != (int)mousePos.getX() || nuevaY != (int)mousePos.getY()){
+			try {
+				new Robot().mouseMove(nuevaX, nuevaY);
+			} catch (AWTException e1) {}
+		}
 	}
 	
 	protected KeyCode ultima;
