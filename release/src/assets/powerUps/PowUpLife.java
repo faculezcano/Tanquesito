@@ -13,7 +13,7 @@ public class PowUpLife extends PowerUp {
 
 	public PowUpLife(double x, double y, Mapa m) {
 		super(x, y, m);
-		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpVida.png"))));
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUPLife.png"))));
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class PowUpStar extends PowerUp {
 
 	public PowUpStar(double x, double y, Mapa m) {
 		super(x, y, m);
-		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowerUPstar.png"))));
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpS.png"))));
 	}
 
 	@Override

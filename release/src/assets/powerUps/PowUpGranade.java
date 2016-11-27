@@ -10,11 +10,11 @@ import javafx.scene.paint.ImagePattern;
 /**
  * 
  */
-public class PowUPGranade extends PowerUp {
+public class PowUpGranade extends PowerUp {
 
-	public PowUPGranade(double x, double y, Mapa m){
+	public PowUpGranade(double x, double y, Mapa m){
 		super(x,y,m);
-		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/Granada.png"))));
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpGO.png"))));
 	}
 	
 	

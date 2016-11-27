@@ -508,7 +508,7 @@ public class Mapa {
     		switch(randomPU){
     		
 	    		case 0:
-	    			PowerUp granada= new PowUPGranade(xPU,yPU,this);
+	    			PowerUp granada= new PowUpGranade(xPU,yPU,this);
 	    			powerups.getChildren().add(granada.getForma());
 					powerUps.add(granada);
 					break;
@@ -526,7 +526,7 @@ public class Mapa {
 					break;
 	    			
 	    		case 3:
-	    			PowerUp pala= new PowUPShovel(xPU,yPU,this);
+	    			PowerUp pala= new PowUpShovel(xPU,yPU,this);
 	    			powerups.getChildren().add(pala.getForma());
 					powerUps.add(pala);
 					break;
@@ -801,16 +801,6 @@ public class Mapa {
 						pisadasAgua.getChildren().add(obstaculo.getForma());
 						obstaculos.add(obstaculo);
 						break;
-					case '5':
-						PowerUp granada= new PowUPShovel(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
-						powerups.getChildren().add(granada.getForma());
-						powerUps.add(granada);
-						break;
-					case '7':
-						PowerUp time= new PowUPTime(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
-						powerups.getChildren().add(time.getForma());
-						powerUps.add(time);
-						break;
 					case '8':
 						if(aguila == null){
 							obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
@@ -818,8 +808,37 @@ public class Mapa {
 							aguila = obstaculo;
 						}
 						break;
-					}
-					
+					case 'g':
+						PowerUp granada= new PowUpGranade(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(granada.getForma());
+						powerUps.add(granada);
+						break;
+					case 'v':
+						PowerUp star= new PowUpStar(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(star.getForma());
+						powerUps.add(star);
+						break;
+					case 'p':
+						PowerUp pala= new PowUpShovel(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(pala.getForma());
+						powerUps.add(pala);
+						break;
+					case 't':
+						PowerUp time= new PowUPTime(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(time.getForma());
+						powerUps.add(time);
+						break;
+					case 'l':
+						PowerUp vida = new PowUpLife(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(vida.getForma());
+						powerUps.add(vida);
+						break;
+					case 'c':
+						PowerUp casco = new PowUpHelm(col*Obstaculo.SIZE,fila*Obstaculo.SIZE,this);
+						powerups.getChildren().add(casco.getForma());
+						powerUps.add(casco);
+						break;	
+					}	
 					if(cadena.charAt(col+1) == '0' || cadena.charAt(col+1) == '3'){
 						posicionesLibres.add(new Point2D(col*Obstaculo.SIZE,fila*Obstaculo.SIZE));
 					}
@@ -831,9 +850,11 @@ public class Mapa {
 				fila++;
 				cadena=b.readLine();
 			}
-			b.close();
 			
-		} catch (FileNotFoundException e) {
+			b.close();
+			}
+			
+		 catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();

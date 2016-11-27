@@ -9,11 +9,11 @@ import javafx.scene.paint.ImagePattern;
 /**
  * 
  */
-public class PowUPShovel extends PowerUp {
+public class PowUpShovel extends PowerUp {
 
-	public PowUPShovel(double x, double y, Mapa m) {
+	public PowUpShovel(double x, double y, Mapa m) {
 		super(x, y, m);
-		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpS.png"))));
+		forma.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/PowUpShovel.png"))));
 	}
 
 	@Override
