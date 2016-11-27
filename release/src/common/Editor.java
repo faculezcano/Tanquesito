@@ -1,4 +1,5 @@
 package common;
+import java.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import assets.Obstaculo;
@@ -6,19 +7,16 @@ import assets.obstaculos.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.SubScene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.*;
+import javafx.scene.image.Image;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
+import javafx.scene.shape.*;
+import javafx.stage.*;
 
 public class Editor extends Application {
 
@@ -28,12 +26,23 @@ public class Editor extends Application {
 	protected Obstaculo current;
 	protected int currentInt = 1;
 	
+	protected Stage stage;
+	
 	protected Group pisadasAgua;
     protected Group balasObstaculos;
     protected Group arboles;
     protected SubScene sceneMapa;
     
+    protected Paint fillNuevo = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/new.png")));
+    protected Paint fillAbrir = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/open.png")));
+    protected Paint fillGuardar = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/save.png")));
+    
     protected ConcurrentLinkedQueue<Obstaculo> obstaculos = new ConcurrentLinkedQueue<Obstaculo>();
+    
+    protected int ultiX = 0;
+    protected int ultiY = 0;
+    
+    protected boolean huboCambio = false;
     
     public static void main(String[] args) {
 		launch(args);
@@ -41,6 +50,7 @@ public class Editor extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		this.stage = stage;
 		stage.setTitle("Tanquesito - Editor de mapa");
 		
 		g = new Group();
@@ -88,7 +98,70 @@ public class Editor extends Application {
         toolbar.setSpacing(10);
         toolbar.setPadding(new Insets(10,10,10,10));
         
-        Shape tool = new Ladrillo(0,0).getForma();
+        Alert al = new Alert(AlertType.CONFIRMATION);
+        al.setContentText("¿Esta seguro que no quiere guardar el mapa?");
+        
+        Shape tool = new Rectangle(0,0,24,24);
+        tool.setFill(fillNuevo);
+        tool.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(huboCambio){
+					al.setTitle("Nuevo mapa");
+					al.setHeaderText(al.getTitle());
+					al.showAndWait();
+				}
+				
+				if(!huboCambio || al.getResult() == ButtonType.OK){
+					vaciarMapa();
+					createObstaculo();
+					huboCambio = false;
+				}
+				
+			}
+        });
+        toolbar.getChildren().add(tool);
+        
+        tool = new Rectangle(0,0,24,24);
+        tool.setFill(fillAbrir);
+        tool.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(huboCambio){
+					al.setTitle("Abrir mapa");
+					al.setHeaderText(al.getTitle());
+					al.showAndWait();
+				}
+				
+				if(!huboCambio || al.getResult() == ButtonType.OK){
+					FileChooser fc = new FileChooser();
+					fc.setTitle("Abrir mapa");
+					File file = fc.showOpenDialog(stage);
+					cargarMapa(file);
+				}
+			}
+        });
+        toolbar.getChildren().add(tool);
+        
+        tool = new Rectangle(0,0,24,24);
+        tool.setFill(fillGuardar);
+        tool.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent arg0) {
+				FileChooser fc = new FileChooser();
+				fc.setTitle("Guardar mapa");
+				File file = fc.showSaveDialog(stage);
+				guardarMapa(file);
+			}
+        });
+        toolbar.getChildren().add(tool);
+        
+        tool = new Line(0,0,0,24);
+        tool.setStroke(Color.GRAY);
+        toolbar.getChildren().add(tool);
+        
+        
+        tool = new Ladrillo(0,0).getForma();
         tool.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
@@ -156,6 +229,12 @@ public class Editor extends Application {
         return toolbar;
 	}
 	
+	protected void vaciarMapa(){
+		pisadasAgua.getChildren().clear();
+		balasObstaculos.getChildren().clear();
+		arboles.getChildren().clear();
+	}
+	
 	protected void ponerBlocks(){
 		for(int i = 0; i<map.length; i++){
 			map[i][0] = 9;
@@ -175,6 +254,9 @@ public class Editor extends Application {
 				
 				s.setX(Math.floor(e.getSceneX()/24)*24);
 				s.setY(Math.floor(e.getSceneY()/24)*24);
+				
+				ultiX = (int)s.getX();
+				ultiY = (int)s.getY();
 			}
 			
 		});
@@ -184,18 +266,23 @@ public class Editor extends Application {
 			public void handle(MouseEvent e) {
 				if(e.getButton() == MouseButton.PRIMARY){
 					Rectangle s = (Rectangle)current.getForma();
+					int x = (int)s.getX();
+					int y = (int)s.getY();
+					
 					s.setOpacity(1);
-					map[(int)(s.getX()/24)+1][(int)(s.getY()/24)+1] = currentInt;
-					
+					map[(x/24)+1][(y/24)+1] = currentInt;
+					eliminarObstaculo(x,y);
 					obstaculos.add(current);
-					
 					createObstaculo();
+					huboCambio = true;
+					
 				}else if(e.getButton() == MouseButton.SECONDARY){
 					Rectangle s = (Rectangle)current.getForma();
 					int x = (int)s.getX();
 					int y = (int)s.getY();
 					map[(x/24)+1][(y/24)+1] = 0;
 					eliminarObstaculo(x,y);
+					huboCambio = true;
 				}
 			}
 			
@@ -206,23 +293,23 @@ public class Editor extends Application {
 	protected void createObstaculo(){
 		switch(currentInt){
 		case 1:
-			current=new Ladrillo(0,0);
+			current=new Ladrillo(ultiX,ultiY);
 			balasObstaculos.getChildren().add(current.getForma());
 			break;
 		case 2:
-			current=new Metal(0,0);
+			current=new Metal(ultiX,ultiY);
 			balasObstaculos.getChildren().add(current.getForma());
 			break;
 		case 3:
-			current=new Arbol(0,0);
+			current=new Arbol(ultiX,ultiY);
 			arboles.getChildren().add(current.getForma());
 			break;
 		case 4:
-			current=new Agua(0,0);
+			current=new Agua(ultiX,ultiY);
 			pisadasAgua.getChildren().add(current.getForma());
 			break;
 		case 8:
-			current=new AguilaNasi(0,0);
+			current=new AguilaNasi(ultiX,ultiY);
 			balasObstaculos.getChildren().add(current.getForma());
 			break;
 		}
@@ -260,6 +347,79 @@ public class Editor extends Application {
 			balasObstaculos.getChildren().remove(current.getForma());
 			break;
 		}
+	}
+	
+	public void cargarMapa(File file){
+		try{
+			InputStreamReader f = new InputStreamReader(new FileInputStream(file));
+			
+			BufferedReader b = new BufferedReader(f);
+			
+			vaciarMapa();
+			
+			int fila = -1;
+			String cadena = b.readLine();
+			//enemigo = enemigos.poll();
+			
+			while(cadena != null){
+				for(int col=-1;col<cadena.length()-1;col++){
+
+					Obstaculo obstaculo;
+					map[col+1][fila+1]= Integer.parseInt(String.valueOf(cadena.charAt(col+1)));
+					switch (cadena.charAt(col+1)){
+					
+					case '9':
+						
+						break;
+					case '1':
+						obstaculo = new Ladrillo(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						balasObstaculos.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
+					case '2':
+						obstaculo = new Metal(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						balasObstaculos.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
+					case '3':
+						obstaculo = new Arbol(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						arboles.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
+					case '4':
+						obstaculo = new Agua(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						pisadasAgua.getChildren().add(obstaculo.getForma());
+						obstaculos.add(obstaculo);
+						break;
+					case '8':
+						obstaculo = new AguilaNasi(col*Obstaculo.SIZE,fila*Obstaculo.SIZE);
+						pisadasAgua.getChildren().add(obstaculo.getForma());
+						break;
+					}					
+				}
+				
+				fila++;
+				cadena=b.readLine();
+			}
+			
+			b.close();
+			createObstaculo();
+			huboCambio = false;
+			
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void guardarMapa(File file){
+		try{
+		    PrintWriter writer = new PrintWriter(file.getAbsolutePath(), "UTF-8");
+		    writer.println(this);
+		    writer.close();
+		    huboCambio = false;
+		} catch (IOException e) {}
 	}
 	
 	public String toString(){
