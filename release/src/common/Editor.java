@@ -365,7 +365,11 @@ public class Editor extends Application {
 				for(int col=-1;col<cadena.length()-1;col++){
 
 					Obstaculo obstaculo;
-					map[col+1][fila+1]= Integer.parseInt(String.valueOf(cadena.charAt(col+1)));
+					try{
+						map[col+1][fila+1]= Integer.parseInt(String.valueOf(cadena.charAt(col+1)));
+					}catch(NumberFormatException e){
+						
+					}
 					switch (cadena.charAt(col+1)){
 					
 					case '9':
