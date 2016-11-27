@@ -435,7 +435,7 @@ public class Mapa {
 			}
 		}
 		
-		if(colisiona(aguila,jugador)){
+		if(aguila!=null && colisiona(aguila,jugador)){
 			aguila.colisionaTanque(jugador);
 		}
 		
@@ -478,7 +478,7 @@ public class Mapa {
 		
 		}
     	
-    	if(colisiona(aguila,b)){
+    	if(aguila!=null && colisiona(aguila,b)){
     		if(!jugador.MisBalas().contains(b)){
     			perder();
     			colisionesBala.add(aguila);
