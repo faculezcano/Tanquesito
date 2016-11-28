@@ -46,9 +46,11 @@ public class TanqueBlindado extends TanqueEnemigo {
 			public void run() {
 				while(true){
 					try {
-						distanciaTiro = 240;
+						if(distanciaTiro == 480)
+							distanciaTiro = 240;
 						Thread.sleep((rand.nextInt(5)+10)*1000);
-						distanciaTiro = 480;
+						if(distanciaTiro == 240)
+							distanciaTiro = 480;
 						Thread.sleep((rand.nextInt(7)+3)*1000);
 					} catch (InterruptedException e) {}
 				}
