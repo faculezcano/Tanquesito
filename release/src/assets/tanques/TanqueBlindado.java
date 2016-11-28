@@ -63,8 +63,13 @@ public class TanqueBlindado extends TanqueEnemigo {
 		}
 		
 		//pisadas(p);
-
-		super.mover(deltaT);
+		
+		if(distanciaJug >= 360){
+    		super.mover(deltaT);
+    	}else{
+    		apuntar(map.getJugador().getX(),map.getJugador().getY());
+    	}
+    		
 		
 		tiroLimpio = true;
     }
