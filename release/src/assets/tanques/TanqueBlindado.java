@@ -1,5 +1,8 @@
 package assets.tanques;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -37,6 +40,25 @@ public class TanqueBlindado extends TanqueEnemigo {
     	
     	giroAleatorio = rand.nextInt(5)+2;
     	cantPisadas = 0;
+    	
+    	Thread thBuscando = new Thread(new Runnable(){
+			@Override
+			public void run() {
+				while(true){
+					try {
+						if(distanciaTiro == 480)
+							distanciaTiro = 240;
+						Thread.sleep((rand.nextInt(5)+10)*1000);
+						if(distanciaTiro == 240)
+							distanciaTiro = 480;
+						Thread.sleep((rand.nextInt(7)+3)*1000);
+					} catch (InterruptedException e) {}
+				}
+			}
+    	});
+    	thBuscando.setName("TanqueBlindado");
+    	thBuscando.setDaemon(true);
+    	thBuscando.start();
 	}
     
 	@Override
@@ -50,6 +72,7 @@ public class TanqueBlindado extends TanqueEnemigo {
 				if(bullets.isEmpty()){
 					Bullet b = disparar();
 					if(b!=null){
+						distanciaTiro=240;
 						disparoPorChoque = false;
 						map.addBullet(b);
 					}
@@ -63,8 +86,13 @@ public class TanqueBlindado extends TanqueEnemigo {
 		}
 		
 		//pisadas(p);
-
-		super.mover(deltaT);
+		
+		if(distanciaTiro <= 240){
+    		super.mover(deltaT);
+    	}else{
+    		//apuntar(map.getJugador().getX(),map.getJugador().getY());
+    	}
+    		
 		
 		tiroLimpio = true;
     }
@@ -74,6 +102,12 @@ public class TanqueBlindado extends TanqueEnemigo {
     	super.setVelocidad(vel);
     	setAngle(vel.angle(new Point2D(1,0)));
     }*/
+	
+	@Override
+	public void afectar(){
+		super.afectar();
+		distanciaTiro = (int)distancia(map.getJugador(),this)+48;
+	}
 
 	@Override
 	public void colisiona() {

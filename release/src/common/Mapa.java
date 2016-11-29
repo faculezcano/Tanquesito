@@ -65,7 +65,7 @@ public class Mapa {
     protected Obstaculo aguila;
     protected Tanque enemigo;
     
-    protected double dificul = 0.9; 
+    protected double dificul = 4; 
     
     protected Group pisadasAgua;
     protected Group tanques;
