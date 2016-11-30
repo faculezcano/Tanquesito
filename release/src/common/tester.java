@@ -128,7 +128,7 @@ public class tester extends Application {
 		
 		
 		Random rand = new Random();
-		int chance = rand.nextInt(2);
+		int chance = rand.nextInt(3);
 		switch(chance){
 		case 0:
 			map.cargarMapa("mapas/rombo.txt");
