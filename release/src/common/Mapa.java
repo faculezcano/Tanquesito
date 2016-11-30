@@ -699,7 +699,7 @@ public class Mapa {
 						eliminarEnemigo(tenemigo);
 						habilitarPU++;
 						kills++;
-						if (kills >= 2)
+						if (kills >= 20)
 							ganar();
 						System.out.println("cantidad de enemigos muertos:"+ habilitarPU);
 					}
