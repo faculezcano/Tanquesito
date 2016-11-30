@@ -162,7 +162,7 @@ public class tester extends Application {
 		if (chance == 0)
 			map.cargarMapa("mapas/rombo.txt");
 		else
-			map.cargarMapa("mapas/ProtoMap.txt");
+			map.cargarMapa("mapas/Lv1.txt");
 		
 		bindearMouse();
 		bindearTeclado();
