@@ -6,7 +6,6 @@ import assets.NivelUno;
 import assets.Tanque;
 import javafx.animation.FadeTransition;
 import javafx.scene.Group;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.util.Duration;

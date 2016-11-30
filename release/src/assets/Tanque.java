@@ -1,6 +1,5 @@
 package assets;
 
-import java.applet.AudioClip;
 import java.util.LinkedList;
 
 import common.Animation;
@@ -8,7 +7,6 @@ import common.Mapa;
 import common.SyncAdder;
 import common.SyncRemover;
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +15,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -100,7 +97,7 @@ public abstract class Tanque extends ObjetoDinamico {
 		final Bullet bala = new Bullet(this,pos,velBala);
 		bullets.add(bala);
 		
-		//animacionDisparo();
+		animacionDisparo();
 		
 		//disparoSound = new MediaPlayer(new Media("file:///"+ System.getProperty("user.dir").replace('\\', '/') +"/src/audio/8bit_bomb_explosion.wav"));
 		//disparoSound.play();

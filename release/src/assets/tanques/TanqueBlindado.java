@@ -1,8 +1,5 @@
 package assets.tanques;
 
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;

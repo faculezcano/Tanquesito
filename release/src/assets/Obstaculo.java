@@ -2,7 +2,6 @@ package assets;
 
 import javafx.geometry.Point2D;
 import javafx.scene.CacheHint;
-import javafx.scene.Node;
 import javafx.scene.shape.*;
 
 /**

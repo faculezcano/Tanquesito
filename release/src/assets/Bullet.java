@@ -2,11 +2,9 @@ package assets;
 
 import java.util.Random;
 
-import common.AnimatedGif;
 import common.Animation;
 import common.SyncAdder;
 import common.SyncRemover;
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +17,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  * 
@@ -162,6 +159,7 @@ public class Bullet extends ObjetoDinamico {
 		forma.setTranslateY(p.getY()+SIZE.getY()/2);
 	}*/
 	
+	@SuppressWarnings("unused")
 	private Circle crearHumo(){
 		Circle c = new Circle(getX()+SIZE.getX()/2-SIZE.getX()/2*Math.cos(Math.toRadians(forma.getRotate()))+r.nextGaussian(),getY()+SIZE.getY()/2-SIZE.getX()/2*Math.sin(Math.toRadians(forma.getRotate()))+r.nextGaussian(),SIZE.getY()*.8);
 		double col = (r.nextInt(2)+2)/10.0;
@@ -217,7 +215,7 @@ public class Bullet extends ObjetoDinamico {
 //			t.start();
 			}
 			if(resistencia <= 0){
-				//animacionImpacto();
+				animacionImpacto();
 				t.removeBullet(this);
 			}
 	}
