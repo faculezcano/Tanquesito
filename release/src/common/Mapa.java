@@ -265,43 +265,6 @@ public class Mapa {
     
     public void startColisiones(){
     	
-    	Runnable colisiones = (new Runnable(){
-
-			@Override
-			public void run() {
-				while(true){
-				
-				
-				/*try {
-					synchronized(monitor){
-						monitor.wait();
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
-				colisionOk = true;
-				
-				try {
-					while(colisionOk == true)
-						Thread.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				}
-				}
-			}
-    		
-    	});
-    	
-    	
-    	
-    	threadColisiones = new Thread(colisiones);
-    	threadColisiones.setDaemon(true);
-    	threadColisiones.setName("colisiones");
-    	//threadColisiones.start();
-    	
     	anim = (new AnimationTimer(){
     		
     		/*final int fps = 30;

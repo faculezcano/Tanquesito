@@ -92,7 +92,8 @@ public class GifDecoder {
   protected byte[] pixelStack;
   protected byte[] pixels;
 
-  protected ArrayList frames; // frames read from current file
+  @SuppressWarnings("rawtypes")
+protected ArrayList frames; // frames read from current file
   protected int frameCount;
 
   static class GifFrame {
@@ -483,7 +484,8 @@ public class GifDecoder {
   /**
    * Initializes or re-initializes reader
    */
-  protected void init() {
+  @SuppressWarnings("rawtypes")
+protected void init() {
     status = STATUS_OK;
     frameCount = 0;
     frames = new ArrayList();
@@ -653,7 +655,8 @@ public class GifDecoder {
   /**
    * Reads next frame image
    */
-  protected void readImage() {
+  @SuppressWarnings("unchecked")
+protected void readImage() {
     ix = readShort(); // (sub)image position & size
     iy = readShort();
     iw = readShort();

@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;

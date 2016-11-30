@@ -3,7 +3,6 @@ package common;
 import assets.ObjetoDinamico;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.shape.Shape;
 
 public class SyncRemover implements Runnable {
 	Group g;

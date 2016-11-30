@@ -9,7 +9,6 @@ import java.util.Random;
 import assets.*;
 import assets.tanques.*;
 import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
@@ -25,15 +23,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class tester extends Application {
 	
@@ -125,8 +118,7 @@ public class tester extends Application {
 		hud.setJugador(j);
 		hud.update();
 		map.setJugador(j);
-		
-		VBox vb = new VBox(sceneMapa,hud);
+
 		sceneMapa.setLayoutY(30);
 		
 		g.getChildren().addAll(sceneMapa,hud);
@@ -137,10 +129,16 @@ public class tester extends Application {
 		
 		Random rand = new Random();
 		int chance = rand.nextInt(2);
-		if (chance == 0)
+		switch(chance){
+		case 0:
 			map.cargarMapa("mapas/rombo.txt");
-		else
+			break;
+		case 1:
 			map.cargarMapa("mapas/Lv1.txt");
+			break;
+		default:
+			map.cargarMapa("mapas/tdp2016.txt");
+		}
 		
 		bindearMouse();
 		bindearTeclado();
