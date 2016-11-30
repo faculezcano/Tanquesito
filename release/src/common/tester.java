@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.util.Random;
 
 import assets.*;
 import assets.tanques.*;
@@ -75,7 +76,6 @@ public class tester extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("tester: EventoPerder capturado");
 				map.stopColisiones();
 				Platform.runLater(new SyncRemover(groupMapa,g));
 			
@@ -93,7 +93,7 @@ public class tester extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("tester: EventoPerder capturado");
+				
 				map.stopColisiones();
 				Platform.runLater(new SyncRemover(groupMapa,g));
 			
@@ -156,7 +156,13 @@ public class tester extends Application {
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
 		
-		map.cargarMapa("mapas/rombo.txt");
+		
+		Random rand = new Random();
+		int chance = rand.nextInt(2);
+		if (chance == 0)
+			map.cargarMapa("mapas/rombo.txt");
+		else
+			map.cargarMapa("mapas/ProtoMap.txt");
 		
 		bindearMouse();
 		bindearTeclado();
