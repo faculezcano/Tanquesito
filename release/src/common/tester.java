@@ -17,12 +17,14 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -41,6 +43,8 @@ public class tester extends Application {
 	protected TanqueEnemigo enemigo2;
 	protected Text puntos;
 	protected HUD hud;
+	protected Scene sceneGameOver;
+	protected Group grupoGameOver;
 
 	@Override	
 	public void start(Stage stage) throws Exception {
@@ -55,8 +59,11 @@ public class tester extends Application {
 		this.stage.setWidth(1038);
 		this.stage.setHeight(628);
 		g = new Group();
+		grupoGameOver=new Group();
 		
 		s = new Scene(g,1024,600, Color.OLIVE);
+		sceneGameOver= new Scene(grupoGameOver,1024,600);
+		sceneGameOver.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/gameover.jpg"))));
 		
 		s.setCursor(Cursor.CROSSHAIR);
 		//BorderPane bp = new BorderPane();
@@ -71,6 +78,12 @@ public class tester extends Application {
 				System.out.println("tester: EventoPerder capturado");
 				map.stopColisiones();
 				Platform.runLater(new SyncRemover(groupMapa,g));
+			
+				s=null;
+				stage.setScene(sceneGameOver);
+				
+				
+				
 				
 			}
 			
@@ -90,13 +103,14 @@ public class tester extends Application {
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
 		
-		map.cargarMapa("mapas/ProtoMap.txt");
+		map.cargarMapa("mapas/rombo.txt");
 		
 		bindearMouse();
 		bindearTeclado();
 		
 		stage.setScene(s);
 		//stage.setResizable(false);
+		
 		stage.show();
 		
 		map.startColisiones();
@@ -115,17 +129,50 @@ public class tester extends Application {
 	}
 	
 	private void bindearMouse(){
-		s.setOnMouseMoved(new EventHandler<MouseEvent>(){
-			@Override
-			public void handle(MouseEvent e) {
-				j.apuntar(e.getX(),e.getY());
-				Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
-				xDiscrepance = mousePos.getX()-e.getX();
-				yDiscrepance = mousePos.getY()-e.getY();
+		if(s!=null){
+			s.setOnMouseMoved(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent e) {
+					j.apuntar(e.getX(),e.getY());
+					Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
+					xDiscrepance = mousePos.getX()-e.getX();
+					yDiscrepance = mousePos.getY()-e.getY();
+					
+				}
 				
-			}
+			});
 			
-		});
+			
+			s.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				
+				@Override
+				public void handle(MouseEvent e) {
+					if(e.getButton() == MouseButton.PRIMARY){
+						Platform.runLater(new Runnable(){
+							
+							
+							@Override
+							public void run() {
+								if(j.getNivel().getDisparosSimul()> j.MisBalas().size()){
+							
+									Bullet b = j.disparar();
+									map.addBullet(b);
+									
+					
+								}
+								
+								
+							}
+							
+						});
+						
+						
+					}
+				}
+				
+			});
+		}
+		
 		
 		
 		
@@ -137,118 +184,97 @@ public class tester extends Application {
 			}
 		});*/
 		
-		s.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-			@Override
-			public void handle(MouseEvent e) {
-				if(e.getButton() == MouseButton.PRIMARY){
-					Platform.runLater(new Runnable(){
-						
-						
-						@Override
-						public void run() {
-							if(j.getNivel().getDisparosSimul()> j.MisBalas().size()){
-						
-								Bullet b = j.disparar();
-								map.addBullet(b);
-								
-				
-							}
-							
-							
-						}
-						
-					});
-					
-					
-				}
-			}
-			
-		});
+		
 	}
 	
 	protected void acomodarMouse(){
-		Point mousePos = MouseInfo.getPointerInfo().getLocation();
-		int nuevaX = (int)mousePos.getX();
-		int nuevaY = (int)mousePos.getY();
+		if(s!=null){
+			Point mousePos = MouseInfo.getPointerInfo().getLocation();
+			int nuevaX = (int)mousePos.getX();
+			int nuevaY = (int)mousePos.getY();
 
-		if(mousePos.getX()<s.getWindow().getX())
-			nuevaX = (int)s.getWindow().getX()+10;
-		else if(mousePos.getX()>s.getWindow().getWidth()+s.getWindow().getX())
-			nuevaX = (int)s.getWindow().getWidth() + (int)s.getWindow().getX()-10;
-		
-		if(mousePos.getY()<s.getWindow().getY())
-			nuevaY = (int)s.getWindow().getY()+50;
-		else if(mousePos.getY()>s.getWindow().getHeight()+s.getWindow().getY())
-			nuevaY = (int)s.getWindow().getHeight() + (int)s.getWindow().getY()-10;
-		
-		if(nuevaX != (int)mousePos.getX() || nuevaY != (int)mousePos.getY()){
-			try {
-				new Robot().mouseMove(nuevaX, nuevaY);
-			} catch (AWTException e1) {}
+			if(mousePos.getX()<s.getWindow().getX())
+				nuevaX = (int)s.getWindow().getX()+10;
+			else if(mousePos.getX()>s.getWindow().getWidth()+s.getWindow().getX())
+				nuevaX = (int)s.getWindow().getWidth() + (int)s.getWindow().getX()-10;
+			
+			if(mousePos.getY()<s.getWindow().getY())
+				nuevaY = (int)s.getWindow().getY()+50;
+			else if(mousePos.getY()>s.getWindow().getHeight()+s.getWindow().getY())
+				nuevaY = (int)s.getWindow().getHeight() + (int)s.getWindow().getY()-10;
+			
+			if(nuevaX != (int)mousePos.getX() || nuevaY != (int)mousePos.getY()){
+				try {
+					new Robot().mouseMove(nuevaX, nuevaY);
+				} catch (AWTException e1) {}
+			}
 		}
+		
+		
 	}
 	
 	protected KeyCode ultima;
 	
 	private void bindearTeclado(){
 		
-		s.setOnKeyPressed(new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent e) {
-				Point2D vel = j.getVelocidad();
-				if(e.getCode()==KeyCode.W){
-					vel = new Point2D(0, -j.velMovimiento());
-					ultima = e.getCode();
-					//j.setAngle(180);
-				}else if(e.getCode()==KeyCode.S){
-					vel = new Point2D(0, j.velMovimiento());
-					ultima = e.getCode();
-					//j.setAngle(0);
-				}else if(e.getCode()==KeyCode.A){
-					vel = new Point2D(-j.velMovimiento(),0);
-					ultima = e.getCode();
-					//j.setAngle(90);
-				}else if(e.getCode()==KeyCode.D){
-					vel = new Point2D(j.velMovimiento(),0);
-					ultima = e.getCode();
-					//j.setAngle(-90);
-				}
-				j.setVelocidad(vel);
-				
-				if(e.getCode()==KeyCode.P){
-					
-					if(!map.getEnemigos().isEmpty()){
-						map.eliminarEnemigo(map.getEnemigos().poll());
+		if(s!=null){
+			s.setOnKeyPressed(new EventHandler<KeyEvent>(){
+				@Override
+				public void handle(KeyEvent e) {
+					Point2D vel = j.getVelocidad();
+					if(e.getCode()==KeyCode.W){
+						vel = new Point2D(0, -j.velMovimiento());
+						ultima = e.getCode();
+						//j.setAngle(180);
+					}else if(e.getCode()==KeyCode.S){
+						vel = new Point2D(0, j.velMovimiento());
+						ultima = e.getCode();
+						//j.setAngle(0);
+					}else if(e.getCode()==KeyCode.A){
+						vel = new Point2D(-j.velMovimiento(),0);
+						ultima = e.getCode();
+						//j.setAngle(90);
+					}else if(e.getCode()==KeyCode.D){
+						vel = new Point2D(j.velMovimiento(),0);
+						ultima = e.getCode();
+						//j.setAngle(-90);
 					}
-				}
-				if(e.getCode()==KeyCode.L){
+					j.setVelocidad(vel);
 					
-					map.getJugador().subirNivel();
-				}
+					if(e.getCode()==KeyCode.P){
+						
+						if(!map.getEnemigos().isEmpty()){
+							map.eliminarEnemigo(map.getEnemigos().poll());
+						}
+					}
+					if(e.getCode()==KeyCode.L){
+						
+						map.getJugador().subirNivel();
+					}
+						
 					
+					double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
+					double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
+					j.apuntar(mouseX-xDiscrepance, mouseY-yDiscrepance);
+				}
+				});
 				
-				double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
-				double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
-				j.apuntar(mouseX-xDiscrepance, mouseY-yDiscrepance);
-			}
-			});
 			
-		
-		
-		s.setOnKeyReleased(new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent e) {
-				Point2D vel = j.getVelocidad();
-				if(ultima == e.getCode()){
-					vel = new Point2D(0,0);
+			
+			s.setOnKeyReleased(new EventHandler<KeyEvent>(){
+				@Override
+				public void handle(KeyEvent e) {
+					Point2D vel = j.getVelocidad();
+					if(ultima == e.getCode()){
+						vel = new Point2D(0,0);
+					}
+					j.setVelocidad(vel);
+					//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
+					//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);
 				}
-				j.setVelocidad(vel);
-				//Point2D mousePos = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY());
-				//j.pointTo(mousePos.getX()-xDiscrepance, mousePos.getY()-yDiscrepance);
-			}
-			
-		});
+				
+			});
+		}
 		
 	}
 

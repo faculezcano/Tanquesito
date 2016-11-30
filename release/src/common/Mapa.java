@@ -32,6 +32,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -89,6 +90,7 @@ public class Mapa {
     
     protected EventHandler<ActionEvent> eventoPerder;
     protected EventHandler<ActionEvent> eventoGanar;
+   
     
 	/**
      * @param cantX 
@@ -463,6 +465,9 @@ public class Mapa {
     	if(eventoPerder != null){
     		eventoPerder.handle(new ActionEvent(this,null));
     	}
+    	
+    	
+    	
     }
     
     protected void ganar(){
@@ -648,6 +653,7 @@ public class Mapa {
 		Invulnerable(5);
 		if(jugador.getVidas() == 0){
 			perder();
+			
 		}
     	
     	Rectangle r = new Rectangle(jugador.getX()-64,jugador.getY()-64,128,128);
