@@ -137,7 +137,7 @@ public class tester extends Application {
 			map.cargarMapa("mapas/Lv1.txt");
 			break;
 		default:
-			map.cargarMapa("mapas/tdp2016.txt");
+			map.cargarMapa("mapas/tdp2016");
 		}
 		
 		bindearMouse();
