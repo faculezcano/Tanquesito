@@ -87,7 +87,6 @@ public class Mapa {
     protected int kills = 0;
     
     protected AnimationTimer anim;
-    protected Thread threadColisiones;
     
     protected EventHandler<ActionEvent> eventoPerder;
     protected EventHandler<ActionEvent> eventoGanar;
@@ -178,7 +177,6 @@ public class Mapa {
     
     public void stopColisiones(){
     	anim.stop();
-    	threadColisiones.interrupt();
     }
     
     /*protected boolean colisiona(Shape s1, Shape s2){
