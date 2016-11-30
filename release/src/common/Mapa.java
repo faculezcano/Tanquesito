@@ -341,7 +341,7 @@ public class Mapa {
 					if(esLibre && jugador != null && ObjetoDinamico.distancia(x, y,jugador) < 240)
 						esLibre=false;
 					if(librePU && jugador != null && ObjetoDinamico.distancia(xPU, yPU,jugador) < 240)
-						esLibre=false;
+						librePU=false;
 					
 					if(esLibre){
 						addEnemigoAleatorio(x,y);
