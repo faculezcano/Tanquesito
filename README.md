@@ -6,9 +6,5 @@ Un jueguillo de un tanquesito :B
 2. Desplazamiento: W,S,A,D
 3. Disparo: Clic primario.
 
-# Testing
-A modo de testeo se utilizan ciertas teclas para probar funcionalidad del juego.
-## Agregar o eliminar enemigo
-Para agregar o eliminar un enemigo de prueba se utiliza la tecla "O".
-## Subir de nivel
-Para subir de nivel se utiliza la tecla "L"
+# Editor de mapas
+Se encuentra disponible un editor de mapas utilizado para ayudar al desarrollo del juego facilitando la creacion de mapas.
