@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import assets.Bullet;
 import assets.Tanque;
 import assets.TanqueEnemigo;
@@ -24,6 +25,7 @@ public class TanqueBasico extends TanqueEnemigo {
      */
     public TanqueBasico(Mapa m,double x, double y) {
     	super(m,x,y);
+  
     	vel_mov = 1;
     	puntos = 100;
     	vel_disparo = 1;

@@ -31,8 +31,8 @@ public class TanquePoder extends TanqueEnemigo {
     	vel_disparo = 3;
     	resistencia = 1;
     	
-    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/enemigo_tanque.png"))));
-    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/KV-2_Cannon.png"))));
+    	cuerpo.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/cuerpoP.png"))));
+    	canon.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/canonP.png"))));
     	
     	direccion = rand.nextInt(4);
     	setVelocidad(velAleatoria(direccion));
