@@ -61,11 +61,13 @@ public class tester extends Application {
 		this.stage.setHeight(628);
 		g = new Group();
 		grupoGameOver=new Group();
-		
+		Group grupoGanar=new Group();
 		s = new Scene(g,1038,628, Color.OLIVE);
 		sceneGameOver= new Scene(grupoGameOver,1038,628);
 		sceneGameOver.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/gameover.jpg"))));
-		
+		Scene sceneGanar= new Scene(grupoGanar,1038,628);
+		sceneGanar.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/WinScreen.png"))));
+
 		s.setCursor(Cursor.CROSSHAIR);
 		//BorderPane bp = new BorderPane();
 		
@@ -97,46 +99,8 @@ public class tester extends Application {
 				map.stopColisiones();
 				Platform.runLater(new SyncRemover(groupMapa,g));
 			
-				
-				Group groupMapa = new Group();
-				//bp.setCenter(groupMapa);
-				map = new Mapa(8,8,groupMapa);
-				hud = new HUD();
-				//bp.setBottom(hud);
-				
-				j = new Jugador(48,48);
-				
-				hud.setJugador(j);
-				hud.update();
-				map.setJugador(j);
-				
-				g.getChildren().addAll(groupMapa,hud);
-				//g.getChildren().add(bp);
-				//map.addEnemigo(enemigo);
-				//enemigo.setPosicion(new Point2D(32,97));
-				
-				map.cargarMapa("mapas/ProtoMap.txt");
-				
-				bindearMouse();
-				bindearTeclado();
-				
-				stage.setScene(s);
-				//stage.setResizable(false);
-				
-				stage.show();
-				
-				map.startColisiones();
-				
-				
-				AnimationTimer hudUpdater = (new AnimationTimer(){
-					@Override
-					public void handle(long arg0) {
-						hud.update();
-						acomodarMouse();
-					}
-				});
-				
-				hudUpdater.start();
+				s=null;
+				stage.setScene(sceneGanar);
 				
 			}
 			
