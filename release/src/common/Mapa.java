@@ -84,6 +84,7 @@ public class Mapa {
     protected Random rand = new Random();
     
     protected int habilitarPU = 0;
+    protected int kills = 0;
     
     protected AnimationTimer anim;
     protected Thread threadColisiones;
@@ -461,6 +462,10 @@ public class Mapa {
     	eventoPerder = e;
     }
     
+    public void setOnGanar(EventHandler<ActionEvent> g){
+    	eventoGanar = g;
+    }
+    
     protected void perder(){
     	if(eventoPerder != null){
     		eventoPerder.handle(new ActionEvent(this,null));
@@ -693,6 +698,9 @@ public class Mapa {
 					if(tenemigo.getResistencia()<=0){
 						eliminarEnemigo(tenemigo);
 						habilitarPU++;
+						kills++;
+						if (kills >= 2)
+							ganar();
 						System.out.println("cantidad de enemigos muertos:"+ habilitarPU);
 					}
 					if(b.getResistencia()<=0){

@@ -89,6 +89,40 @@ public class tester extends Application {
 			
 		});
 		
+		map.setOnGanar(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("tester: EventoPerder capturado");
+				map.stopColisiones();
+				Platform.runLater(new SyncRemover(groupMapa,g));
+			
+				
+				Group groupMapa = new Group();
+				//bp.setCenter(groupMapa);
+				map = new Mapa(8,8,groupMapa);
+				hud = new HUD();
+				//bp.setBottom(hud);
+				
+				j = new Jugador(48,48);
+				
+				hud.setJugador(j);
+				hud.update();
+				map.setJugador(j);
+				
+				g.getChildren().addAll(groupMapa,hud);
+				//g.getChildren().add(bp);
+				//map.addEnemigo(enemigo);
+				//enemigo.setPosicion(new Point2D(32,97));
+				
+				map.cargarMapa("mapas/ProtoMap.txt");
+				
+				
+				
+			}
+			
+		});
+		
 		hud = new HUD();
 		//bp.setBottom(hud);
 		
