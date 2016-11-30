@@ -61,8 +61,8 @@ public class tester extends Application {
 		g = new Group();
 		grupoGameOver=new Group();
 		
-		s = new Scene(g,1024,600, Color.OLIVE);
-		sceneGameOver= new Scene(grupoGameOver,1024,600);
+		s = new Scene(g,1038,628, Color.OLIVE);
+		sceneGameOver= new Scene(grupoGameOver,1038,628);
 		sceneGameOver.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/gameover.jpg"))));
 		
 		s.setCursor(Cursor.CROSSHAIR);
