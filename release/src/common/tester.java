@@ -9,6 +9,7 @@ import java.util.Random;
 import assets.*;
 import assets.tanques.*;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class tester extends Application {
 	
@@ -79,11 +81,18 @@ public class tester extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				map.stopColisiones();
-				Platform.runLater(new SyncRemover(groupMapa,g));
+				//Platform.runLater(new SyncRemover(groupMapa,g));
 			
-				s=null;
+//				s=null;
+//				stage.setScene(sceneGameOver);
+				try {
+					Thread.sleep(1700);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	s=null;
 				stage.setScene(sceneGameOver);
-				
 				
 				
 				
