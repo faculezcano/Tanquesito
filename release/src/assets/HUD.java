@@ -1,5 +1,10 @@
 package assets;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.concurrent.TimeUnit;
+
 import assets.tanques.Jugador;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,17 +29,19 @@ public class HUD extends HBox{
 	protected HBox vida = new HBox();
 	protected Text lvl = new Text();
 	protected Text puntos = new Text();
+	protected Text tiempo = new Text();
 	protected Rectangle resistencia;
 	protected HBox balas = new HBox();
 	
 	protected Node node;
+	
+	protected Date inicio = new Date();
 	
 	protected ImagePattern imgVida = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/vida.png")));
 	protected ImagePattern imgBala = new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("img/bala.png")));
 	
 	public HUD(){
 		super();
-		
 		resistencia = new Rectangle(0,0,0,5);
 		resistencia.setFill(Color.LIGHTGREEN);
 		Rectangle resistenciaBack = new Rectangle(0,0,58,5);
@@ -49,11 +56,20 @@ public class HUD extends HBox{
 		VBox vidaResistencia = new VBox(5);
 		vidaResistencia.getChildren().addAll(vida,groupRes);
 		//vidaResistencia.setMinWidth();
-		HBox boxNivel = new HBox();
-		boxNivel.getChildren().addAll(new Text("Nivel: "), lvl);
-		HBox boxPuntos = new HBox();
-		boxPuntos.getChildren().addAll(new Text("Puntos: "),puntos);
-		getChildren().addAll(vidaResistencia,boxNivel,boxPuntos,balas);
+		VBox boxNivel = new VBox();
+		Text lblNivel = new Text("Nivel");
+		lblNivel.setStroke(Color.WHITE);
+		lvl.setStroke(Color.WHITE);
+		boxNivel.getChildren().addAll(lblNivel, lvl);
+		VBox boxPuntos = new VBox();
+		Text lblPuntos = new Text("Puntos");
+		lblPuntos.setStroke(Color.WHITE);
+		puntos.setStroke(Color.WHITE);
+		boxPuntos.getChildren().addAll(lblPuntos,puntos);
+		
+		tiempo.setStroke(Color.WHITE);
+		
+		getChildren().addAll(vidaResistencia,boxNivel,boxPuntos,balas,tiempo);
 		setSpacing(20);
 		setAlignment(Pos.CENTER_LEFT);
 	}
@@ -69,6 +85,7 @@ public class HUD extends HBox{
 			updateLvl();
 			updatePuntos();
 			updateBalas();
+			updateTiempo();
 		}
 	}
 	
@@ -117,6 +134,14 @@ public class HUD extends HBox{
 			}
 			balasAnterior = balasDisponibles;
 		}
+	}
+	
+	private void updateTiempo(){
+		long diferencia = (new Date()).getTime() - inicio.getTime();
+		int segs = (int)TimeUnit.MILLISECONDS.toSeconds(diferencia);
+		String seg = ((segs/60 < 10) ? "0" : "") + segs/60;
+		String min = ((segs%60 < 10) ? "0" : "") + segs%60;
+		tiempo.setText(seg+":"+min);
 	}
 	
 }

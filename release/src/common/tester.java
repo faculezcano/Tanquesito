@@ -19,12 +19,14 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
@@ -54,17 +56,15 @@ public class tester extends Application {
 		stage.setTitle("Tanquesito");
 		stage.centerOnScreen();
 		stage.setWidth(1038);
-		stage.setHeight(628);
+		stage.setHeight(658);
 		stage.setResizable(false);
 		
 		this.stage = stage;
-		this.stage.setResizable(false);
-		this.stage.setWidth(1038);
-		this.stage.setHeight(628);
+		
 		g = new Group();
 		grupoGameOver=new Group();
 		Group grupoGanar=new Group();
-		s = new Scene(g,1038,628, Color.OLIVE);
+		s = new Scene(g,1038,628, Color.BLACK);
 		sceneGameOver= new Scene(grupoGameOver,1038,628);
 		sceneGameOver.setFill(new ImagePattern (new Image(getClass().getClassLoader().getResourceAsStream("img/gameover.jpg"))));
 		Scene sceneGanar= new Scene(grupoGanar,1038,628);
@@ -74,6 +74,8 @@ public class tester extends Application {
 		//BorderPane bp = new BorderPane();
 		
 		Group groupMapa = new Group();
+		SubScene sceneMapa = new SubScene(groupMapa,1038,628);
+		sceneMapa.setFill(Color.OLIVE);
 		//bp.setCenter(groupMapa);
 		map = new Mapa(8,8,groupMapa);
 		map.setOnPerder(new EventHandler<ActionEvent>(){
@@ -124,7 +126,10 @@ public class tester extends Application {
 		hud.update();
 		map.setJugador(j);
 		
-		g.getChildren().addAll(groupMapa,hud);
+		VBox vb = new VBox(sceneMapa,hud);
+		sceneMapa.setLayoutY(30);
+		
+		g.getChildren().addAll(sceneMapa,hud);
 		//g.getChildren().add(bp);
 		//map.addEnemigo(enemigo);
 		//enemigo.setPosicion(new Point2D(32,97));
