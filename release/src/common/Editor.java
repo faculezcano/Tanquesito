@@ -22,7 +22,7 @@ public class Editor extends Application {
 
 	protected Scene s;
 	protected Group g;
-	protected int[][] map = new int[45][28];
+	protected int[][] map = new int[45][27];
 	protected Obstaculo current;
 	protected int currentInt = 1;
 	
