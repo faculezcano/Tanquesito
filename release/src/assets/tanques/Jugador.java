@@ -109,7 +109,7 @@ public class Jugador extends Tanque {
 		
 		//pisadas(p);
 		
-		super.mover(deltaT);		
+		super.mover(deltaT+0.2);		
 	}
 
 	/*@Override

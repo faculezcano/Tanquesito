@@ -39,7 +39,7 @@ public abstract class TanqueEnemigo extends Tanque {
 			@Override
 			public void run() {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 						puedeDisparar=true;
 					} catch (InterruptedException e) {}
 			}
