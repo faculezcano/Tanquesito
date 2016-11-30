@@ -264,16 +264,16 @@ public class tester extends Application {
 					}
 					j.setVelocidad(vel);
 					
-					if(e.getCode()==KeyCode.P){
-						
-						if(!map.getEnemigos().isEmpty()){
-							map.eliminarEnemigo(map.getEnemigos().poll());
-						}
-					}
-					if(e.getCode()==KeyCode.L){
-						
-						map.getJugador().subirNivel();
-					}
+//					if(e.getCode()==KeyCode.P){
+//						
+//						if(!map.getEnemigos().isEmpty()){
+//							map.eliminarEnemigo(map.getEnemigos().poll());
+//						}
+//					}
+//					if(e.getCode()==KeyCode.L){
+//						
+//						map.getJugador().subirNivel();
+//					}
 						
 					
 					double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
