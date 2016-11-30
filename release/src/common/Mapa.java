@@ -364,6 +364,11 @@ public class Mapa {
     
     protected void controlColisiones(){
     	for(Bullet b:bullets){
+    		
+    		if(b.getX()<0 || b.getY()<0)
+        		b.colisiona();
+        	if(b.getX()>2000 || b.getY()>700)
+        		b.colisiona();
 			
 			colisionesTanquesBullet(b);
 			
