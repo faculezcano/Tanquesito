@@ -117,7 +117,26 @@ public class tester extends Application {
 				
 				map.cargarMapa("mapas/ProtoMap.txt");
 				
+				bindearMouse();
+				bindearTeclado();
 				
+				stage.setScene(s);
+				//stage.setResizable(false);
+				
+				stage.show();
+				
+				map.startColisiones();
+				
+				
+				AnimationTimer hudUpdater = (new AnimationTimer(){
+					@Override
+					public void handle(long arg0) {
+						hud.update();
+						acomodarMouse();
+					}
+				});
+				
+				hudUpdater.start();
 				
 			}
 			
